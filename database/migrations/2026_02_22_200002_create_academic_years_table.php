@@ -4,16 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('units', function (Blueprint $table) {
+        Schema::create('academic_years', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('entity_id')->constrained('entities')->onDelete('restrict');
-            $table->string('name');
+            $table->string('name'); // contoh: "2023/2024"
+            $table->enum('semester', ['ganjil', 'genap'])->default('ganjil');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('units');
+        Schema::dropIfExists('academic_years');
     }
 };

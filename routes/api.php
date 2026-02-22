@@ -18,9 +18,9 @@ use App\Http\Controllers\Api\SppBillController;
 use App\Http\Controllers\Api\SppPaymentController;
 use App\Http\Controllers\Api\DashboardController;
 
-Route::middleware(['auth:sanctum', 'entity.context'])->group(function () {
+Route::middleware(['auth:sanctum', 'entity.context'])->name('api.')->group(function () {
     // Dashboard Agregasi - Bisa diakses pimpinan, bendahara, admin, super_admin
-    Route::get('dashboard/summary', [DashboardController::class, 'summary']);
+    Route::get('dashboard/summary', [DashboardController::class, 'summary'])->name('dashboard.summary');
 
     // Master Data (hanya admin & super_admin)
     Route::middleware('role:admin,super_admin')->group(function () {

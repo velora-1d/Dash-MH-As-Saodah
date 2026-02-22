@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class SppBill extends Model
 {
+    protected $table = 'infaq_bills';
+
     protected $fillable = [
         'student_id',
-        'unit_id',
         'academic_year_id',
-        'month_period',
-        'amount',
-        'paid_amount',
+        'month',
+        'nominal',
         'status',
     ];
 
@@ -30,6 +30,6 @@ class SppBill extends Model
     }
     public function payments()
     {
-        return $this->hasMany(SppPayment::class);
+        return $this->hasMany(SppPayment::class, 'bill_id');
     }
 }

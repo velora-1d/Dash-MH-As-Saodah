@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class TransactionCategory extends Model
 {
     protected $fillable = [
-        'entity_id',
         'type',
         'name',
+        'description',
         'is_active',
     ];
 
-    public function entity()
+    public function transactions()
     {
-        return $this->belongsTo(Entity::class);
+        return $this->hasMany(GeneralTransaction::class, 'category_id');
     }
 }

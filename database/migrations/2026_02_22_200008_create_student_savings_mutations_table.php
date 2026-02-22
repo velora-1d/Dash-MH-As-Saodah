@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('entities', function (Blueprint $table) {
+        Schema::create('student_savings_mutations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('type'); // sekolah, pesantren
+            $table->foreignId('student_id')->constrained('students');
+            $table->enum('type', ['in', 'out']);
+            $table->decimal('amount', 15, 2);
+            $table->date('date');
             $table->text('description')->nullable();
-            $table->string('status')->default('active');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('entities');
+        Schema::dropIfExists('student_savings_mutations');
     }
 };

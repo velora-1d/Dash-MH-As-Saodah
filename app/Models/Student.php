@@ -7,15 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     protected $fillable = [
-        'entity_id',
-        'unit_id',
         'classroom_id',
         'nisn',
+        'nis',
+        'nik',
+        'no_kk',
         'name',
         'gender',
-        'parent_phone',
-        'entry_date',
+        'category',
         'status',
+        'parent_name',
+        'parent_phone',
+        'address',
     ];
 
     public function entity()
@@ -31,5 +34,10 @@ class Student extends Model
     public function classroom()
     {
         return $this->belongsTo(Classroom::class);
+    }
+
+    public function sppBills()
+    {
+        return $this->hasMany(SppBill::class, 'student_id');
     }
 }

@@ -7,10 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Classroom extends Model
 {
     protected $fillable = [
-        'unit_id',
-        'academic_year_id',
         'name',
         'level',
+        'wali_kelas',
     ];
 
     public function unit()

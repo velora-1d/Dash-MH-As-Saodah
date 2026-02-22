@@ -6,18 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class SppPayment extends Model
 {
+    protected $table = 'infaq_payments';
+
     protected $fillable = [
-        'spp_bill_id',
+        'bill_id',
         'cash_account_id',
-        'user_id',
+        'payment_method',
         'amount',
-        'payment_date',
-        'status',
+        'date',
+        'user_id',
     ];
 
     public function sppBill()
     {
-        return $this->belongsTo(SppBill::class);
+        return $this->belongsTo(SppBill::class, 'bill_id');
     }
     public function cashAccount()
     {

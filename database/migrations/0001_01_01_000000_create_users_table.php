@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('username')->unique();
+            $table->string('username')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['owner', 'yayasan', 'kepala_sekolah', 'bendahara_pusat', 'bendahara_unit', 'tata_usaha', 'siswa']);
-            $table->string('phone', 20)->nullable();
-            $table->string('status')->default('active');
+            $table->enum('role', ['kepsek', 'bendahara', 'operator']);
+            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->rememberToken();
             $table->timestamps();
         });

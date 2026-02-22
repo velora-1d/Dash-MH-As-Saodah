@@ -8,9 +8,10 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -30,13 +31,32 @@
             /* Hide scrollbar tapi tetap bisa scroll */
             *::-webkit-scrollbar { display: none; }
             * { -ms-overflow-style: none; scrollbar-width: none; }
-            /* Form styling global */
+            /* Form styling global - Aesthetic Modernization */
             select, input[type="text"], input[type="email"], input[type="password"],
             input[type="number"], input[type="tel"], input[type="date"], textarea {
-                transition: all 0.2s ease;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                border-color: #e2e8f0 !important;
+                box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02) !important;
+                border-radius: 0.75rem !important; /* xl */
+                background-color: #f8fafc !important;
+                padding: 0.75rem 1rem !important;
+                font-size: 0.95rem !important;
+            }
+            select:hover, input:hover, textarea:hover {
+                border-color: #cbd5e1 !important;
+                background-color: #ffffff !important;
             }
             select:focus, input:focus, textarea:focus {
-                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+                background-color: #ffffff !important;
+                border-color: #6366f1 !important;
+                box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), inset 0 2px 4px 0 rgba(0, 0, 0, 0.01) !important;
+                transform: translateY(-1px);
+                outline: none !important;
+            }
+            /* Label Styling Update */
+            label {
+                letter-spacing: 0.025em;
+                color: #475569;
             }
         </style>
     </head>

@@ -21,9 +21,9 @@
                                         </svg>
                                     </div>
                                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari by Nama/NISN..." 
-                                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-sm focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-64 transition-all">
+                                        class="pl-10 pr-4 py-2.5 w-full sm:w-64 transition-all">
                                 </div>
-                                <select name="classroom_id" onchange="this.form.submit()" class="py-2 pl-3 pr-8 border border-gray-300 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500">
+                                <select name="classroom_id" onchange="this.form.submit()" class="py-2.5 pl-3 pr-8">
                                     <option value="">Semua Kelas</option>
                                     @foreach($classrooms as $cls)
                                         <option value="{{ $cls->id }}" {{ request('classroom_id') == $cls->id ? 'selected' : '' }}>Tingkat {{ $cls->level }} - {{ $cls->name }}</option>
@@ -40,7 +40,7 @@
                             </form>
                             
                             <!-- Add Button -->
-                            <a href="{{ route('students.create') }}" class="inline-flex justify-center items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition shadow-sm shadow-indigo-600/20">
+                            <a href="{{ route('students.create') }}" class="inline-flex justify-center items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-xl font-bold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md shadow-indigo-500/30">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                                 Tambah Data
                             </a>
@@ -58,17 +58,17 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Identitas Siswa</th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Kategorisasi</th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Penempatan Kelas</th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Aksi</th>
+                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Identitas Siswa</th>
+                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Kategorisasi</th>
+                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Penempatan Kelas</th>
+                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Status</th>
+                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 text-sm">
                                 @forelse($students as $student)
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                    <tr class="hover:bg-gray-50/50 transition-colors group">
+                                        <td class="px-6 py-5 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="h-10 w-10 flex-shrink-0">
                                                     <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-100 to-purple-200 flex items-center justify-center text-indigo-700 font-bold">
@@ -76,11 +76,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="ml-4 focus-within:ring-2 focus-within:ring-indigo-500 rounded px-1">
-                                                    <div class="font-bold text-gray-900">{{ $student->name }}</div>
-                                                    <div class="text-xs text-gray-500 mt-0.5">
+                                                    <div class="font-bold text-gray-900 text-sm group-hover:text-indigo-600 transition-colors">{{ $student->name }}</div>
+                                                    <div class="text-[11px] text-gray-400 mt-0.5">
                                                         NISN: {{ $student->nisn ?: '-' }} &bull; NIS: {{ $student->nis ?: '-' }}
                                                     </div>
-                                                    <div class="text-xs text-gray-500 mt-0.5 font-medium">JK: {{ $student->gender == 'L' ? 'Laki-Laki' : 'Perempuan' }}</div>
+                                                    <div class="text-[10px] uppercase tracking-wider text-gray-400 mt-1 font-bold">JK: {{ $student->gender == 'L' ? 'Laki-Laki' : 'Perempuan' }}</div>
                                                 </div>
                                             </div>
                                         </td>
@@ -92,33 +92,44 @@
                                             @elseif($student->category == 'kurang_mampu')
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">Kurang Mampu</span>
                                             @endif
+                                            
+                                            <div class="mt-2 text-xs">
+                                                SPP: 
+                                                @if($student->infaq_status == 'bayar')
+                                                    <span class="font-bold text-gray-400">Bayar Penuh</span>
+                                                @elseif($student->infaq_status == 'subsidi')
+                                                    <span class="font-bold text-emerald-500">Subsidi (Rp {{ number_format($student->infaq_nominal, 0, ',', '.') }})</span>
+                                                @else
+                                                    <span class="font-bold text-amber-500">Gratis</span>
+                                                @endif
+                                            </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-6 py-5 whitespace-nowrap">
                                             @if($student->classroom)
-                                                <div class="text-sm font-bold text-gray-900">Tingkat {{ $student->classroom->level }}</div>
-                                                <div class="text-xs text-indigo-600 bg-indigo-50 px-2 flex justify-center py-0.5 rounded-full font-bold border border-indigo-100 inline-block mt-1">Ruang: {{ $student->classroom->name }}</div>
+                                                <div class="text-sm font-bold text-gray-900">MI-{{ $student->classroom->level }}</div>
+                                                <div class="text-[10px] text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-full font-bold border border-indigo-100 uppercase tracking-widest inline-block mt-1">{{ $student->classroom->name }}</div>
                                             @else
-                                                <span class="text-xs font-medium text-rose-500 italic bg-rose-50 px-2 py-1 rounded border border-rose-100">Belum mendapat kelas</span>
+                                                <span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest bg-rose-50 px-2 py-1 rounded-lg border border-rose-100">Tanpa Kelas</span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-6 py-5 whitespace-nowrap">
                                             @if($student->status == 'aktif')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">Siswa Aktif</span>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase tracking-widest">Aktif</span>
                                             @elseif($student->status == 'lulus')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyan-100 text-cyan-800">Lulus / Alumni</span>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-50 text-cyan-600 border border-cyan-100 uppercase tracking-widest">Lulus</span>
                                             @elseif($student->status == 'pindah')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-100 text-orange-800">Pindah / Mutasi</span>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-50 text-orange-600 border border-orange-100 uppercase tracking-widest">Pindah</span>
                                             @elseif($student->status == 'nonaktif')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-800">Diberhentikan</span>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-gray-50 text-gray-400 border border-gray-100 uppercase tracking-widest">Nonaktif</span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <div class="flex items-center gap-3">
-                                                <a href="{{ route('students.edit', $student->id) }}" class="text-indigo-600 hover:text-indigo-900 font-semibold bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors">Edit</a>
+                                        <td class="px-6 py-5 whitespace-nowrap text-sm font-medium">
+                                            <div class="flex items-center gap-2">
+                                                <a href="{{ route('students.edit', $student->id) }}" class="text-indigo-500 hover:text-indigo-700 font-bold bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-xl transition-all text-[11px] uppercase tracking-widest border border-indigo-100">Edit</a>
                                                 <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('PENGHAPUSAN DATA SISWA! \n\nHati-hati: Segala rekam jejak Infaq, Daftar Ulang, dan PPDB yang bertautan dengan anak ini akan ikut terhapus. Yakin mau dilanjutkan?');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="text-rose-600 hover:text-rose-900 font-semibold bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg transition-colors">Hapus</button>
+                                                    <button type="submit" class="text-rose-500 hover:text-rose-700 font-bold bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-xl transition-all text-[11px] uppercase tracking-widest border border-rose-100">Hapus</button>
                                                 </form>
                                             </div>
                                         </td>

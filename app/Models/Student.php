@@ -16,6 +16,8 @@ class Student extends Model
         'gender',
         'category',
         'status',
+        'infaq_status',
+        'infaq_nominal',
         'parent_name',
         'parent_phone',
         'address',

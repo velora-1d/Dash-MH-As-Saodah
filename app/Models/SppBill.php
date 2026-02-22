@@ -20,10 +20,6 @@ class SppBill extends Model
     {
         return $this->belongsTo(Student::class);
     }
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class);
-    }
     public function academicYear()
     {
         return $this->belongsTo(AcademicYear::class);

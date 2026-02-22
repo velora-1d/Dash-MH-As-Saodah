@@ -25,12 +25,14 @@ class ClassroomController extends Controller
             'name' => 'required|string|max:255|unique:classrooms,name',
             'level' => 'required|integer|min:1|max:6',
             'wali_kelas' => 'nullable|string|max:255',
+            'infaq_nominal' => 'required|numeric|min:0',
         ]);
 
         Classroom::create([
             'name' => $request->name,
             'level' => $request->level,
             'wali_kelas' => $request->wali_kelas,
+            'infaq_nominal' => $request->infaq_nominal,
         ]);
 
         return redirect()->route('classrooms.index')->with('success', 'Data Kelas berhasil ditambahkan.');
@@ -52,12 +54,14 @@ class ClassroomController extends Controller
             'name' => 'required|string|max:255|unique:classrooms,name,' . $classroom->id,
             'level' => 'required|integer|min:1|max:6',
             'wali_kelas' => 'nullable|string|max:255',
+            'infaq_nominal' => 'required|numeric|min:0',
         ]);
 
         $classroom->update([
             'name' => $request->name,
             'level' => $request->level,
             'wali_kelas' => $request->wali_kelas,
+            'infaq_nominal' => $request->infaq_nominal,
         ]);
 
         return redirect()->route('classrooms.index')->with('success', 'Data Kelas berhasil diperbarui.');

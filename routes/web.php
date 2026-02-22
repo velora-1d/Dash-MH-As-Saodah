@@ -23,6 +23,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('master-data/classrooms', ClassroomController::class)->except('show');
     Route::resource('master-data/students', StudentController::class);
     Route::resource('master-data/transaction-categories', TransactionCategoryController::class)->except('show');
+
+    // Mutasi & Kenaikan Kelas
+    Route::get('master-data/mutations', [\App\Http\Controllers\MasterData\MutationController::class, 'index'])->name('mutations.index');
+    Route::post('master-data/mutations/execute', [\App\Http\Controllers\MasterData\MutationController::class, 'execute'])->name('mutations.execute');
+
+    // Infaq / SPP
+    Route::get('infaq/bills', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'index'])->name('infaq.bills.index');
+    Route::get('infaq/bills/generate', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'createGenerate'])->name('infaq.bills.generate.create');
+    Route::post('infaq/bills/generate', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'storeGenerate'])->name('infaq.bills.generate.store');
+    Route::post('infaq/bills/{sppBill}/void', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'void'])->name('infaq.bills.void');
 });
 
 Route::middleware('auth')->group(function () {

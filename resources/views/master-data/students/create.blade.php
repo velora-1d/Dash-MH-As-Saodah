@@ -19,7 +19,7 @@
                                 <div class="col-span-1 md:col-span-2">
                                     <label for="name" class="block text-sm font-bold text-gray-700">Nama Lengkap Siswa</label>
                                     <input type="text" name="name" id="name" required placeholder="Cth: Muhammad Al-Fatih"
-                                        class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm transition duration-150"
+                                        class="mt-2 block w-full"
                                         value="{{ old('name') }}">
                                     @error('name')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                                 </div>
@@ -27,7 +27,7 @@
                                 <div>
                                     <label for="nisn" class="block text-sm font-bold text-gray-700">NISN (Nomor Induk Siswa Nasional)</label>
                                     <input type="number" name="nisn" id="nisn" placeholder="Opsional, Cth: 0102030405"
-                                        class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm transition duration-150"
+                                        class="mt-2 block w-full"
                                         value="{{ old('nisn') }}">
                                     <p class="text-xs text-gray-500 mt-1">Dapat dikosongkan jika belum turun surat keputusannya.</p>
                                     @error('nisn')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
@@ -36,7 +36,7 @@
                                 <div>
                                     <label for="nis" class="block text-sm font-bold text-gray-700">NIS (Nomor Induk Sekolah Lokal)</label>
                                     <input type="number" name="nis" id="nis" placeholder="Opsional"
-                                        class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm transition duration-150"
+                                        class="mt-2 block w-full"
                                         value="{{ old('nis') }}">
                                     @error('nis')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                                 </div>
@@ -44,7 +44,7 @@
                                 <div>
                                     <label for="nik" class="block text-sm font-bold text-gray-700">NIK (Nomor Induk Kependudukan)</label>
                                     <input type="number" name="nik" id="nik" placeholder="16 Digit NIK Anak"
-                                        class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm transition duration-150"
+                                        class="mt-2 block w-full"
                                         value="{{ old('nik') }}">
                                     @error('nik')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                                 </div>
@@ -52,7 +52,7 @@
                                 <div>
                                     <label for="no_kk" class="block text-sm font-bold text-gray-700">No. Kartu Keluarga (KK)</label>
                                     <input type="number" name="no_kk" id="no_kk" placeholder="16 Digit Nomor KK"
-                                        class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm transition duration-150"
+                                        class="mt-2 block w-full"
                                         value="{{ old('no_kk') }}">
                                     @error('no_kk')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                                 </div>
@@ -60,7 +60,7 @@
                                 <div>
                                     <label for="gender" class="block text-sm font-bold text-gray-700">Jenis Kelamin</label>
                                     <select id="gender" name="gender" required
-                                        class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm transition duration-150">
+                                        class="mt-2 block w-full">
                                         <option value="" disabled selected>-- Tentukan --</option>
                                         <option value="L" {{ old('gender') == 'L' ? 'selected' : '' }}>Laki - Laki</option>
                                         <option value="P" {{ old('gender') == 'P' ? 'selected' : '' }}>Perempuan</option>
@@ -75,22 +75,21 @@
                             <h4 class="text-sm font-bold text-emerald-600 uppercase tracking-wider mb-4 border-b border-emerald-100 pb-2">Status Penempatan & Administrasi</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 
-                                <div>
-                                    <label for="category" class="block text-sm font-bold text-gray-700">Kategori Basis Biaya Pendanaan (SPP/Infaq)</label>
+                                <div class="col-span-1 md:col-span-2">
+                                    <label for="category" class="block text-sm font-bold text-gray-700">Kategori Siswa (Sosial)</label>
                                     <select id="category" name="category" required
-                                        class="mt-2 block w-full border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl shadow-sm transition duration-150">
-                                        <option value="reguler" {{ old('category') == 'reguler' ? 'selected' : '' }}>Reguler (Normal)</option>
-                                        <option value="yatim" {{ old('category') == 'yatim' ? 'selected' : '' }}>Yatim/Piatu (Gratis 100%)</option>
-                                        <option value="kurang_mampu" {{ old('category') == 'kurang_mampu' ? 'selected' : '' }}>Kurang Mampu (Diskon Manual)</option>
+                                        class="mt-2 block w-full">
+                                        <option value="reguler" {{ old('category') == 'reguler' ? 'selected' : '' }}>Reguler</option>
+                                        <option value="yatim" {{ old('category') == 'yatim' ? 'selected' : '' }}>Yatim / Piatu</option>
+                                        <option value="kurang_mampu" {{ old('category') == 'kurang_mampu' ? 'selected' : '' }}>Kurang Mampu</option>
                                     </select>
-                                    <p class="text-xs text-gray-500 mt-1">Sangat menentukan generator tagihan sistem ke depannya.</p>
                                     @error('category')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                                 </div>
 
                                 <div>
                                     <label for="classroom_id" class="block text-sm font-bold text-gray-700">Penempatan Kelas Awal</label>
                                     <select id="classroom_id" name="classroom_id"
-                                        class="mt-2 block w-full border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl shadow-sm transition duration-150">
+                                        class="mt-2 block w-full">
                                         <option value="">-- Biarkan Mengambang (Belum Set) --</option>
                                         @foreach($classrooms as $cls)
                                             <option value="{{ $cls->id }}" {{ old('classroom_id') == $cls->id ? 'selected' : '' }}>
@@ -104,13 +103,52 @@
                                 <div>
                                     <label for="status" class="block text-sm font-bold text-gray-700">Status Kenegaraan Siswa</label>
                                     <select id="status" name="status" required
-                                        class="mt-2 block w-full border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl shadow-sm transition duration-150">
+                                        class="mt-2 block w-full">
                                         <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }} class="font-bold text-emerald-600">Siswa Aktif</option>
                                         <option value="lulus" {{ old('status') == 'lulus' ? 'selected' : '' }}>Lulus / Alumni</option>
                                         <option value="pindah" {{ old('status') == 'pindah' ? 'selected' : '' }}>Pindah / Mutasi Keluar</option>
                                         <option value="nonaktif" {{ old('status') == 'nonaktif' ? 'selected' : '' }}>Diskorsing / Cuti</option>
                                     </select>
                                     @error('status')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+                                </div>
+                                
+                                <div class="col-span-1 md:col-span-2 mt-4 pt-4 border-t border-emerald-50">
+                                    <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Pengaturan SPP / Infaq Bulanan</h5>
+                                    
+                                    <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 mb-4 flex items-start space-x-3">
+                                        <svg class="w-5 h-5 text-sky-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        <p class="text-sm text-sky-800 leading-relaxed">
+                                            <strong>Sekilas Info:</strong> Secara otomatis sistem akan membaca Pilihan Kategori di atas. Jika <strong>Yatim</strong>, maka tagihannya otomatis <strong>Gratis</strong>. Jika <strong>Reguler</strong>, tagihannya otomatis <strong>Sesuai Tarif Kelas</strong>. Anda hanya perlu mengganti pilihan di bawah jika ada <strong>pengecualian</strong> aturan dari sekolah / kepala sekolah (Misal: anak itu Reguler tapi karena dia anak dari seorang guru maka SPP nya dipotong/disubsidi).
+                                        </p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
+                                        <div>
+                                            <label for="infaq_status" class="block text-sm font-bold text-gray-700">Skema Pembayaran Siswa Ini</label>
+                                            <select id="infaq_status" name="infaq_status" required
+                                                class="mt-2 block w-full">
+                                                <option value="bayar" {{ old('infaq_status') == 'bayar' ? 'selected' : '' }}>Bayar Normal (Sesuai Tarif Kelas)</option>
+                                                <option value="subsidi" {{ old('infaq_status') == 'subsidi' ? 'selected' : '' }}>Dapat Keringanan (Bayar Sebagian Saja)</option>
+                                                <option value="gratis" {{ old('infaq_status') == 'gratis' ? 'selected' : '' }}>Gratis Sepenuhnya (Rp 0)</option>
+                                            </select>
+                                            <p class="text-xs text-gray-500 mt-1">Ubah manual jika ada kebijakan khusus diluar standar sistem.</p>
+                                            @error('infaq_status')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+                                        </div>
+
+                                        <div id="infaq_nominal_container" class="{{ old('infaq_status') == 'subsidi' ? '' : 'hidden' }}">
+                                            <label for="infaq_nominal" class="block text-sm font-bold text-gray-700">Nominal yang Wajib Dibayar</label>
+                                            <div class="relative mt-2">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <span class="text-gray-500 sm:text-sm font-bold">Rp</span>
+                                                </div>
+                                                <input type="number" name="infaq_nominal" id="infaq_nominal" min="0" step="1000"
+                                                    class="pl-10 block w-full"
+                                                    placeholder="Cth: 20000" value="{{ old('infaq_nominal') }}">
+                                            </div>
+                                            <p class="text-xs text-gray-500 mt-1">Keringanan: Misal tarif aslinya 50.000, tapi kena aturan Keringanan cukup bayar 20.000, maka isi 20000 di sini.</p>
+                                            @error('infaq_nominal')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+                                        </div>
+                                    </div>
                                 </div>
                                 
                             </div>
@@ -123,7 +161,7 @@
                                 <div class="col-span-1 md:col-span-2">
                                     <label for="parent_name" class="block text-sm font-bold text-gray-700">Nama Orang Tua / Wali</label>
                                     <input type="text" name="parent_name" id="parent_name" placeholder="Cth: Bpk. Ahmad Fauzi"
-                                        class="mt-2 block w-full border-gray-300 focus:border-amber-500 focus:ring-amber-500 rounded-xl shadow-sm transition duration-150"
+                                        class="mt-2 block w-full"
                                         value="{{ old('parent_name') }}">
                                     @error('parent_name')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                                 </div>
@@ -131,33 +169,67 @@
                                 <div>
                                     <label for="parent_phone" class="block text-sm font-bold text-gray-700">No. WhatsApp / HP Wali</label>
                                     <input type="text" name="parent_phone" id="parent_phone" placeholder="Cth: 08123456789"
-                                        class="mt-2 block w-full border-gray-300 focus:border-amber-500 focus:ring-amber-500 rounded-xl shadow-sm transition duration-150"
+                                        class="mt-2 block w-full"
                                         value="{{ old('parent_phone') }}">
                                     <p class="text-xs text-gray-500 mt-1">Digunakan untuk notifikasi tagihan & pengumuman.</p>
                                     @error('parent_phone')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                                 </div>
 
                                 <div>
-                                    <label for="address" class="block text-sm font-bold text-gray-700">Alamat Rumah</label>
+                                     <label for="address" class="block text-sm font-bold text-gray-700">Alamat Rumah</label>
                                     <textarea name="address" id="address" rows="2" placeholder="Cth: Jl. Mawar No. 10, RT 02/05, Kel. Sukamaju"
-                                        class="mt-2 block w-full border-gray-300 focus:border-amber-500 focus:ring-amber-500 rounded-xl shadow-sm transition duration-150">{{ old('address') }}</textarea>
+                                        class="mt-2 block w-full">{{ old('address') }}</textarea>
                                     @error('address')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                                 </div>
                             </div>
                         </div>
 
-                    <!-- Action -->
-                    <div class="p-8 bg-gray-50 border-t border-gray-100 flex items-center justify-end gap-3 rounded-b-2xl">
-                        <a href="{{ route('students.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-xl font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 transition">
-                            Batal
-                        </a>
-                        <button type="submit" class="inline-flex items-center px-6 py-2 bg-indigo-600 border border-transparent rounded-xl font-bold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition shadow-sm shadow-indigo-600/20">
-                            Simpan Rekam Profil Siswa
-                        </button>
+                        <!-- Action Buttons -->
+                        <div class="mt-10 flex items-center justify-end gap-x-3 border-t border-gray-100 pt-6">
+                            <a href="{{ route('students.index') }}" class="inline-flex items-center px-4 py-2 bg-rose-50 border border-rose-200 rounded-xl font-bold text-xs text-rose-600 uppercase tracking-widest shadow-sm hover:bg-rose-100 active:bg-rose-200 outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                Batal
+                            </a>
+                            <button type="submit" class="inline-flex items-center px-6 py-3 bg-indigo-600 border border-transparent rounded-xl font-bold text-sm text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-lg shadow-indigo-500/30">
+                                Simpan Rekam Profil Siswa
+                            </button>
+                        </div>
                     </div>
                 </form>
 
             </div>
         </div>
     </div>
+
+    <!-- Script for Dynamic SPP Toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('category');
+            const infaqStatusSelect = document.getElementById('infaq_status');
+            const infaqNominalContainer = document.getElementById('infaq_nominal_container');
+            const infaqNominalInput = document.getElementById('infaq_nominal');
+
+            function toggleNominalInput() {
+                if (infaqStatusSelect.value === 'subsidi') {
+                    infaqNominalContainer.classList.remove('hidden');
+                    infaqNominalInput.setAttribute('required', 'required');
+                } else {
+                    infaqNominalContainer.classList.add('hidden');
+                    infaqNominalInput.removeAttribute('required');
+                    infaqNominalInput.value = ''; // Reset value
+                }
+            }
+
+            function autoAdjustStatusBasedOnCategory() {
+                if (categorySelect.value === 'yatim') {
+                    infaqStatusSelect.value = 'gratis';
+                } else if (categorySelect.value === 'reguler') {
+                    infaqStatusSelect.value = 'bayar';
+                }
+                toggleNominalInput();
+            }
+
+            infaqStatusSelect.addEventListener('change', toggleNominalInput);
+            categorySelect.addEventListener('change', autoAdjustStatusBasedOnCategory);
+        });
+    </script>
 </x-app-layout>

@@ -1,221 +1,181 @@
 <x-app-layout>
-
-    <div>
-        <div class="">
-            <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100">
-                <div class="p-6 text-gray-900 space-y-6">
-                    
-                    <!-- Header Action -->
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="space-y-6">
+        <!-- Hero Header -->
+        <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%); border-radius: 1rem; overflow: hidden; position: relative;">
+            <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+            <div style="position: absolute; right: 80px; bottom: -40px; width: 150px; height: 150px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+            <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3);">
+                            <svg style="width: 22px; height: 22px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-                                <svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                Manajemen Tagihan Infaq / SPP
-                            </h3>
-                            <p class="text-sm text-gray-500 mt-1">Kelola riwayat tagihan bulanan siswa dan status pembayarannya secara mutlak.</p>
-                        </div>
-                        <a href="{{ route('infaq.bills.generate.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-xl font-bold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md shadow-indigo-500/30">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            Generate Tagihan Massal
-                        </a>
-                    </div>
-                    
-                    @if (session('success'))
-                        <div class="bg-emerald-50 border border-emerald-200 text-emerald-600 px-4 py-3 rounded-xl relative" role="alert">
-                            <span class="block sm:inline font-medium">{{ session('success') }}</span>
-                        </div>
-                    @endif
-
-                    @if (session('error'))
-                        <div class="bg-rose-50 border border-rose-200 text-rose-600 px-4 py-3 rounded-xl relative" role="alert">
-                            <span class="block sm:inline font-medium">{{ session('error') }}</span>
-                        </div>
-                    @endif
-
-                    <!-- Filter Section -->
-                    <div class="bg-gray-50 rounded-xl border border-gray-200 p-5 mt-4">
-                <form action="{{ route('infaq.bills.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
-                    <div class="md:col-span-2">
-                        <label for="search" class="block text-xs font-bold text-gray-500 mb-1">Cari Nama Siswa</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                            </div>
-                            <input type="text" name="search" id="search" value="{{ request('search') }}" class="pl-10 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl text-sm" placeholder="Ketik nama...">
+                            <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Tagihan Infaq / SPP</h2>
+                            <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Kelola tagihan bulanan dan status pembayaran siswa.</p>
                         </div>
                     </div>
-                    
-                    <div>
-                        <label for="classroom_id" class="block text-xs font-bold text-gray-500 mb-1">Kelas</label>
-                        <select name="classroom_id" id="classroom_id" class="block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl text-sm">
-                            <option value="">Semua Kelas</option>
-                            @foreach($classrooms as $room)
-                                <option value="{{ $room->id }}" {{ request('classroom_id') == $room->id ? 'selected' : '' }}>{{ $room->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="month" class="block text-xs font-bold text-gray-500 mb-1">Bulan</label>
-                        <select name="month" id="month" class="block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl text-sm">
-                            <option value="">Semua Bulan</option>
-                            @foreach([1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April', 5=>'Mei', 6=>'Juni', 7=>'Juli', 8=>'Agustus', 9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember'] as $key => $name)
-                                <option value="{{ $key }}" {{ request('month') == $key ? 'selected' : '' }}>{{ $name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="status" class="block text-xs font-bold text-gray-500 mb-1">Status</label>
-                        <select name="status" id="status" class="block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl text-sm">
-                            <option value="">Semua Status</option>
-                            <option value="belum_lunas" {{ request('status') == 'belum_lunas' ? 'selected' : '' }}>Menunggak / Belum Lunas</option>
-                            <option value="lunas" {{ request('status') == 'lunas' ? 'selected' : '' }}>Lunas / Gratis</option>
-                            <option value="void" {{ request('status') == 'void' ? 'selected' : '' }}>Dibatalkan (Void)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 bg-indigo-50 border border-indigo-200 rounded-xl font-bold text-sm text-indigo-700 hover:bg-indigo-100 transition-colors">
-                            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
-                            Filter
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Table Section -->
-            <div class="bg-white overflow-hidden shadow-sm rounded-3xl border border-indigo-50/50">
-                <div class="border-b border-gray-200 bg-gray-50 px-6 py-4 flex justify-between items-center">
-                    <h3 class="font-bold text-gray-700">Daftar Tagihan Siswa</h3>
-                    <span class="text-xs font-bold bg-indigo-100 text-indigo-800 py-1 px-3 rounded-full">Total: {{ $bills->total() }} Data</span>
+                    <a href="{{ route('infaq.bills.generate.create') }}" style="display: inline-flex; align-items: center; padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border-radius: 0.75rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1.5px solid rgba(255,255,255,0.3); text-decoration: none; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.35)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                        <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                        Generate Tagihan
+                    </a>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">No</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Info Siswa</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Kelas</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Periode</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Nominal Tagihan</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @php
-                                $months = [1=>'Jan', 2=>'Feb', 3=>'Mar', 4=>'Apr', 5=>'Mei', 6=>'Jun', 7=>'Jul', 8=>'Agu', 9=>'Sep', 10=>'Okt', 11=>'Nov', 12=>'Des'];
-                            @endphp
-                            @forelse ($bills as $index => $bill)
-                                <tr class="hover:bg-indigo-50/30 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-bold">
-                                        {{ $bills->firstItem() + $index }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-xl bg-indigo-100 text-indigo-700 font-bold uppercase border border-indigo-200">
-                                                {{ substr($bill->student->name, 0, 1) }}
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-bold text-gray-900">{{ $bill->student->name }}</div>
-                                                <div class="text-xs text-gray-500">{{ $bill->student->nisn ?? 'NISN Tidak Ada' }}</div>
-                                            </div>
+            </div>
+        </div>
+
+        @if (session('success'))
+            <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.875rem 1.25rem; border-radius: 0.75rem; font-size: 0.8125rem; font-weight: 500;">{{ session('success') }}</div>
+        @endif
+        @if (session('error'))
+            <div style="background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 0.875rem 1.25rem; border-radius: 0.75rem; font-size: 0.8125rem; font-weight: 500;">{{ session('error') }}</div>
+        @endif
+
+        <!-- Filter Card -->
+        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
+            <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%;"></div>
+                <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Filter Data</h4>
+            </div>
+            <form action="{{ route('infaq.bills.index') }}" method="GET" style="padding: 1.5rem; display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; align-items: end;">
+                <div style="grid-column: span 2;">
+                    <label style="display: block; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.375rem;">Cari Nama</label>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Ketik nama..." style="width: 100%; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.375rem;">Kelas</label>
+                    <select name="classroom_id" style="width: 100%; box-sizing: border-box;">
+                        <option value="">Semua</option>
+                        @foreach($classrooms as $room)<option value="{{ $room->id }}" {{ request('classroom_id') == $room->id ? 'selected' : '' }}>{{ $room->name }}</option>@endforeach
+                    </select>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.375rem;">Bulan</label>
+                    <select name="month" style="width: 100%; box-sizing: border-box;">
+                        <option value="">Semua</option>
+                        @foreach([1=>'Jan', 2=>'Feb', 3=>'Mar', 4=>'Apr', 5=>'Mei', 6=>'Jun', 7=>'Jul', 8=>'Agu', 9=>'Sep', 10=>'Okt', 11=>'Nov', 12=>'Des'] as $key => $name)<option value="{{ $key }}" {{ request('month') == $key ? 'selected' : '' }}>{{ $name }}</option>@endforeach
+                    </select>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.375rem;">Status</label>
+                    <select name="status" style="width: 100%; box-sizing: border-box;">
+                        <option value="">Semua</option>
+                        <option value="belum_lunas" {{ request('status') == 'belum_lunas' ? 'selected' : '' }}>Belum Lunas</option>
+                        <option value="lunas" {{ request('status') == 'lunas' ? 'selected' : '' }}>Lunas</option>
+                        <option value="void" {{ request('status') == 'void' ? 'selected' : '' }}>Void</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" style="width: 100%; display: inline-flex; justify-content: center; align-items: center; padding: 0.625rem 1rem; font-size: 0.75rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.625rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+                        <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
+                        Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Table -->
+        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
+            <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%;"></div>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Daftar Tagihan</h4>
+                </div>
+                <span style="font-size: 0.6875rem; font-weight: 600; color: #d97706; background: #fef3c7; padding: 0.25rem 0.75rem; border-radius: 999px;">{{ $bills->total() }} Data</span>
+            </div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
+                            <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">No</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Siswa</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Kelas</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Periode</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: right; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Nominal</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Status</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php $months = [1=>'Jan', 2=>'Feb', 3=>'Mar', 4=>'Apr', 5=>'Mei', 6=>'Jun', 7=>'Jul', 8=>'Agu', 9=>'Sep', 10=>'Okt', 11=>'Nov', 12=>'Des']; @endphp
+                        @forelse ($bills as $index => $bill)
+                            <tr style="border-bottom: 1px solid #f1f5f9; {{ $bill->status == 'void' ? 'opacity: 0.45;' : '' }}transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                                <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; color: #94a3b8; font-weight: 600;">{{ $bills->firstItem() + $index }}</td>
+                                <td style="padding: 1rem 1.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8125rem; color: #b45309;">{{ strtoupper(substr($bill->student->name, 0, 1)) }}</div>
+                                        <div>
+                                            <p style="font-weight: 600; font-size: 0.8125rem; color: #1e293b; margin: 0;">{{ $bill->student->name }}</p>
+                                            <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $bill->student->nisn ?? '-' }}</p>
                                         </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-bold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100">
-                                            {{ $bill->student->classroom ? $bill->student->classroom->name : 'N/A' }}
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem 1.5rem;">
+                                    <span style="font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $bill->student->classroom ? $bill->student->classroom->name : '-' }}</span>
+                                </td>
+                                <td style="padding: 1rem 1.5rem;">
+                                    <p style="font-weight: 600; font-size: 0.8125rem; color: #1e293b; margin: 0;">{{ $months[$bill->month] }}</p>
+                                    <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $bill->academicYear->name }}</p>
+                                </td>
+                                <td style="padding: 1rem 1.5rem; text-align: right;">
+                                    @if($bill->nominal <= 0)
+                                        <span style="font-weight: 700; font-size: 0.8125rem; color: #059669;">GRATIS</span>
+                                    @else
+                                        <span style="font-weight: 700; font-size: 0.8125rem; color: #1e293b;">Rp {{ number_format($bill->nominal, 0, ',', '.') }}</span>
+                                    @endif
+                                </td>
+                                <td style="padding: 1rem 1.5rem; text-align: center;">
+                                    @if($bill->status == 'lunas')
+                                        <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">
+                                            <svg style="width: 0.75rem; height: 0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                            Lunas
                                         </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900 font-bold">{{ $months[$bill->month] }}</div>
-                                        <div class="text-xs text-gray-500">{{ $bill->academicYear->name }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($bill->nominal <= 0)
-                                            <span class="text-sm font-bold text-emerald-600">GRATIS</span>
+                                    @elseif($bill->status == 'belum_lunas')
+                                        <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #be123c; background: #ffe4e6; border-radius: 999px;">
+                                            <svg style="width: 0.75rem; height: 0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                            Belum Lunas
+                                        </span>
+                                    @else
+                                        <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #6b7280; background: #e5e7eb; border-radius: 999px;">Void</span>
+                                    @endif
+                                </td>
+                                <td style="padding: 1rem 1.5rem; text-align: center;">
+                                    <div style="display: flex; justify-content: center; gap: 0.375rem;">
+                                        @if($bill->status == 'belum_lunas')
+                                            <a href="{{ route('infaq.payments.create', $bill->id) }}" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #059669; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Bayar</a>
+                                            <form action="{{ route('infaq.bills.void', $bill->id) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                <button type="button" onclick="confirmVoid(this)" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Void</button>
+                                            </form>
+                                        @elseif($bill->status == 'lunas')
+                                            <form action="{{ route('infaq.bills.revert', $bill->id) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                <button type="button" onclick="confirmRevert(this)" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #d97706; background: #fef3c7; border: 1px solid #fde68a; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Buka Kembali</button>
+                                            </form>
                                         @else
-                                            <span class="text-sm font-bold text-gray-900">Rp {{ number_format($bill->nominal, 0, ',', '.') }}</span>
+                                            <span style="color: #cbd5e1;">—</span>
                                         @endif
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($bill->status == 'lunas')
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                                                <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                                Lunas
-                                            </span>
-                                        @elseif($bill->status == 'belum_lunas')
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800">
-                                                <svg class="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                                Belum Lunas
-                                            </span>
-                                        @else
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-800">
-                                                Dibatalkan
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        <div class="flex justify-center space-x-2">
-                                            @if($bill->status == 'belum_lunas')
-                                                <a href="{{ route('infaq.payments.create', $bill->id) }}" title="Bayar Tagihan Ini" class="inline-flex items-center px-3 py-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors border border-emerald-200">
-                                                    <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                                    </svg>
-                                                    Bayar
-                                                </a>
-                                                
-                                                <form action="{{ route('infaq.bills.void', $bill->id) }}" method="POST" class="inline void-form">
-                                                    @csrf
-                                                    <button type="button" onclick="confirmVoid(this)" title="Batalkan Tagihan" class="inline-flex items-center px-3 py-1.5 text-xs font-bold text-rose-600 bg-rose-50 rounded-lg hover:bg-rose-100 transition-colors border border-rose-200">
-                                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
-                                                        </svg>
-                                                        Void
-                                                    </button>
-                                                </form>
-                                            @elseif($bill->status == 'lunas')
-                                                <form action="{{ route('infaq.bills.revert', $bill->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    <button type="button" onclick="confirmRevert(this)" title="Kembalikan ke Belum Lunas" class="inline-flex items-center px-3 py-1.5 text-xs font-bold text-amber-600 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors border border-amber-200">
-                                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                                                        </svg>
-                                                        Buka Kembali
-                                                    </button>
-                                                </form>
-                                            @else
-                                                <span class="text-gray-300">—</span>
-                                            @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" style="padding: 4rem 2rem; text-align: center;">
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                        <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                            <svg style="width: 28px; height: 28px; color: #d97706;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                                         </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="px-6 py-12 whitespace-nowrap text-center">
-                                        <div class="flex flex-col items-center justify-center text-gray-500">
-                                            <svg class="w-12 h-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                            </svg>
-                                            <p class="text-base font-bold text-gray-900">Belum ada data tagihan</p>
-                                            <p class="text-sm mt-1">Gunakan tombol "Generate Tagihan Massal" untuk membuat tagihan bulaaan.</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-                
-                @if($bills->hasPages())
-                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
-                    {{ $bills->links() }}
-                </div>
-                @endif
+                                        <p style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #1e293b; margin: 0;">Belum Ada Tagihan</p>
+                                        <p style="font-size: 0.8125rem; color: #94a3b8; margin-top: 0.375rem;">Generate tagihan terlebih dahulu untuk melihat data di sini.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
+            @if($bills->hasPages())
+                <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">{{ $bills->links() }}</div>
+            @endif
         </div>
     </div>
 
@@ -223,49 +183,18 @@
         function confirmVoid(btn) {
             Swal.fire({
                 title: 'Void Tagihan?',
-                html: '<p class="text-sm text-gray-600">Tagihan ini akan dibatalkan secara permanen.<br>Aksi ini <strong class="text-rose-600">tidak bisa dibatalkan</strong>.</p>',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e11d48',
-                cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Ya, Void Tagihan',
-                cancelButtonText: 'Batal',
-                reverseButtons: true,
-                focusCancel: true,
-                customClass: {
-                    popup: 'rounded-2xl',
-                    confirmButton: 'rounded-xl font-bold text-sm px-6 py-2',
-                    cancelButton: 'rounded-xl font-bold text-sm px-6 py-2',
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    btn.closest('form').submit();
-                }
-            });
+                html: '<p style="font-size:0.875rem;color:#475569;">Tagihan ini akan dibatalkan secara permanen.<br>Aksi ini <strong style="color:#e11d48;">tidak bisa dibatalkan</strong>.</p>',
+                icon: 'warning', showCancelButton: true, confirmButtonColor: '#e11d48', cancelButtonColor: '#64748b',
+                confirmButtonText: 'Ya, Void', cancelButtonText: 'Batal', reverseButtons: true, focusCancel: true,
+            }).then((r) => { if (r.isConfirmed) btn.closest('form').submit(); });
         }
-
         function confirmRevert(btn) {
             Swal.fire({
-                title: 'Buka Kembali Tagihan?',
-                html: '<p class="text-sm text-gray-600">Status tagihan akan dikembalikan ke <strong class="text-amber-600">Belum Lunas</strong>.<br>Gunakan ini jika terjadi kesalahan input.</p>',
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonColor: '#d97706',
-                cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Ya, Buka Kembali',
-                cancelButtonText: 'Batal',
-                reverseButtons: true,
-                focusCancel: true,
-                customClass: {
-                    popup: 'rounded-2xl',
-                    confirmButton: 'rounded-xl font-bold text-sm px-6 py-2',
-                    cancelButton: 'rounded-xl font-bold text-sm px-6 py-2',
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    btn.closest('form').submit();
-                }
-            });
+                title: 'Buka Kembali?',
+                html: '<p style="font-size:0.875rem;color:#475569;">Status tagihan akan dikembalikan ke <strong style="color:#d97706;">Belum Lunas</strong>.</p>',
+                icon: 'info', showCancelButton: true, confirmButtonColor: '#d97706', cancelButtonColor: '#64748b',
+                confirmButtonText: 'Ya, Buka', cancelButtonText: 'Batal', reverseButtons: true, focusCancel: true,
+            }).then((r) => { if (r.isConfirmed) btn.closest('form').submit(); });
         }
     </script>
 </x-app-layout>

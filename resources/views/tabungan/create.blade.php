@@ -1,74 +1,69 @@
 <x-app-layout>
-    <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
-        <div class="p-8 text-gray-900 border-b border-gray-100">
-            <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                Transaksi Tabungan — {{ $student->name }}
-            </h3>
-            <p class="text-sm text-gray-500 mt-1">Saldo saat ini: <strong class="{{ $balance > 0 ? 'text-emerald-600' : 'text-gray-400' }}">Rp {{ number_format($balance, 0, ',', '.') }}</strong></p>
+    <div class="space-y-6">
+        <!-- Hero Header -->
+        <div style="background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%); border-radius: 1rem; overflow: hidden; position: relative;">
+            <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+            <div style="position: absolute; left: 30%; bottom: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+            <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3);">
+                        <svg style="width: 22px; height: 22px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                    </div>
+                    <div>
+                        <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Transaksi Tabungan — {{ $student->name }}</h2>
+                        <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Saldo saat ini: <strong style="color: #fff;">Rp {{ number_format($balance, 0, ',', '.') }}</strong></p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="p-8">
+        <!-- Form Card -->
+        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
             <form action="{{ route('tabungan.store', $student->id) }}" method="POST">
                 @csrf
-
-                <div class="space-y-8">
-                    <!-- Tipe Transaksi -->
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-3">Jenis Transaksi <span class="text-rose-500">*</span></label>
-                        <div class="grid grid-cols-2 gap-4" id="type-selector">
-                            <div class="type-option selected" data-value="in" onclick="selectType(this)">
-                                <svg class="w-8 h-8 mx-auto mb-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" /></svg>
-                                <p class="text-sm font-bold text-gray-700">Setoran</p>
-                                <p class="text-xs text-gray-500 mt-1">Tambah saldo</p>
+                <div style="padding: 2rem;">
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">Jenis Transaksi <span style="color: #e11d48;">*</span></label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;" id="type-selector">
+                            <div class="type-option selected" data-value="in" onclick="selectType(this)" style="border: 2px solid #6366f1; background: #eef2ff; border-radius: 0.75rem; padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+                                <svg style="width: 2rem; height: 2rem; margin: 0 auto 0.5rem; color: #059669;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" /></svg>
+                                <p style="font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Setoran</p>
+                                <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem;">Tambah saldo</p>
                             </div>
-                            <div class="type-option" data-value="out" onclick="selectType(this)">
-                                <svg class="w-8 h-8 mx-auto mb-2 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6" /></svg>
-                                <p class="text-sm font-bold text-gray-700">Penarikan</p>
-                                <p class="text-xs text-gray-500 mt-1">Kurangi saldo</p>
+                            <div class="type-option" data-value="out" onclick="selectType(this)" style="border: 2px solid #e2e8f0; background: #fff; border-radius: 0.75rem; padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+                                <svg style="width: 2rem; height: 2rem; margin: 0 auto 0.5rem; color: #e11d48;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6" /></svg>
+                                <p style="font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Penarikan</p>
+                                <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem;">Kurangi saldo</p>
                             </div>
                         </div>
                         <input type="hidden" name="type" id="type_input" value="{{ old('type', 'in') }}">
-                        @error('type')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+                        @error('type')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Nominal -->
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
                         <div>
-                            <label for="amount" class="block text-sm font-bold text-gray-700">Nominal (Rp) <span class="text-rose-500">*</span></label>
-                            <input type="number" name="amount" id="amount" value="{{ old('amount') }}" min="1000" step="1000" required
-                                class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm" placeholder="Contoh: 50000">
-                            @error('amount')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+                            <label for="amount" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nominal (Rp) <span style="color: #e11d48;">*</span></label>
+                            <input type="number" name="amount" id="amount" value="{{ old('amount') }}" min="1000" step="1000" required placeholder="Contoh: 50000" style="width: 100%; box-sizing: border-box;">
+                            @error('amount')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                         </div>
-
-                        <!-- Tanggal -->
                         <div>
-                            <label for="date" class="block text-sm font-bold text-gray-700">Tanggal Transaksi <span class="text-rose-500">*</span></label>
-                            <input type="date" name="date" id="date" value="{{ old('date', date('Y-m-d')) }}" required
-                                class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm">
-                            @error('date')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+                            <label for="date" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tanggal <span style="color: #e11d48;">*</span></label>
+                            <input type="date" name="date" id="date" value="{{ old('date', date('Y-m-d')) }}" required style="width: 100%; box-sizing: border-box;">
+                            @error('date')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                         </div>
                     </div>
 
-                    <!-- Keterangan -->
-                    <div>
-                        <label for="description" class="block text-sm font-bold text-gray-700">Keterangan <span class="text-gray-400 font-normal">(Opsional)</span></label>
-                        <textarea name="description" id="description" rows="3" maxlength="500"
-                            class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm" placeholder="Contoh: Setoran rutin minggu ke-2">{{ old('description') }}</textarea>
-                        @error('description')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="description" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Keterangan <span style="color: #94a3b8; font-weight: 400;">(Opsional)</span></label>
+                        <textarea name="description" id="description" rows="3" maxlength="500" placeholder="Contoh: Setoran rutin minggu ke-2" style="width: 100%; box-sizing: border-box;">{{ old('description') }}</textarea>
+                        @error('description')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                 </div>
 
-                <div class="mt-10 flex items-center justify-end gap-x-3 border-t border-gray-100 pt-6">
-                    <a href="{{ route('tabungan.show', $student->id) }}" class="inline-flex items-center px-4 py-2 bg-rose-50 border border-rose-200 rounded-xl font-bold text-xs text-rose-600 uppercase tracking-widest shadow-sm hover:bg-rose-100 transition ease-in-out duration-150">
-                        Batal
-                    </a>
-                    <button type="submit" style="background-color: #059669; color: #ffffff;" class="inline-flex items-center px-6 py-3 border border-transparent rounded-xl font-bold text-sm uppercase tracking-widest hover:opacity-90 shadow-md transition ease-in-out duration-150">
-                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
+                <div style="padding: 1.25rem 2rem; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; background: #fafbfc;">
+                    <a href="{{ route('tabungan.show', $student->id) }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">Batal</a>
+                    <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(5,150,105,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 12px rgba(5,150,105,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 3px rgba(5,150,105,0.3)'">
+                        <svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                         Simpan Transaksi
                     </button>
                 </div>
@@ -77,29 +72,19 @@
     </div>
 
     <style>
-        .type-option {
-            border: 2px solid #e5e7eb;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .type-option:hover {
-            border-color: #a5b4fc;
-            background-color: #f5f3ff;
-        }
-        .type-option.selected {
-            border-color: #4f46e5;
-            background-color: #eef2ff;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-        }
+        .type-option:hover { border-color: #a5b4fc !important; background: #f5f3ff !important; }
+        .type-option.selected { border-color: #6366f1 !important; background: #eef2ff !important; box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
     </style>
-
     <script>
         function selectType(el) {
-            document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.type-option').forEach(opt => {
+                opt.classList.remove('selected');
+                opt.style.borderColor = '#e2e8f0';
+                opt.style.background = '#fff';
+            });
             el.classList.add('selected');
+            el.style.borderColor = '#6366f1';
+            el.style.background = '#eef2ff';
             document.getElementById('type_input').value = el.dataset.value;
         }
     </script>

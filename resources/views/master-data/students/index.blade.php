@@ -1,163 +1,120 @@
 <x-app-layout>
-
-    <div>
-        <div class="">
-            <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100">
-                <div class="p-6 text-gray-900 space-y-6">
-                    
-                    <!-- Header Action & Search -->
-                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+    <div class="space-y-6">
+        <!-- Hero Header -->
+        <div style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%); border-radius: 1rem; overflow: hidden; position: relative;">
+            <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+            <div style="position: absolute; right: 80px; bottom: -40px; width: 150px; height: 150px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+            <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3);">
+                            <svg style="width: 22px; height: 22px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        </div>
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900">Manajemen Siswa</h3>
-                            <p class="text-sm text-gray-500 mt-1">Kelola data seluruh siswa beserta kategorisasi biaya & penempatan kelasnya.</p>
-                        </div>
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <!-- Search & Filter Area -->
-                            <form action="{{ route('students.index') }}" method="GET" class="flex flex-col sm:flex-row gap-2">
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                        </svg>
-                                    </div>
-                                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari by Nama/NISN..." 
-                                        class="pl-10 pr-4 py-2.5 w-full sm:w-64 transition-all">
-                                </div>
-                                <select name="classroom_id" onchange="this.form.submit()" class="py-2.5 pl-3 pr-8">
-                                    <option value="">Semua Kelas</option>
-                                    @foreach($classrooms as $cls)
-                                        <option value="{{ $cls->id }}" {{ request('classroom_id') == $cls->id ? 'selected' : '' }}>Tingkat {{ $cls->level }} - {{ $cls->name }}</option>
-                                    @endforeach
-                                </select>
-                                <button type="submit" class="hidden sm:inline-flex items-center px-4 py-2 bg-gray-100 border border-gray-300 rounded-xl font-bold text-xs text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors">
-                                    Terapkan Filter
-                                </button>
-                                @if(request('search') || request('classroom_id'))
-                                    <a href="{{ route('students.index') }}" class="items-center px-4 py-2 bg-rose-50 border border-rose-200 rounded-xl font-bold text-xs text-rose-700 hover:bg-rose-100 justify-center flex transition-colors">
-                                        Reset
-                                    </a>
-                                @endif
-                            </form>
-                            
-                            <!-- Add Button -->
-                            <a href="{{ route('students.create') }}" class="inline-flex justify-center items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-xl font-bold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md shadow-indigo-500/30">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                Tambah Data
-                            </a>
+                            <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Manajemen Siswa</h2>
+                            <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Kelola data siswa, kategorisasi biaya & penempatan kelas.</p>
                         </div>
                     </div>
-
-                    @if (session('success'))
-                        <div class="bg-emerald-50 border border-emerald-200 text-emerald-600 px-4 py-3 rounded-xl relative" role="alert">
-                            <span class="block sm:inline font-medium">{{ session('success') }}</span>
-                        </div>
-                    @endif
-
-                    <!-- Table -->
-                    <div class="overflow-x-auto rounded-xl border border-gray-200">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Identitas Siswa</th>
-                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Kategorisasi</th>
-                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Penempatan Kelas</th>
-                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Status</th>
-                                    <th scope="col" class="px-6 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200 text-sm">
-                                @forelse($students as $student)
-                                    <tr class="hover:bg-gray-50/50 transition-colors group">
-                                        <td class="px-6 py-5 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0">
-                                                    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-100 to-purple-200 flex items-center justify-center text-indigo-700 font-bold">
-                                                        {{ strtoupper(substr($student->name, 0, 1)) }}
-                                                    </div>
-                                                </div>
-                                                <div class="ml-4 focus-within:ring-2 focus-within:ring-indigo-500 rounded px-1">
-                                                    <div class="font-bold text-gray-900 text-sm group-hover:text-indigo-600 transition-colors">{{ $student->name }}</div>
-                                                    <div class="text-[11px] text-gray-400 mt-0.5">
-                                                        NISN: {{ $student->nisn ?: '-' }} &bull; NIS: {{ $student->nis ?: '-' }}
-                                                    </div>
-                                                    <div class="text-[10px] uppercase tracking-wider text-gray-400 mt-1 font-bold">JK: {{ $student->gender == 'L' ? 'Laki-Laki' : 'Perempuan' }}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @if($student->category == 'reguler')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">Reguler</span>
-                                            @elseif($student->category == 'yatim')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">Yatim / Piatu</span>
-                                            @elseif($student->category == 'kurang_mampu')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">Kurang Mampu</span>
-                                            @endif
-                                            
-                                            <div class="mt-2 text-xs">
-                                                SPP: 
-                                                @if($student->infaq_status == 'bayar')
-                                                    <span class="font-bold text-gray-400">Bayar Penuh</span>
-                                                @elseif($student->infaq_status == 'subsidi')
-                                                    <span class="font-bold text-emerald-500">Subsidi (Rp {{ number_format($student->infaq_nominal, 0, ',', '.') }})</span>
-                                                @else
-                                                    <span class="font-bold text-amber-500">Gratis</span>
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-5 whitespace-nowrap">
-                                            @if($student->classroom)
-                                                <div class="text-sm font-bold text-gray-900">MI-{{ $student->classroom->level }}</div>
-                                                <div class="text-[10px] text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-full font-bold border border-indigo-100 uppercase tracking-widest inline-block mt-1">{{ $student->classroom->name }}</div>
-                                            @else
-                                                <span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest bg-rose-50 px-2 py-1 rounded-lg border border-rose-100">Tanpa Kelas</span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-5 whitespace-nowrap">
-                                            @if($student->status == 'aktif')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase tracking-widest">Aktif</span>
-                                            @elseif($student->status == 'lulus')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-50 text-cyan-600 border border-cyan-100 uppercase tracking-widest">Lulus</span>
-                                            @elseif($student->status == 'pindah')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-orange-50 text-orange-600 border border-orange-100 uppercase tracking-widest">Pindah</span>
-                                            @elseif($student->status == 'nonaktif')
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-gray-50 text-gray-400 border border-gray-100 uppercase tracking-widest">Nonaktif</span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-5 whitespace-nowrap text-sm font-medium">
-                                            <div class="flex items-center gap-2">
-                                                <a href="{{ route('students.edit', $student->id) }}" class="text-indigo-500 hover:text-indigo-700 font-bold bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-xl transition-all text-[11px] uppercase tracking-widest border border-indigo-100">Edit</a>
-                                                <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('PENGHAPUSAN DATA SISWA! \n\nHati-hati: Segala rekam jejak Infaq, Daftar Ulang, dan PPDB yang bertautan dengan anak ini akan ikut terhapus. Yakin mau dilanjutkan?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-rose-500 hover:text-rose-700 font-bold bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-xl transition-all text-[11px] uppercase tracking-widest border border-rose-100">Hapus</button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="px-6 py-12 text-center">
-                                            <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                            </svg>
-                                            <h3 class="mt-2 text-sm font-bold text-gray-900">Siswa Tidak Ditemukan</h3>
-                                            <p class="mt-1 text-sm text-gray-500">Tabel siswa masih kosong atau filter pencarian tidak membuahkan hasil.</p>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <form action="{{ route('students.index') }}" method="GET" style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/NISN..." style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 0.625rem; font-size: 0.8125rem; width: 180px; outline: none;" class="placeholder-white/60">
+                            <select name="classroom_id" onchange="this.form.submit()" style="padding: 0.5rem 2rem 0.5rem 0.75rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 0.625rem; font-size: 0.8125rem; cursor: pointer; outline: none;">
+                                <option value="" style="color: #1e293b;">Semua Kelas</option>
+                                @foreach($classrooms as $cls)<option value="{{ $cls->id }}" {{ request('classroom_id') == $cls->id ? 'selected' : '' }} style="color: #1e293b;">{{ $cls->name }}</option>@endforeach
+                            </select>
+                        </form>
+                        <a href="{{ route('students.create') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border-radius: 0.625rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1.5px solid rgba(255,255,255,0.3); text-decoration: none; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.35)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                            <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            Tambah
+                        </a>
                     </div>
-
-                    <!-- Pagination -->
-                    @if($students->hasPages())
-                        <div class="mt-6 border-t border-gray-100 pt-4">
-                            {{ $students->links() }}
-                        </div>
-                    @endif
-
                 </div>
             </div>
         </div>
+
+        @if (session('success'))
+            <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.875rem 1.25rem; border-radius: 0.75rem; font-size: 0.8125rem; font-weight: 500;">{{ session('success') }}</div>
+        @endif
+
+        <!-- Table -->
+        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
+            <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%;"></div>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Daftar Siswa</h4>
+                </div>
+            </div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
+                            <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Siswa</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Kategorisasi</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Kelas</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Status</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($students as $student)
+                            <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                                <td style="padding: 1rem 1.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ede9fe, #e0e7ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8125rem; color: #6366f1;">{{ strtoupper(substr($student->name, 0, 1)) }}</div>
+                                        <div>
+                                            <p style="font-weight: 600; font-size: 0.8125rem; color: #1e293b; margin: 0;">{{ $student->name }}</p>
+                                            <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">NISN: {{ $student->nisn ?: '-' }} · {{ $student->gender == 'L' ? '♂ Laki-laki' : '♀ Perempuan' }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem 1.5rem;">
+                                    @php $catColors = ['reguler'=>['#f1f5f9','#475569'], 'yatim'=>['#fef3c7','#92400e'], 'kurang_mampu'=>['#ede9fe','#6b21a8']]; $cc = $catColors[$student->category] ?? ['#f1f5f9','#475569']; @endphp
+                                    <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: {{ $cc[1] }}; background: {{ $cc[0] }}; border-radius: 999px;">{{ ucfirst(str_replace('_', ' ', $student->category)) }}</span>
+                                    <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.375rem;">
+                                        SPP: @if($student->infaq_status == 'gratis')<span style="color: #d97706; font-weight: 600;">Gratis</span>@elseif($student->infaq_status == 'subsidi')<span style="color: #059669; font-weight: 600;">Subsidi (Rp {{ number_format($student->infaq_nominal, 0, ',', '.') }})</span>@else<span style="color: #64748b;">Bayar Penuh</span>@endif
+                                    </p>
+                                </td>
+                                <td style="padding: 1rem 1.5rem;">
+                                    @if($student->classroom)
+                                        <span style="font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $student->classroom->name }}</span>
+                                    @else
+                                        <span style="font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; padding: 0.25rem 0.625rem; border-radius: 999px;">Tanpa Kelas</span>
+                                    @endif
+                                </td>
+                                <td style="padding: 1rem 1.5rem; text-align: center;">
+                                    @php $statusColors = ['aktif'=>['#d1fae5','#047857'], 'lulus'=>['#cffafe','#0e7490'], 'pindah'=>['#ffedd5','#c2410c'], 'nonaktif'=>['#e5e7eb','#6b7280']]; $sc = $statusColors[$student->status] ?? ['#e5e7eb','#6b7280']; @endphp
+                                    <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: {{ $sc[1] }}; background: {{ $sc[0] }}; border-radius: 999px; text-transform: capitalize;">{{ $student->status }}</span>
+                                </td>
+                                <td style="padding: 1rem 1.5rem; text-align: center;">
+                                    <div style="display: flex; justify-content: center; gap: 0.375rem;">
+                                        <a href="{{ route('students.edit', $student->id) }}" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Edit</a>
+                                        <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin hapus data siswa ini? Semua data terkait akan ikut terhapus.');">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Hapus</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" style="padding: 4rem 2rem; text-align: center;">
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                        <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #ede9fe, #e0e7ff); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                            <svg style="width: 28px; height: 28px; color: #8b5cf6;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                                        </div>
+                                        <p style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #1e293b; margin: 0;">Belum Ada Data Siswa</p>
+                                        <p style="font-size: 0.8125rem; color: #94a3b8; margin-top: 0.375rem;">Klik tombol "Tambah" untuk menambahkan data siswa.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            @if($students->hasPages())
+                <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">{{ $students->links() }}</div>
+            @endif
+        </div>
     </div>
+    <style>::placeholder { color: rgba(255,255,255,0.6) !important; }</style>
 </x-app-layout>

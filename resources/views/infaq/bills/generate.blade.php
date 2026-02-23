@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('infaq.bills.generate.store') }}" onsubmit="return confirm('Apakah Anda yakin ingin mengeksekusi Generate Tagihan SPP untuk semua Siswa Aktif pada periode ini?');">
+            <form id="form-generate" method="POST" action="{{ route('infaq.bills.generate.store') }}">
                 @csrf
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -64,7 +64,7 @@
                     <a href="{{ route('infaq.bills.index') }}" class="inline-flex items-center px-4 py-2 bg-rose-50 border border-rose-200 rounded-xl font-bold text-xs text-rose-600 uppercase tracking-widest shadow-sm hover:bg-rose-100 active:bg-rose-200 outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Batal
                     </a>
-                    <button type="submit" class="inline-flex items-center px-6 py-3 bg-indigo-600 border border-transparent rounded-xl font-bold text-sm text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md shadow-indigo-500/30">
+                    <button type="button" id="btn-generate" class="inline-flex items-center px-6 py-3 bg-indigo-600 border border-transparent rounded-xl font-bold text-sm text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md shadow-indigo-500/30">
                         <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
@@ -74,4 +74,40 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('btn-generate').addEventListener('click', function() {
+            const bulan = document.getElementById('month');
+            const namaBulan = bulan.options[bulan.selectedIndex].text;
+
+            Swal.fire({
+                title: 'Konfirmasi Generate Tagihan',
+                html: `<div class="text-left text-sm space-y-2">
+                    <p>Anda akan men-generate tagihan Infaq/SPP untuk:</p>
+                    <ul class="list-disc pl-5 text-gray-600">
+                        <li>Bulan: <strong>${namaBulan}</strong></li>
+                        <li>Seluruh siswa aktif</li>
+                    </ul>
+                    <p class="text-rose-500 font-bold mt-3">Tagihan yang sudah ada tidak akan digandakan.</p>
+                </div>`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4f46e5',
+                cancelButtonColor: '#e11d48',
+                confirmButtonText: '<i class="fa fa-check mr-1"></i> Ya, Generate Sekarang!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                focusCancel: true,
+                customClass: {
+                    popup: 'rounded-2xl',
+                    confirmButton: 'rounded-xl font-bold text-sm px-6 py-2',
+                    cancelButton: 'rounded-xl font-bold text-sm px-6 py-2',
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('form-generate').submit();
+                }
+            });
+        });
+    </script>
 </x-app-layout>

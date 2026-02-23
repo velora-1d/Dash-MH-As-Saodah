@@ -168,12 +168,13 @@
                                                     Bayar
                                                 </a>
                                                 
-                                                <form action="{{ route('infaq.bills.void', $bill->id) }}" method="POST" class="inline" onsubmit="return confirm('Anda yakin ingin MEMBATALKAN tagihan ini? Data ini akan menjadi Void.');">
+                                                <form action="{{ route('infaq.bills.void', $bill->id) }}" method="POST" class="inline void-form">
                                                     @csrf
-                                                    <button type="submit" title="Batalkan Tagihan" class="text-rose-500 hover:text-rose-700 transition-colors p-1.5 bg-rose-50 hover:bg-rose-100 rounded-lg">
-                                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <button type="button" onclick="confirmVoid(this)" title="Batalkan Tagihan" class="inline-flex items-center px-3 py-1.5 text-xs font-bold text-rose-600 bg-rose-50 rounded-lg hover:bg-rose-100 transition-colors border border-rose-200">
+                                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
                                                         </svg>
+                                                        Void
                                                     </button>
                                                 </form>
                                             @else
@@ -207,4 +208,30 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmVoid(btn) {
+            Swal.fire({
+                title: 'Void Tagihan?',
+                html: '<p class="text-sm text-gray-600">Tagihan ini akan dibatalkan secara permanen.<br>Aksi ini <strong class="text-rose-600">tidak bisa dibatalkan</strong>.</p>',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e11d48',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Void Tagihan',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                focusCancel: true,
+                customClass: {
+                    popup: 'rounded-2xl',
+                    confirmButton: 'rounded-xl font-bold text-sm px-6 py-2',
+                    cancelButton: 'rounded-xl font-bold text-sm px-6 py-2',
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btn.closest('form').submit();
+                }
+            });
+        }
+    </script>
 </x-app-layout>

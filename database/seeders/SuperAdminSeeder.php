@@ -10,13 +10,13 @@ class SuperAdminSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Buat Akun Owner (Super Admin)
+        // 1. Buat Akun Super Admin
         $ownerId = DB::table('users')->insertGetId([
-            'name' => 'Owner As-Saodah',
-            'email' => 'owner@assaodah.com',
+            'name' => 'Super Admin As-Saodah',
+            'email' => 'superadmin@assaodah.com',
             'username' => 'superadmin',
             'password' => Hash::make('rahasia123'), // Default Password
-            'role' => 'owner',
+            'role' => 'superadmin',
             'phone' => '081234567890',
             'status' => 'active',
             'created_at' => now(),
@@ -53,13 +53,13 @@ class SuperAdminSeeder extends Seeder
                 'user_id' => $ownerId,
                 'entity_id' => $sekolahEntityId,
                 'unit_id' => null, // Berarti akses penuh ke semua unit di bawah MI As-Saodah ini
-                'role' => 'owner',
+                'role' => 'superadmin',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
         ]);
         
-        $this->command->info('Super Admin ber-role Owner berhasil ditambahkan!');
-        $this->command->info('Email: owner@assaodah.com | Password: rahasia123');
+        $this->command->info('Super Admin berhasil ditambahkan!');
+        $this->command->info('Email: superadmin@assaodah.com | Password: rahasia123');
     }
 }

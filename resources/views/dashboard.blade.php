@@ -72,7 +72,7 @@
             </div>
 
             <!-- KPI 2: Pendaftar PPDB -->
-            @if(in_array(auth()->user()->role, ['kepsek', 'operator', 'admin', 'superadmin', 'owner']))
+            @if(in_array(auth()->user()->role, ['kepsek', 'operator', 'admin', 'superadmin']))
             <div class="kpi-card anim-card-2" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(14,165,233,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
                 <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #e0f2fe; border-radius: 50%; opacity: 0.5;"></div>
                 <div style="position: relative; z-index: 1;">
@@ -89,7 +89,7 @@
             </div>
             @endif
 
-            @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner']))
+            @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
             <!-- KPI 3: Pemasukan Bulan Ini -->
             <div class="kpi-card anim-card-3" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(16,185,129,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
                 <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #d1fae5; border-radius: 50%; opacity: 0.5;"></div>
@@ -141,7 +141,7 @@
         </div>
 
         <!-- Tabel Tunggakan -->
-        @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner']))
+        @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
         <div class="anim-section" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
 
             <!-- Tunggakan PA -->
@@ -223,7 +223,7 @@
         <!-- Charts -->
         <div class="anim-chart" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
 
-            @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner']))
+            @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
             <!-- Chart 1: Tren Arus Kas -->
             <div style="grid-column: span 2; background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
                 <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
@@ -267,7 +267,7 @@
             </div>
             @endif
 
-            @if(in_array(auth()->user()->role, ['kepsek', 'operator', 'admin', 'superadmin', 'owner']))
+            @if(in_array(auth()->user()->role, ['kepsek', 'operator', 'admin', 'superadmin']))
             <!-- Chart 4: PPDB -->
             @if(auth()->user()->role === 'operator')
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; grid-column: span 3;">

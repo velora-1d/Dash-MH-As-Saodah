@@ -31,42 +31,6 @@ class RoleUnitUserSeeder extends Seeder
             ['entity_id' => $entity->id, 'name' => 'MI As-Saodah']
         );
 
-        // 3. Create Owner User
-        $owner = User::create([
-            'name' => 'Super Owner',
-            'email' => 'owner@test.com',
-            'username' => 'super_owner',
-            'role' => 'owner',
-            'phone' => '0811111111',
-            'status' => 'active',
-            'password' => Hash::make('password'),
-        ]);
-
-        // Assign Scope Owner
-        UserScope::create([
-            'user_id' => $owner->id,
-            'entity_id' => $entity->id,
-            'unit_id' => null, // Owner has access to all units
-            'role' => 'owner'
-        ]);
-
-        // 4. Create Mitra User (Admin MI)
-        $mitraMi = User::create([
-            'name' => 'Admin MI',
-            'email' => 'adminmi@test.com',
-            'username' => 'admin_mi',
-            'role' => 'mitra',
-            'phone' => '0822222222',
-            'status' => 'active',
-            'password' => Hash::make('password'),
-        ]);
-
-        // Assign Scope Mitra
-        UserScope::create([
-            'user_id' => $mitraMi->id,
-            'entity_id' => $entity->id,
-            'unit_id' => $unitMI->id, // Mitra specific to MI
-            'role' => 'mitra'
-        ]);
+        // Users creation moved to DatabaseSeeder (if any).
     }
 }

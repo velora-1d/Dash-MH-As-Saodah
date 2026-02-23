@@ -29,7 +29,7 @@ class DashboardController extends Controller
             ->pluck('unit_id')
             ->toArray();
             
-        $isGlobalAdmin = in_array($role, ['superadmin', 'owner', 'yayasan']);
+        $isGlobalAdmin = in_array($role, ['superadmin', 'kepsek', 'bendahara']);
 
         // KPI 1: Siswa Aktif
         $siswaQuery = Student::query();
@@ -42,7 +42,7 @@ class DashboardController extends Controller
 
         // KPI 2: Pemasukan Bulan Ini
         $pemasukanBulanIni = 0;
-        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
+        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) {
             $pemasukanUmumQuery = GeneralTransaction::where('type', 'in')->whereMonth('date', now()->month);
             $pemasukanSppQuery = SppPayment::whereMonth('date', now()->month);
             
@@ -63,7 +63,7 @@ class DashboardController extends Controller
         $tunggakanPa = 0; $tunggakanPi = 0;
         $tunggakanPaRp = 0; $tunggakanPiRp = 0;
 
-        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
+        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) {
             $kepatuhanQuery = SppBill::where('status', 'lunas');
             $unpaidQuery = SppBill::where('status', 'belum_lunas');
             
@@ -106,7 +106,7 @@ class DashboardController extends Controller
         $siswaMenunggakPa = collect([]);
         $siswaMenunggakPi = collect([]);
 
-        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
+        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) {
             $menunggakBaseQuery = Student::whereHas('sppBills', function($q) {
                     $q->where('status', 'belum_lunas');
                 })
@@ -147,7 +147,7 @@ class DashboardController extends Controller
 
         // Data Chart 1: Arus Kas Tahunan (In & Out) - Per Bulan tahun ini
         $chartCashflow = [];
-        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
+        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) {
             $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             $currentYear = now()->year;
             $cashflowIn = array_fill(0, 12, 0);
@@ -197,7 +197,7 @@ class DashboardController extends Controller
 
         // Data Chart 2: Komposisi Sumber Pemasukan
         $chartSource = [];
-        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
+        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) {
             $sppSourceQuery = SppPayment::query();
             $categoriesInQuery = DB::table('transaction_categories')
                 ->where('transaction_categories.type', 'in')
@@ -250,7 +250,7 @@ class DashboardController extends Controller
 
         // Data Chart 3: Kepatuhan Infaq per Kelas
         $chartCompliance = [];
-        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
+        if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) {
             $classroomsQuery = Classroom::orderBy('level')->orderBy('name');
             if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
                 $classroomsQuery->whereIn('unit_id', $userScopeUnitIds);

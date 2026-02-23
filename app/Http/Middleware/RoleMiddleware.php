@@ -28,8 +28,8 @@ class RoleMiddleware
             return redirect()->route('login');
         }
 
-        // Superadmin selalu memiliki akses penuh
-        if ($user->role === 'superadmin') {
+        // Superadmin, kepsek, dan bendahara selalu memiliki akses penuh
+        if (in_array($user->role, ['superadmin', 'kepsek', 'bendahara'])) {
             return $next($request);
         }
 

@@ -24,7 +24,7 @@ class DashboardController extends Controller
                 ->where('unit_id', $unitId)
                 ->exists();
                 
-            if (!$hasAccess && !in_array($user->role, ['superadmin', 'owner', 'yayasan'])) {
+            if (!$hasAccess && !in_array($user->role, ['superadmin', 'kepsek', 'bendahara'])) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Anda tidak memiliki akses untuk unit ini.'

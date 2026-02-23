@@ -34,7 +34,7 @@
                 </a>
 
                 <!-- PPDB & DAFTAR ULANG -->
-                @if(in_array(auth()->user()->role, ['kepsek', 'operator', 'admin', 'superadmin', 'owner']))
+                @if(in_array(auth()->user()->role, ['kepsek', 'operator', 'admin', 'superadmin']))
                 <div class="pt-4 pb-2 px-4">
                     <span class="text-[10px] font-bold text-indigo-400/70 uppercase tracking-widest">Penerimaan Siswa</span>
                 </div>
@@ -92,7 +92,7 @@
                     Kategori Keuangan
                 </a>
 
-                @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner']))
+                @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
                 <!-- KEUANGAN TATA USAHA -->
                 <div class="pt-4 pb-2 px-4 border-t border-indigo-900 mt-4">
                     <span class="text-[10px] font-bold text-indigo-400/70 uppercase tracking-widest">Keuangan & Tagihan</span>

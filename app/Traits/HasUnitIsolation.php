@@ -34,7 +34,7 @@ trait HasUnitIsolation
             if (Auth::check()) {
                 /** @var \App\Models\User $user */
                 $user = Auth::user();
-                $isGlobal = in_array($user->role, ['superadmin', 'owner', 'yayasan']);
+                $isGlobal = in_array($user->role, ['superadmin', 'kepsek', 'bendahara']);
                 
                 if (!$isGlobal) {
                     $unitIds = UserScope::where('user_id', $user->id)

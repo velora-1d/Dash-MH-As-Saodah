@@ -1,67 +1,51 @@
 <x-app-layout>
-
-    <div>
-        <div class="">
-            <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100">
-                <div class="p-8 text-gray-900">
-                    
-                    <div class="mb-8 border-b border-gray-100 pb-4">
-                        <h3 class="text-lg font-bold text-gray-900">Definisikan Kategori Baru</h3>
-                        <p class="text-sm text-gray-500 mt-1">Tambahkan kategori referensi untuk pencatatan pemasukan atau pengeluaran.</p>
+    <div class="space-y-6">
+        <div style="background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%); border-radius: 1rem; overflow: hidden; position: relative;">
+            <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+            <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3);">
+                        <svg style="width: 22px; height: 22px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                     </div>
-
-                    <form action="{{ route('transaction-categories.store') }}" method="POST" class="space-y-6">
-                        @csrf
-
-                        <!-- Nama -->
-                        <div>
-                            <label for="name" class="block text-sm font-bold text-gray-700">Nama Kategori</label>
-                            <input type="text" name="name" id="name" required
-                                class="mt-2 block w-full"
-                                placeholder="Misal: Dana BOS, Listrik, Honor Guru" value="{{ old('name') }}">
-                            @error('name')
-                                <p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Tipe -->
-                        <div>
-                            <label for="type" class="block text-sm font-bold text-gray-700">Jenis Kategori</label>
-                            <select id="type" name="type" required
-                                class="mt-2 block w-full">
-                                <option value="" disabled selected>-- Pilih Jenis --</option>
-                                <option value="in" {{ old('type') == 'in' ? 'selected' : '' }}>Pemasukan (Masuk)</option>
-                                <option value="out" {{ old('type') == 'out' ? 'selected' : '' }}>Pengeluaran (Keluar)</option>
-                            </select>
-                            @error('type')
-                                <p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Keterangan -->
-                        <div>
-                            <label for="description" class="block text-sm font-bold text-gray-700">Keterangan (Opsional)</label>
-                            <textarea name="description" id="description" rows="2"
-                                class="mt-2 block w-full"
-                                placeholder="Penjelasan singkat mengenai kategori ini">{{ old('description') }}</textarea>
-                            @error('description')
-                                <p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="mt-10 flex items-center justify-end gap-x-3 border-t border-gray-100 pt-6">
-                            <a href="{{ route('transaction-categories.index') }}" class="inline-flex items-center px-4 py-2 bg-rose-50 border border-rose-200 rounded-xl font-bold text-xs text-rose-600 uppercase tracking-widest shadow-sm hover:bg-rose-100 active:bg-rose-200 outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                Batal
-                            </a>
-                            <button type="submit" class="inline-flex items-center px-6 py-3 bg-indigo-600 border border-transparent rounded-xl font-bold text-sm text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-lg shadow-indigo-500/30">
-                                Simpan Kategori
-                            </button>
-                        </div>
-                    </form>
-
+                    <div>
+                        <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Tambah Kategori</h2>
+                        <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Definisikan kategori baru untuk pemasukan atau pengeluaran.</p>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
+            <form action="{{ route('transaction-categories.store') }}" method="POST">
+                @csrf
+                <div style="padding: 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                    <div>
+                        <label for="name" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nama Kategori <span style="color: #e11d48;">*</span></label>
+                        <input type="text" name="name" id="name" required placeholder="Misal: Dana BOS, Listrik" value="{{ old('name') }}" style="width: 100%; box-sizing: border-box;">
+                        @error('name')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label for="type" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Jenis <span style="color: #e11d48;">*</span></label>
+                        <select id="type" name="type" required style="width: 100%; box-sizing: border-box;">
+                            <option value="" disabled selected>-- Pilih --</option>
+                            <option value="in" {{ old('type') == 'in' ? 'selected' : '' }}>Pemasukan</option>
+                            <option value="out" {{ old('type') == 'out' ? 'selected' : '' }}>Pengeluaran</option>
+                        </select>
+                        @error('type')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <label for="description" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Keterangan <span style="color: #94a3b8; font-weight: 400;">(Opsional)</span></label>
+                        <textarea name="description" id="description" rows="2" placeholder="Penjelasan singkat" style="width: 100%; box-sizing: border-box;">{{ old('description') }}</textarea>
+                        @error('description')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                    </div>
+                </div>
+                <div style="padding: 1.25rem 2rem; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; background: #fafbfc;">
+                    <a href="{{ route('transaction-categories.index') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none;">Batal</a>
+                    <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(79,70,229,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+                        <svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        Simpan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </x-app-layout>

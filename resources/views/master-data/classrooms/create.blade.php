@@ -1,87 +1,57 @@
 <x-app-layout>
-
-    <div>
-        <div class="">
-            <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100">
-                <div class="p-8 text-gray-900">
-                    
-                    <div class="mb-8 border-b border-gray-100 pb-4">
-                        <h3 class="text-lg font-bold text-gray-900">Informasi Rombongan Belajar</h3>
-                        <p class="text-sm text-gray-500 mt-1">Definisikan nomor tingkat kelas (1-6) dan nama ruangannya (Opsional jika ada pengelompokan seperti A, B, C).</p>
+    <div class="space-y-6">
+        <div style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%); border-radius: 1rem; overflow: hidden; position: relative;">
+            <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+            <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3);">
+                        <svg style="width: 22px; height: 22px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                     </div>
-
-                    <form action="{{ route('classrooms.store') }}" method="POST" class="space-y-6">
-                        @csrf
-
-                        <!-- Tingkat Kelas -->
-                        <div>
-                            <label for="level" class="block text-sm font-bold text-gray-700">Tingkatan / Level Kelas</label>
-                            <select id="level" name="level" required
-                                class="mt-2 block w-full">
-                                <option value="" disabled selected>-- Pilih Tingkat Kelas MI --</option>
-                                @for($i = 1; $i <= 6; $i++)
-                                    <option value="{{ $i }}" {{ old('level') == $i ? 'selected' : '' }}>Kelas {{ $i }}</option>
-                                @endfor
-                            </select>
-                            @error('level')
-                                <p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Nama Ruangan / Sub-Kelas -->
-                        <div>
-                            <label for="name" class="block text-sm font-bold text-gray-700">Nama Kelas / Ruangan / Paralel</label>
-                            <div class="mt-2 text-xs text-gray-500 mb-2">Label identitas unik. Misalnya Kelas Anda paralel: "Kelas 1A" atau "1 Abu Bakar"</div>
-                            <input type="text" name="name" id="name" required
-                                class="mt-1 block w-full"
-                                placeholder="Misal: Kelas 1A" value="{{ old('name') }}">
-                            @error('name')
-                                <p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Wali Kelas -->
-                        <div>
-                            <label for="wali_kelas" class="block text-sm font-bold text-gray-700">Wali Kelas</label>
-                            <div class="mt-2 text-xs text-gray-500 mb-2">Nama guru yang menjadi wali kelas ini.</div>
-                            <input type="text" name="wali_kelas" id="wali_kelas"
-                                class="mt-1 block w-full"
-                                placeholder="Misal: Ustadzah Siti Aminah" value="{{ old('wali_kelas') }}">
-                            @error('wali_kelas')
-                                <p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Nominal Infaq/SPP Bulanan -->
-                        <div>
-                            <label for="infaq_nominal" class="block text-sm font-bold text-gray-700">Tarif Infaq/SPP Bulanan (Format Rupiah Tanam)</label>
-                            <div class="mt-2 text-xs text-gray-500 mb-2">Biaya standar infaq bulanan untuk kelas ini. Anak Yatim tetap gratis (diatur di siswa). Format Angka saja (misal 50000).</div>
-                            <div class="relative mt-1">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span class="text-gray-500 sm:text-sm font-bold">Rp</span>
-                                </div>
-                                <input type="number" name="infaq_nominal" id="infaq_nominal" required min="0" step="1000"
-                                    class="pl-10 block w-full"
-                                    placeholder="50000" value="{{ old('infaq_nominal', 0) }}">
-                            </div>
-                            @error('infaq_nominal')
-                                <p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="mt-10 flex items-center justify-end gap-x-3 border-t border-gray-100 pt-6">
-                            <a href="{{ route('classrooms.index') }}" class="inline-flex items-center px-4 py-2 bg-rose-50 border border-rose-200 rounded-xl font-bold text-xs text-rose-600 uppercase tracking-widest shadow-sm hover:bg-rose-100 active:bg-rose-200 outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                Batal
-                            </a>
-                            <button type="submit" class="inline-flex items-center px-6 py-3 bg-indigo-600 border border-transparent rounded-xl font-bold text-sm text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-lg shadow-indigo-500/30">
-                                Simpan Kelas
-                            </button>
-                        </div>
-                    </form>
-
+                    <div>
+                        <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Tambah Kelas Baru</h2>
+                        <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Definisikan rombongan belajar baru beserta tarif Infaq/SPP.</p>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
+            <form action="{{ route('classrooms.store') }}" method="POST">
+                @csrf
+                <div style="padding: 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                    <div>
+                        <label for="level" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tingkatan Kelas <span style="color: #e11d48;">*</span></label>
+                        <select id="level" name="level" required style="width: 100%; box-sizing: border-box;">
+                            <option value="" disabled selected>-- Pilih Tingkat --</option>
+                            @for($i = 1; $i <= 6; $i++)<option value="{{ $i }}" {{ old('level') == $i ? 'selected' : '' }}>Kelas {{ $i }}</option>@endfor
+                        </select>
+                        @error('level')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label for="name" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nama Kelas <span style="color: #e11d48;">*</span></label>
+                        <input type="text" name="name" id="name" required placeholder="Misal: Kelas 1A" value="{{ old('name') }}" style="width: 100%; box-sizing: border-box;">
+                        @error('name')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label for="wali_kelas" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Wali Kelas <span style="color: #94a3b8; font-weight: 400;">(Opsional)</span></label>
+                        <input type="text" name="wali_kelas" id="wali_kelas" placeholder="Nama guru wali kelas" value="{{ old('wali_kelas') }}" style="width: 100%; box-sizing: border-box;">
+                        @error('wali_kelas')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label for="infaq_nominal" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tarif Infaq/SPP <span style="color: #e11d48;">*</span></label>
+                        <input type="number" name="infaq_nominal" id="infaq_nominal" required min="0" step="1000" placeholder="50000" value="{{ old('infaq_nominal', 0) }}" style="width: 100%; box-sizing: border-box;">
+                        <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.375rem;">Nominal Rp (angka saja, misal: 50000)</p>
+                        @error('infaq_nominal')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                    </div>
+                </div>
+                <div style="padding: 1.25rem 2rem; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; background: #fafbfc;">
+                    <a href="{{ route('classrooms.index') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none;">Batal</a>
+                    <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(79,70,229,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+                        <svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        Simpan Kelas
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </x-app-layout>

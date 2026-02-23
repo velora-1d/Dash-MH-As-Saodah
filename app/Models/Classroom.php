@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasUnitIsolation;
 
 class Classroom extends Model
 {
+    use HasUnitIsolation;
     protected $fillable = [
+        'unit_id',
+        'academic_year_id',
         'level',
         'name',
         'infaq_nominal',
@@ -23,8 +27,8 @@ class Classroom extends Model
         return $this->belongsTo(AcademicYear::class);
     }
 
-    public function students()
+    public function enrollments()
     {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(StudentEnrollment::class);
     }
 }

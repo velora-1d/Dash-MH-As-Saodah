@@ -3,15 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasUnitIsolation;
 
 class SppBill extends Model
 {
+    use HasUnitIsolation;
     protected $table = 'infaq_bills';
 
     protected $fillable = [
+        'entity_id',
+        'unit_id',
         'student_id',
         'academic_year_id',
         'month',
+        'year',
         'nominal',
         'status',
     ];

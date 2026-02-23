@@ -343,6 +343,46 @@
             /* --- CUSTOM SCROLLBAR FOR SIDEBAR (HIDDEN) --- */
             aside::-webkit-scrollbar { display: none; }
             aside { -ms-overflow-style: none; scrollbar-width: none; }
+
+            /* --- RESPONSIVE MOBILE OVERRIDES --- */
+            @media (max-width: 768px) {
+                /* Force multi-column grids to 1 column on mobile */
+                [style*="grid-template-columns: repeat("],
+                [style*="grid-template-columns: 1fr 1fr"],
+                [style*="grid-template-columns: 2fr 1fr"],
+                [style*="grid-template-columns: 1fr 1fr 300px"] {
+                    grid-template-columns: 1fr !important;
+                }
+                
+                /* Reset span to 1 column */
+                [style*="grid-column: span"] {
+                    grid-column: span 1 !important;
+                }
+                
+                /* EXCEPTIONS: keep these grids responsive natively */
+                .keep-grid-mobile,
+                [style*="grid-template-columns: repeat(auto-fit"],
+                [style*="grid-template-columns: repeat(auto-fill"] {
+                    /* Allow auto-fit/auto-fill to do their job, but override the force from above if matched */
+                    grid-template-columns: inherit !important;
+                }
+
+                /* Adjust large padding for mobile screens */
+                div[style*="padding: 2rem"] {
+                    padding: 1.25rem !important;
+                }
+                div[style*="padding: 1.5rem"] {
+                    padding: 1.25rem !important;
+                }
+                
+                /* Fix header fonts on small screens */
+                h2[style*="font-size: 1.875rem"] {
+                    font-size: 1.5rem !important;
+                }
+                h2[style*="font-size: 1.25rem"] {
+                    font-size: 1.125rem !important;
+                }
+            }
         </style>
     </head>
     <body class="font-sans antialiased text-slate-900 bg-slate-50 h-screen overflow-hidden" x-data="{ sidebarOpen: false }">

@@ -69,7 +69,13 @@
                     @if($target)
                         <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.25rem;">Target: Rp {{ number_format($target, 0, ',', '.') }}</p>
                         <div style="margin-top: 0.75rem; height: 6px; background: #e2e8f0; border-radius: 999px; overflow: hidden;">
-                            <div style="height: 100%; width: {{ $pct }}%; background: linear-gradient(90deg, #059669, #10b981); border-radius: 999px; transition: width 0.3s ease;"></div>
+                            <div @style([
+                                'height: 100%',
+                                "width: {$pct}%",
+                                'background: linear-gradient(90deg, #059669, #10b981)',
+                                'border-radius: 999px',
+                                'transition: width 0.3s ease'
+                            ])></div>
                         </div>
                         <p style="font-size: 0.6875rem; font-weight: 600; color: #059669; margin-top: 0.375rem;">{{ $pct }}% tercapai</p>
                     @endif

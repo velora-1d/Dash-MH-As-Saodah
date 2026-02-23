@@ -3,10 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\HasUnitIsolation;
 
 class Student extends Model
 {
+    use SoftDeletes, HasUnitIsolation;
     protected $fillable = [
+        'entity_id',
+        'unit_id',
         'classroom_id',
         'nisn',
         'nis',
@@ -21,6 +26,8 @@ class Student extends Model
         'parent_name',
         'parent_phone',
         'address',
+        'entry_date',
+        'admission_academic_year_id',
     ];
 
     public function entity()
@@ -46,5 +53,17 @@ class Student extends Model
     public function savingMutations()
     {
         return $this->hasMany(StudentSaving::class, 'student_id');
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(StudentEnrollment::class);
+    }
+
+    public function currentEnrollment()
+    {
+        return $this->hasOne(StudentEnrollment::class)->whereHas('academicYear', function($q) {
+            $q->where('is_active', true);
+        });
     }
 }

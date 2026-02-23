@@ -73,7 +73,11 @@
                     </thead>
                     <tbody>
                         @forelse($mutations as $m)
-                            <tr style="border-bottom: 1px solid #f1f5f9; {{ $m->status === 'void' ? 'opacity: 0.45;' : '' }}transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                            <tr @style([
+                                'border-bottom: 1px solid #f1f5f9',
+                                'transition: background 0.15s ease',
+                                'opacity: 0.45' => $m->status === 'void'
+                            ]) onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; color: #475569; white-space: nowrap;">{{ $m->date->format('d M Y') }}</td>
                                 <td style="padding: 1rem 1.5rem;">
                                     @if($m->type === 'in')
@@ -88,7 +92,15 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td style="padding: 1rem 1.5rem; text-align: right; font-size: 0.875rem; font-weight: 700; color: {{ $m->type === 'in' ? '#059669' : '#e11d48' }}; white-space: nowrap;">
+                                <td @style([
+                                    'padding: 1rem 1.5rem',
+                                    'text-align: right',
+                                    'font-size: 0.875rem',
+                                    'font-weight: 700',
+                                    'white-space: nowrap',
+                                    'color: #059669' => $m->type === 'in',
+                                    'color: #e11d48' => $m->type !== 'in'
+                                ])>
                                     {{ $m->type === 'in' ? '+' : '-' }} Rp {{ number_format($m->amount, 0, ',', '.') }}
                                 </td>
                                 <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; color: #64748b; max-width: 200px; overflow: hidden; text-overflow: ellipsis;">{{ $m->description ?: '-' }}</td>

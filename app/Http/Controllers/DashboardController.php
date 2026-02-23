@@ -17,21 +17,44 @@ class DashboardController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
+        
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
         $role = $user->role;
 
+        $userScopeUnitIds = \App\Models\UserScope::where('user_id', $user->id)
+            ->whereNotNull('unit_id')
+            ->pluck('unit_id')
+            ->toArray();
+            
+        $isGlobalAdmin = in_array($role, ['superadmin', 'owner', 'yayasan']);
+
         // KPI 1: Siswa Aktif
-        $totalSiswaPa = Student::whereIn('gender', ['L', 'Laki-laki'])->count();
-        $totalSiswaPi = Student::whereIn('gender', ['P', 'Perempuan'])->count();
+        $siswaQuery = Student::query();
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $siswaQuery->whereIn('unit_id', $userScopeUnitIds);
+        }
+        $totalSiswaPa = (clone $siswaQuery)->whereIn('gender', ['L', 'Laki-laki'])->count();
+        $totalSiswaPi = (clone $siswaQuery)->whereIn('gender', ['P', 'Perempuan'])->count();
         $totalSiswa = $totalSiswaPa + $totalSiswaPi;
 
         // KPI 2: Pemasukan Bulan Ini
         $pemasukanBulanIni = 0;
         if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
-            $pemasukanUmum = GeneralTransaction::where('type', 'in')
-                ->whereMonth('date', now()->month)
-                ->sum('amount');
-            $pemasukanSpp = SppPayment::whereMonth('date', now()->month)
-                ->sum('amount');
+            $pemasukanUmumQuery = GeneralTransaction::where('type', 'in')->whereMonth('date', now()->month);
+            $pemasukanSppQuery = SppPayment::whereMonth('date', now()->month);
+            
+            if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+                $pemasukanUmumQuery->whereIn('unit_id', $userScopeUnitIds);
+                $pemasukanSppQuery->whereHas('sppBill', function($q) use ($userScopeUnitIds) {
+                    $q->whereIn('unit_id', $userScopeUnitIds);
+                });
+            }
+
+            $pemasukanUmum = $pemasukanUmumQuery->sum('amount');
+            $pemasukanSpp = $pemasukanSppQuery->sum('amount');
             $pemasukanBulanIni = $pemasukanUmum + $pemasukanSpp;
         }
 
@@ -41,44 +64,61 @@ class DashboardController extends Controller
         $tunggakanPaRp = 0; $tunggakanPiRp = 0;
 
         if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
-            $kepatuhanPa = SppBill::whereHas('student', function($q) {
-                $q->whereIn('gender', ['L', 'Laki-laki']);
-            })->where('status', 'lunas')->count();
+            $kepatuhanQuery = SppBill::where('status', 'lunas');
+            $unpaidQuery = SppBill::where('status', 'belum_lunas');
+            
+            if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+                $kepatuhanQuery->whereIn('unit_id', $userScopeUnitIds);
+                $unpaidQuery->whereIn('unit_id', $userScopeUnitIds);
+            }
 
-            $kepatuhanPi = SppBill::whereHas('student', function($q) {
+            $kepatuhanPa = (clone $kepatuhanQuery)->whereHas('student', function($q) {
+                $q->whereIn('gender', ['L', 'Laki-laki']);
+            })->count();
+
+            $kepatuhanPi = (clone $kepatuhanQuery)->whereHas('student', function($q) {
                 $q->whereIn('gender', ['P', 'Perempuan']);
-            })->where('status', 'lunas')->count();
+            })->count();
 
             // Tunggakan
-            $unpaidPa = SppBill::whereHas('student', function($q){
+            $unpaidPa = (clone $unpaidQuery)->whereHas('student', function($q){
                 $q->whereIn('gender', ['L', 'Laki-laki']);
-            })->where('status', 'belum_lunas')->get();
+            })->get();
             $tunggakanPa = $unpaidPa->groupBy('student_id')->count();
             $tunggakanPaRp = $unpaidPa->sum('nominal');
 
-            $unpaidPi = SppBill::whereHas('student', function($q){
+            $unpaidPi = (clone $unpaidQuery)->whereHas('student', function($q){
                 $q->whereIn('gender', ['P', 'Perempuan']);
-            })->where('status', 'belum_lunas')->get();
+            })->get();
             $tunggakanPi = $unpaidPi->groupBy('student_id')->count();
             $tunggakanPiRp = $unpaidPi->sum('nominal');
         }
 
-        // KPI 5: PPDB (Placeholder pending table creation)
-        $ppdbPending = 0; // Query from future PPDB table
-        $ppdbDiterima = 0;
+        // KPI 5: PPDB (Data Real dari tabel ppdb_registrations)
+        $ppdbQuery = \App\Models\PpdbRegistration::query();
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $ppdbQuery->whereIn('unit_id', $userScopeUnitIds);
+        }
+        $ppdbPending = (clone $ppdbQuery)->where('status', 'pending')->count();
+        $ppdbDiterima = (clone $ppdbQuery)->where('status', 'diterima')->count();
 
         // Grid Tagihan 
         $siswaMenunggakPa = collect([]);
         $siswaMenunggakPi = collect([]);
 
         if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
-            $siswaMenunggakPa = Student::whereIn('gender', ['L', 'Laki-laki'])
-                ->whereHas('sppBills', function($q) {
+            $menunggakBaseQuery = Student::whereHas('sppBills', function($q) {
                     $q->where('status', 'belum_lunas');
                 })
                 ->with(['sppBills' => function($q) {
                     $q->where('status', 'belum_lunas');
-                }, 'classroom'])
+                }, 'classroom']);
+                
+            if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+                $menunggakBaseQuery->whereIn('unit_id', $userScopeUnitIds);
+            }
+
+            $siswaMenunggakPa = (clone $menunggakBaseQuery)->whereIn('gender', ['L', 'Laki-laki'])
                 ->take(5)->get()
                 ->map(function($student) {
                     $tunggakan = $student->sppBills->sum('nominal');
@@ -91,13 +131,7 @@ class DashboardController extends Controller
                     ];
                 });
 
-            $siswaMenunggakPi = Student::whereIn('gender', ['P', 'Perempuan'])
-                ->whereHas('sppBills', function($q) {
-                    $q->where('status', 'belum_lunas');
-                })
-                ->with(['sppBills' => function($q) {
-                    $q->where('status', 'belum_lunas');
-                }, 'classroom'])
+            $siswaMenunggakPi = (clone $menunggakBaseQuery)->whereIn('gender', ['P', 'Perempuan'])
                 ->take(5)->get()
                 ->map(function($student) {
                     $tunggakan = $student->sppBills->sum('nominal');
@@ -120,20 +154,30 @@ class DashboardController extends Controller
             $cashflowOut = array_fill(0, 12, 0);
 
             // Fetch Inflow (General + SPP)
-            $generalIn = GeneralTransaction::where('type', 'in')
-                ->whereYear('date', $currentYear)
-                ->selectRaw('EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total')
-                ->groupBy('month')
-                ->pluck('total', 'month');
-
-            $sppIn = SppPayment::whereYear('date', $currentYear)
-                ->selectRaw('EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total')
-                ->groupBy('month')
-                ->pluck('total', 'month');
-
+            $generalInQuery = GeneralTransaction::where('type', 'in')->whereYear('date', $currentYear);
+            $sppInQuery = SppPayment::whereYear('date', $currentYear);
             // Fetch Outflow (General)
-            $generalOut = GeneralTransaction::where('type', 'out')
-                ->whereYear('date', $currentYear)
+            $generalOutQuery = GeneralTransaction::where('type', 'out')->whereYear('date', $currentYear);
+
+            if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+                $generalInQuery->whereIn('unit_id', $userScopeUnitIds);
+                $generalOutQuery->whereIn('unit_id', $userScopeUnitIds);
+                $sppInQuery->whereHas('sppBill', function($q) use ($userScopeUnitIds) {
+                    $q->whereIn('unit_id', $userScopeUnitIds);
+                });
+            }
+
+            $generalIn = $generalInQuery
+                ->selectRaw('EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total')
+                ->groupBy('month')
+                ->pluck('total', 'month');
+
+            $sppIn = $sppInQuery
+                ->selectRaw('EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total')
+                ->groupBy('month')
+                ->pluck('total', 'month');
+
+            $generalOut = $generalOutQuery
                 ->selectRaw('EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total')
                 ->groupBy('month')
                 ->pluck('total', 'month');
@@ -154,11 +198,25 @@ class DashboardController extends Controller
         // Data Chart 2: Komposisi Sumber Pemasukan
         $chartSource = [];
         if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
-            $totalSppAll = SppPayment::sum('amount');
-            
-            $categoriesIn = DB::table('transaction_categories')
+            $sppSourceQuery = SppPayment::query();
+            $categoriesInQuery = DB::table('transaction_categories')
                 ->where('transaction_categories.type', 'in')
-                ->leftJoin('general_transactions', 'transaction_categories.id', '=', 'general_transactions.category_id')
+                ->leftJoin('general_transactions', function($join) use ($isGlobalAdmin, $userScopeUnitIds) {
+                    $join->on('transaction_categories.id', '=', 'general_transactions.category_id');
+                    if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+                        $join->whereIn('general_transactions.unit_id', $userScopeUnitIds);
+                    }
+                });
+                
+            if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+                $sppSourceQuery->whereHas('sppBill', function($q) use ($userScopeUnitIds) {
+                    $q->whereIn('unit_id', $userScopeUnitIds);
+                });
+            }
+
+            $totalSppAll = $sppSourceQuery->sum('amount');
+            
+            $categoriesIn = $categoriesInQuery
                 ->select('transaction_categories.name', DB::raw('SUM(COALESCE(general_transactions.amount, 0)) as total'))
                 ->groupBy('transaction_categories.id', 'transaction_categories.name')
                 ->get();
@@ -193,7 +251,12 @@ class DashboardController extends Controller
         // Data Chart 3: Kepatuhan Infaq per Kelas
         $chartCompliance = [];
         if (in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner'])) {
-            $classrooms = Classroom::orderBy('level')->orderBy('name')->get();
+            $classroomsQuery = Classroom::orderBy('level')->orderBy('name');
+            if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+                $classroomsQuery->whereIn('unit_id', $userScopeUnitIds);
+            }
+            $classrooms = $classroomsQuery->get();
+            
             $compLabels = [];
             $compLunas = [];
             $compNunggak = [];
@@ -220,7 +283,11 @@ class DashboardController extends Controller
             ];
         }
 
-        $academicYears = AcademicYear::orderBy('name', 'desc')->get();
+        $academicYearsQuery = AcademicYear::orderBy('name', 'desc');
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $academicYearsQuery->whereIn('unit_id', $userScopeUnitIds);
+        }
+        $academicYears = $academicYearsQuery->get();
 
         return view('dashboard', compact(
             'academicYears',

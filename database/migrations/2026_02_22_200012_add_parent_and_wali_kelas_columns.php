@@ -15,14 +15,22 @@ return new class extends Migration
     {
         // Gap 1: Data Orang Tua/Wali & No. WhatsApp
         Schema::table('students', function (Blueprint $table) {
-            $table->string('parent_name')->nullable()->after('status');
-            $table->string('parent_phone')->nullable()->after('parent_name');
-            $table->text('address')->nullable()->after('parent_phone');
+            if (!Schema::hasColumn('students', 'parent_name')) {
+                $table->string('parent_name')->nullable()->after('status');
+            }
+            if (!Schema::hasColumn('students', 'parent_phone')) {
+                $table->string('parent_phone')->nullable()->after('parent_name');
+            }
+            if (!Schema::hasColumn('students', 'address')) {
+                $table->text('address')->nullable()->after('parent_phone');
+            }
         });
 
         // Gap 2: Wali Kelas
         Schema::table('classrooms', function (Blueprint $table) {
-            $table->string('wali_kelas')->nullable()->after('name');
+            if (!Schema::hasColumn('classrooms', 'wali_kelas')) {
+                $table->string('wali_kelas')->nullable()->after('name');
+            }
         });
     }
 

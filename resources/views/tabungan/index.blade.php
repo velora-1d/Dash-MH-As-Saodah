@@ -73,7 +73,11 @@
                                     <span style="font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $student->classroom ? $student->classroom->name : '-' }}</span>
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: right;">
-                                    <span style="font-weight: 700; font-size: 0.875rem; color: {{ $student->balance > 0 ? '#059669' : '#94a3b8' }};">Rp {{ number_format($student->balance, 0, ',', '.') }}</span>
+                                    @if($student->balance > 0)
+                                        <span style="font-weight: 700; font-size: 0.875rem; color: #059669;">Rp {{ number_format($student->balance, 0, ',', '.') }}</span>
+                                    @else
+                                        <span style="font-weight: 700; font-size: 0.875rem; color: #94a3b8;">Rp {{ number_format($student->balance, 0, ',', '.') }}</span>
+                                    @endif
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.375rem;">

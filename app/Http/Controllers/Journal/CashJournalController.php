@@ -141,9 +141,9 @@ class CashJournalController extends Controller
             if ($cash) {
                 // Revert saldo (Kebalikan dari saat store)
                 if ($transaction->type === 'in') {
-                    $cash->decrement('balance', $transaction->amount);
+                    $cash->decrement('balance', (float) $transaction->amount);
                 } else {
-                    $cash->increment('balance', $transaction->amount);
+                    $cash->increment('balance', (float) $transaction->amount);
                 }
             }
         });

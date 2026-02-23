@@ -23,48 +23,36 @@ class SuperAdminSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // 2. Buat Entity (Yayasan / Sekolah / Pesantren)
-        $sekolahEntityId = DB::table('entities')->insertGetId([
-            'name' => 'Sekolah MH As-Saodah',
-            'type' => 'sekolah',
-            'description' => 'SD, SMP, SMK',
-            'status' => 'active',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // 2. Buat Entity (Sekolah)
+        $sekolahEntityId = DB::table('entities')->where('name', 'MI As-Saodah')->value('id');
+        if (!$sekolahEntityId) {
+            $sekolahEntityId = DB::table('entities')->insertGetId([
+                'name' => 'MI As-Saodah',
+                'type' => 'sekolah',
+                'description' => 'Madrasah Ibtidaiyah As-Saodah',
+                'status' => 'active',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
-        $pesantrenEntityId = DB::table('entities')->insertGetId([
-            'name' => 'Pesantren MH As-Saodah',
-            'type' => 'pesantren',
-            'description' => 'Pondok Pesantren Putra / Putri',
-            'status' => 'active',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // 3. Buat Unit-unit di bawah Sekolah (Opsional untuk testing unit level)
-        $unitSmkId = DB::table('units')->insertGetId([
-            'entity_id' => $sekolahEntityId,
-            'name' => 'SMK MH As-Saodah',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // 3. Buat Unit MI
+        $unitMiId = DB::table('units')->where('name', 'MI As-Saodah')->where('entity_id', $sekolahEntityId)->value('id');
+        if (!$unitMiId) {
+            $unitMiId = DB::table('units')->insertGetId([
+                'entity_id' => $sekolahEntityId,
+                'name' => 'MI As-Saodah',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
         // 4. Beri Hak Akses (Scope) untuk Super Admin
-        // Karena role 'owner' hardcoded by-pass di middleware, scope ini hanya penguat context UI
         DB::table('user_scopes')->insert([
             [
                 'user_id' => $ownerId,
                 'entity_id' => $sekolahEntityId,
-                'unit_id' => null, // Berarti akses penuh ke semua unit di bawah Sekolah ini
-                'role' => 'owner',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => $ownerId,
-                'entity_id' => $pesantrenEntityId,
-                'unit_id' => null, // Akses penuh ke entitas Pesantren
+                'unit_id' => null, // Berarti akses penuh ke semua unit di bawah MI As-Saodah ini
                 'role' => 'owner',
                 'created_at' => now(),
                 'updated_at' => now(),

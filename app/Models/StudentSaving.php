@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasUnitIsolation;
 
 class StudentSaving extends Model
 {
+    use HasUnitIsolation;
     protected $table = 'student_savings_mutations';
 
     protected $fillable = [
+        'entity_id',
+        'unit_id',
         'student_id',
         'type',
         'amount',

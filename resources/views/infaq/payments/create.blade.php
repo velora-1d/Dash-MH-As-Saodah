@@ -4,6 +4,7 @@
         <div style="background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%); border-radius: 1rem; overflow: hidden; position: relative;">
             <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
             <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                     <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3);">
                         <svg style="width: 22px; height: 22px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
@@ -12,6 +13,8 @@
                         <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Pembayaran Infaq / SPP</h2>
                         <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Catat pembayaran untuk tagihan {{ $bill->student->name }}.</p>
                     </div>
+                </div>
+                <x-back-button href="{{ route('infaq.bills.index') }}" label="Kembali ke Daftar" />
                 </div>
             </div>
         </div>
@@ -37,7 +40,11 @@
                 </div>
                 <div>
                     <p style="font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em;">Sisa Tagihan</p>
-                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: {{ $remaining > 0 ? '#e11d48' : '#059669' }}; margin-top: 0.25rem;">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
+                    @if($remaining > 0)
+                        <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: #e11d48; margin-top: 0.25rem;">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
+                    @else
+                        <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: #059669; margin-top: 0.25rem;">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
+                    @endif
                 </div>
             </div>
         </div>

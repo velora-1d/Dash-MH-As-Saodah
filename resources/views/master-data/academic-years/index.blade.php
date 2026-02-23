@@ -35,15 +35,17 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 50px;">No</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Tahun & Semester</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Status</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($academicYears as $year)
+                        @forelse($academicYears as $index => $year)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                                <td style="padding: 1rem 1.5rem;">
+                                <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $index + 1 }}</td>
+                                <td style="padding: 1rem 1.5rem; vertical-align: middle;">
                                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                                         <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-radius: 0.625rem; display: flex; align-items: center; justify-content: center;">
                                             <svg style="width: 1.125rem; height: 1.125rem; color: #0284c7;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -76,7 +78,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" style="padding: 4rem 2rem; text-align: center;">
+                                <td colspan="4" style="padding: 4rem 2rem; text-align: center;">
                                     <div style="display: flex; flex-direction: column; align-items: center;">
                                         <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
                                             <svg style="width: 28px; height: 28px; color: #0284c7;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>

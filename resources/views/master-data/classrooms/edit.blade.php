@@ -3,6 +3,7 @@
         <div style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%); border-radius: 1rem; overflow: hidden; position: relative;">
             <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
             <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                     <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3);">
                         <svg style="width: 22px; height: 22px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
@@ -11,6 +12,8 @@
                         <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Edit Kelas — {{ $classroom->name }}</h2>
                         <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Perbarui informasi rombongan belajar.</p>
                     </div>
+                </div>
+                <x-back-button href="{{ route('classrooms.index') }}" label="Kembali ke Daftar" />
                 </div>
             </div>
         </div>

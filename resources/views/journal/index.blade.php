@@ -90,6 +90,7 @@
                 <table style="width: 100%; border-collapse: collapse; text-align: left;">
                     <thead>
                         <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <th style="padding: 0.875rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; width: 50px; text-align: center;">No</th>
                             <th style="padding: 0.875rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; width: 120px;">Tgl</th>
                             <th style="padding: 0.875rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Keterangan & Kategori</th>
                             <th style="padding: 0.875rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Kas/Rek.</th>
@@ -99,12 +100,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($transactions as $trx)
+                        @forelse($transactions as $index => $trx)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #1e293b; font-weight: 500;">{{ $trx->date?->format('d M Y') ?? '-' }}</td>
+                                <td style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $transactions->firstItem() + $index }}</td>
+                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #1e293b; font-weight: 500; vertical-align: middle;">{{ $trx->date?->format('d M Y') ?? '-' }}</td>
                                 <td style="padding: 0.875rem 1.5rem;">
                                     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                                        <span style="font-size: 0.875rem; font-weight: 600; color: {{ $trx->status == 'void' ? '#94a3b8; text-decoration: line-through;' : '#0f172a;' }}">{{ $trx->description ?? 'Tanpa Keterangan' }}</span>
+                                        @if($trx->status == 'void')
+                                            <span style="font-size: 0.875rem; font-weight: 600; color: #94a3b8; text-decoration: line-through;">{{ $trx->description ?? 'Tanpa Keterangan' }}</span>
+                                        @else
+                                            <span style="font-size: 0.875rem; font-weight: 600; color: #0f172a;">{{ $trx->description ?? 'Tanpa Keterangan' }}</span>
+                                        @endif
                                         <span style="font-size: 0.6875rem; color: #64748b; font-weight: 500;">
                                             Tag: {{ $trx->category->name ?? '-' }}
                                         </span>
@@ -117,14 +123,22 @@
                                 </td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: right; font-family: 'Outfit', sans-serif;">
                                     @if($trx->type === 'in')
-                                        <span style="font-weight: 700; color: {{ $trx->status == 'void' ? '#94a3b8' : '#059669' }};">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                        @if($trx->status == 'void')
+                                            <span style="font-weight: 700; color: #94a3b8;">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                        @else
+                                            <span style="font-weight: 700; color: #059669;">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                        @endif
                                     @else
                                         <span style="color: #cbd5e1;">-</span>
                                     @endif
                                 </td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: right; font-family: 'Outfit', sans-serif;">
                                     @if($trx->type === 'out')
-                                        <span style="font-weight: 700; color: {{ $trx->status == 'void' ? '#94a3b8' : '#e11d48' }};">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                        @if($trx->status == 'void')
+                                            <span style="font-weight: 700; color: #94a3b8;">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                        @else
+                                            <span style="font-weight: 700; color: #e11d48;">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                        @endif
                                     @else
                                         <span style="color: #cbd5e1;">-</span>
                                     @endif
@@ -144,7 +158,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" style="padding: 3rem; text-align: center;">
+                                <td colspan="7" style="padding: 3rem; text-align: center;">
                                     <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
                                         <div style="width: 48px; height: 48px; background: #f8fafc; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                             <svg style="width: 24px; height: 24px; color: #cbd5e1;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>

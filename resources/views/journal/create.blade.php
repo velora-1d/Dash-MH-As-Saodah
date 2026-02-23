@@ -1,22 +1,27 @@
 <x-app-layout>
-    <div style="max-width: 800px; margin: 0 auto; padding-bottom: 2rem;">
+    <div class="space-y-6">
         
-        <!-- Header -->
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
-            <div>
-                <a href="{{ route('journal.index') }}" style="display: inline-flex; align-items: center; font-size: 0.8125rem; color: #64748b; text-decoration: none; font-weight: 600; margin-bottom: 0.5rem; transition: color 0.2s;" onmouseover="this.style.color='#312e81'" onmouseout="this.style.color='#64748b'">
-                    <svg style="width: 1rem; height: 1rem; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                    Kembali ke Riwayat
-                </a>
-                <h2 style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.75rem; color: #0f172a; margin: 0;">Catat Jurnal Kas Baru</h2>
-                <p style="font-size: 0.875rem; color: #64748b; margin-top: 0.25rem;">Masukkan data pemasukan atau pengeluaran operasional.</p>
+        <!-- Hero Header -->
+        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #4f46e5 100%); border-radius: 1rem; overflow: hidden; position: relative; margin-bottom: 2rem;">
+            <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.06); border-radius: 50%;"></div>
+            <div style="position: absolute; right: 80px; bottom: -40px; width: 150px; height: 150px; background: rgba(255,255,255,0.04); border-radius: 50%;"></div>
+            <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div>
+                            <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.5rem; color: #fff; margin: 0;">Catat Jurnal Kas Baru</h2>
+                            <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.8); margin-top: 0.125rem;">Masukkan data pemasukan atau pengeluaran operasional.</p>
+                        </div>
+                    </div>
+                    <x-back-button href="{{ route('journal.index') }}" label="Kembali ke Daftar" />
+                </div>
             </div>
         </div>
 
         @if (session('error'))
             <div style="background: #fef2f2; border-left: 4px solid #e11d48; color: #991b1b; padding: 1rem 1.25rem; border-radius: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 0.75rem;">
                 <svg style="width: 1.25rem; height: 1.25rem; color: #e11d48; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                <div style="font-size: 0.875rem; font-weight: 500;">{!! session('error') !!}</div>
+                <div style="font-size: 0.875rem; font-weight: 500;">{{ session('error') }}</div>
             </div>
         @endif
 

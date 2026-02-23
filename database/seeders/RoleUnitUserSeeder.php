@@ -17,28 +17,19 @@ class RoleUnitUserSeeder extends Seeder
     public function run(): void
     {
         // 1. Create Entity
-        $entity = Entity::create([
-            'name' => 'Yayasan Pendidikan MH As-Saodah',
-            'type' => 'yayasan',
-            'description' => 'Yayasan Pendidikan MH As-Saodah',
-            'status' => 'active',
-        ]);
+        $entity = Entity::firstOrCreate(
+            ['name' => 'MI As-Saodah'],
+            [
+                'type' => 'sekolah',
+                'description' => 'Madrasah Ibtidaiyah As-Saodah',
+                'status' => 'active',
+            ]
+        );
 
-        // 2. Create Units
-        $unitSD = Unit::create([
-            'entity_id' => $entity->id,
-            'name' => 'SD',
-        ]);
-
-        $unitSMP = Unit::create([
-            'entity_id' => $entity->id,
-            'name' => 'SMP',
-        ]);
-
-        $unitSMA = Unit::create([
-            'entity_id' => $entity->id,
-            'name' => 'SMA',
-        ]);
+        // 2. Create Unit MI
+        $unitMI = Unit::firstOrCreate(
+            ['entity_id' => $entity->id, 'name' => 'MI As-Saodah']
+        );
 
         // 3. Create Owner User
         $owner = User::create([
@@ -59,11 +50,11 @@ class RoleUnitUserSeeder extends Seeder
             'role' => 'owner'
         ]);
 
-        // 4. Create Mitra User (Admin SMP)
-        $mitraSmp = User::create([
-            'name' => 'Admin SMP',
-            'email' => 'adminsmp@test.com',
-            'username' => 'admin_smp',
+        // 4. Create Mitra User (Admin MI)
+        $mitraMi = User::create([
+            'name' => 'Admin MI',
+            'email' => 'adminmi@test.com',
+            'username' => 'admin_mi',
             'role' => 'mitra',
             'phone' => '0822222222',
             'status' => 'active',
@@ -72,28 +63,9 @@ class RoleUnitUserSeeder extends Seeder
 
         // Assign Scope Mitra
         UserScope::create([
-            'user_id' => $mitraSmp->id,
+            'user_id' => $mitraMi->id,
             'entity_id' => $entity->id,
-            'unit_id' => $unitSMP->id, // Mitra specific to SMP
-            'role' => 'mitra'
-        ]);
-
-        // 5. Create Mitra User (Admin SD)
-        $mitraSd = User::create([
-            'name' => 'Admin SD',
-            'email' => 'adminsd@test.com',
-            'username' => 'admin_sd',
-            'role' => 'mitra',
-            'phone' => '0833333333',
-            'status' => 'active',
-            'password' => Hash::make('password'),
-        ]);
-
-        // Assign Scope Mitra
-        UserScope::create([
-            'user_id' => $mitraSd->id,
-            'entity_id' => $entity->id,
-            'unit_id' => $unitSD->id, // Mitra specific to SD
+            'unit_id' => $unitMI->id, // Mitra specific to MI
             'role' => 'mitra'
         ]);
     }

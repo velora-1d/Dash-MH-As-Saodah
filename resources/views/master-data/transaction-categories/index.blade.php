@@ -41,14 +41,16 @@
             <div style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead><tr style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
-                        <th style="padding: 0.75rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 35%;">Nama</th>
+                        <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 50px;">No</th>
+                        <th style="padding: 0.75rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 30%;">Nama</th>
                         <th style="padding: 0.75rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 45%;">Keterangan</th>
-                        <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 20%;">Aksi</th>
+                        <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 15%;">Aksi</th>
                     </tr></thead>
                     <tbody>
-                        @forelse($inCats as $cat)
+                        @forelse($inCats as $index => $cat)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b;">{{ $cat->name }}</td>
+                                <td style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $index + 1 }}</td>
+                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b; vertical-align: middle;">{{ $cat->name }}</td>
                                 <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #64748b;">{{ $cat->description ?: '-' }}</td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.375rem;">
@@ -60,7 +62,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="3" style="padding: 2rem; text-align: center; font-size: 0.8125rem; color: #94a3b8;">Belum ada kategori pemasukan.</td></tr>
+                            <tr><td colspan="4" style="padding: 2rem; text-align: center; font-size: 0.8125rem; color: #94a3b8;">Belum ada kategori pemasukan.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -77,15 +79,16 @@
             <div style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead><tr style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
-                        <th style="padding: 0.75rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 35%;">Nama</th>
+                        <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 50px;">No</th>
+                        <th style="padding: 0.75rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 30%;">Nama</th>
                         <th style="padding: 0.75rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 45%;">Keterangan</th>
-                        <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 20%;">Aksi</th>
+                        <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 15%;">Aksi</th>
                     </tr></thead>
                     <tbody>
-                        @forelse($outCats as $cat)
+                        @forelse($outCats as $index => $cat)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b;">{{ $cat->name }}</td>
-                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #64748b;">{{ $cat->description ?: '-' }}</td>
+                                <td style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $index + 1 }}</td>
+                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b; vertical-align: middle;">{{ $cat->name }}</td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.375rem;">
                                         <a href="{{ route('transaction-categories.edit', $cat->id) }}" style="display: inline-flex; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Edit</a>
@@ -96,7 +99,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="3" style="padding: 2rem; text-align: center; font-size: 0.8125rem; color: #94a3b8;">Belum ada kategori pengeluaran.</td></tr>
+                            <tr><td colspan="4" style="padding: 2rem; text-align: center; font-size: 0.8125rem; color: #94a3b8;">Belum ada kategori pengeluaran.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

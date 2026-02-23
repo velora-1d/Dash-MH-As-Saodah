@@ -17,6 +17,20 @@ class DashboardController extends Controller
         $unitId = $request->query('unit_id');
         $month = $request->query('month', date('m'));
         $year = $request->query('year', date('Y'));
+        
+        $user = $request->user();
+        if ($unitId) {
+            $hasAccess = \App\Models\UserScope::where('user_id', $user->id)
+                ->where('unit_id', $unitId)
+                ->exists();
+                
+            if (!$hasAccess && !in_array($user->role, ['superadmin', 'owner', 'yayasan'])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Anda tidak memiliki akses untuk unit ini.'
+                ], 403);
+            }
+        }
 
         // Query Total Saldo Kas Sekolah (berdasarkan unit_id jika filter aktif)
         $cashQuery = CashAccount::where('status', 'active');
@@ -26,13 +40,13 @@ class DashboardController extends Controller
         $totalCash = $cashQuery->sum('current_balance');
 
         // Pemasukan & Pengeluaran Umum (Bulan filter)
-        $incomeQuery = GeneralTransaction::where('type', 'income')->where('status', 'active')
-            ->whereMonth('transaction_date', $month)
-            ->whereYear('transaction_date', $year);
+        $incomeQuery = GeneralTransaction::where('type', 'in')->where('status', 'valid')
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year);
 
-        $expenseQuery = GeneralTransaction::where('type', 'expense')->where('status', 'active')
-            ->whereMonth('transaction_date', $month)
-            ->whereYear('transaction_date', $year);
+        $expenseQuery = GeneralTransaction::where('type', 'out')->where('status', 'valid')
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year);
 
         if ($unitId) {
             $incomeQuery->where('unit_id', $unitId);
@@ -42,10 +56,10 @@ class DashboardController extends Controller
         $totalGeneralIncome = $incomeQuery->sum('amount');
         $totalGeneralExpense = $expenseQuery->sum('amount');
 
-        // SPP Masuk (Bulan filter) berdasarkan payment_date
-        $sppQuery = SppPayment::where('status', 'active')
-            ->whereMonth('payment_date', $month)
-            ->whereYear('payment_date', $year);
+        // SPP Masuk (Bulan filter) berdasarkan date
+        $sppQuery = SppPayment::query()
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year);
 
         if ($unitId) {
             $sppQuery->whereHas('sppBill', function ($q) use ($unitId) {
@@ -55,13 +69,13 @@ class DashboardController extends Controller
         $totalSppIncome = $sppQuery->sum('amount');
 
         // Tabungan Siswa Masuk & Keluar (Bulan filter)
-        $depositQuery = StudentSaving::where('type', 'deposit')->where('status', 'active')
-            ->whereMonth('transaction_date', $month)
-            ->whereYear('transaction_date', $year);
+        $depositQuery = StudentSaving::where('type', 'in')
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year);
 
-        $withdrawQuery = StudentSaving::whereIn('type', ['withdrawal', 'refund'])->where('status', 'active')
-            ->whereMonth('transaction_date', $month)
-            ->whereYear('transaction_date', $year);
+        $withdrawQuery = StudentSaving::where('type', 'out')
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year);
 
         if ($unitId) {
             $depositQuery->where('unit_id', $unitId);

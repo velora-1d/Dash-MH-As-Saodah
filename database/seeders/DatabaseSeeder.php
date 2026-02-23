@@ -14,40 +14,60 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Akun Super Admin Utama (Kepala Sekolah)
-        DB::table('users')->insert([
-            'name' => 'Bapak Kepala Sekolah',
-            'email' => 'kepsek@mi-assaodah.sch.id',
-            'username' => 'kepsek',
-            'password' => Hash::make('password123'),
-            'role' => 'kepsek',
-            'status' => 'aktif',
-            'created_at' => now(),
-            'updated_at' => now(),
+        // 1. Jalankan Seeders Dasar & Unit (Audit MI Tunggal)
+        $this->call([
+            SuperAdminSeeder::class,
+            RoleUnitUserSeeder::class,
+            SchoolSettingSeeder::class,
         ]);
 
-        // 2. Akun Bendahara
-        DB::table('users')->insert([
-            'name' => 'Ibu Bendahara',
-            'email' => 'bendahara@mi-assaodah.sch.id',
-            'username' => 'bendahara',
-            'password' => Hash::make('password123'),
-            'role' => 'bendahara',
-            'status' => 'aktif',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // 2. Akun Kepsek, Bendahara, Operator (Manual)
+        // Hubungkan ke unit MI yang sudah dibuat oleh seeder di atas
+        $unitMi = \App\Models\Unit::where('name', 'MI As-Saodah')->first();
+        $entityMi = \App\Models\Entity::where('name', 'MI As-Saodah')->first();
 
-        // 3. Akun Operator PPDB
-        DB::table('users')->insert([
-            'name' => 'Admin Operator',
-            'email' => 'operator@mi-assaodah.sch.id',
-            'username' => 'operator',
-            'password' => Hash::make('password123'),
-            'role' => 'operator',
-            'status' => 'aktif',
-            'created_at' => now(),
-            'updated_at' => now(),
+        $users = [
+            [
+                'name' => 'Bapak Kepala Sekolah',
+                'email' => 'kepsek@mi-assaodah.sch.id',
+                'username' => 'kepsek',
+                'password' => Hash::make('password123'),
+                'role' => 'kepsek',
+                'status' => 'aktif',
+            ],
+            [
+                'name' => 'Ibu Bendahara',
+                'email' => 'bendahara@mi-assaodah.sch.id',
+                'username' => 'bendahara',
+                'password' => Hash::make('password123'),
+                'role' => 'bendahara',
+                'status' => 'aktif',
+            ],
+            [
+                'name' => 'Admin Operator',
+                'email' => 'operator@mi-assaodah.sch.id',
+                'username' => 'operator',
+                'password' => Hash::make('password123'),
+                'role' => 'operator',
+                'status' => 'aktif',
+            ],
+        ];
+
+        foreach ($users as $userData) {
+            $user = \App\Models\User::create($userData);
+            
+            // Assign scope ke MI
+            \App\Models\UserScope::create([
+                'user_id' => $user->id,
+                'entity_id' => $entityMi->id,
+                'unit_id' => $unitMi->id,
+                'role' => $user->role,
+            ]);
+        }
+
+        // 3. Jalankan Demo Data (Kelas & Siswa)
+        $this->call([
+            DemoDataSeeder::class,
         ]);
 
         // 4. Default Kas

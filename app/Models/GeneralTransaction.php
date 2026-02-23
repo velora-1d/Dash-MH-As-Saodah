@@ -3,10 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasUnitIsolation;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GeneralTransaction extends Model
 {
+    use HasUnitIsolation;
+    use SoftDeletes;
     protected $fillable = [
+        'entity_id',
         'unit_id',
         'category_id',
         'cash_account_id',

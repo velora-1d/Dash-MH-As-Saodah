@@ -40,6 +40,7 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 50px;">No</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Tingkat</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Nama Kelas</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Wali Kelas</th>
@@ -49,9 +50,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($classrooms as $cls)
+                        @forelse($classrooms as $index => $cls)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                                <td style="padding: 1rem 1.5rem;">
+                                <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $index + 1 }}</td>
+                                <td style="padding: 1rem 1.5rem; vertical-align: middle;">
                                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                                         <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 0.625rem; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.125rem; color: #b45309;">{{ $cls->level }}</div>
                                         <span style="font-weight: 600; font-size: 0.8125rem; color: #1e293b;">Tingkat {{ $cls->level }}</span>
@@ -60,7 +62,14 @@
                                 <td style="padding: 1rem 1.5rem;">
                                     <span style="font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $cls->name }}</span>
                                 </td>
-                                <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; color: {{ $cls->wali_kelas ? '#1e293b' : '#94a3b8' }}; font-weight: {{ $cls->wali_kelas ? '600' : '400' }};">{{ $cls->wali_kelas ?: 'Belum ada' }}</td>
+                                <td @style([
+                                    'padding: 1rem 1.5rem',
+                                    'font-size: 0.8125rem',
+                                    'color: #1e293b' => $cls->wali_kelas,
+                                    'font-weight: 600' => $cls->wali_kelas,
+                                    'color: #94a3b8' => !$cls->wali_kelas,
+                                    'font-weight: 400' => !$cls->wali_kelas,
+                                ])>{{ $cls->wali_kelas ?: 'Belum ada' }}</td>
                                 <td style="padding: 1rem 1.5rem; text-align: center; font-weight: 700; font-size: 0.8125rem; color: #1e293b;">{{ $cls->students()->count() }} <span style="font-size: 0.6875rem; color: #94a3b8; font-weight: 400;">siswa</span></td>
                                 <td style="padding: 1rem 1.5rem; text-align: right;">
                                     <span style="font-weight: 700; font-size: 0.8125rem; color: #059669;">Rp {{ number_format($cls->infaq_nominal, 0, ',', '.') }}</span>
@@ -77,7 +86,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" style="padding: 4rem 2rem; text-align: center;">
+                                <td colspan="7" style="padding: 4rem 2rem; text-align: center;">
                                     <div style="display: flex; flex-direction: column; align-items: center;">
                                         <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
                                             <svg style="width: 28px; height: 28px; color: #d97706;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>

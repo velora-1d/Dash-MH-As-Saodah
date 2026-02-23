@@ -51,24 +51,28 @@
                         <div style="overflow-x: auto;">
                             <table style="width: 100%; border-collapse: collapse;">
                                 <thead><tr style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
-                                    <th style="padding: 0.75rem 1rem; width: 40px; border-bottom: 1.5px solid #e2e8f0;"></th>
+                                    <th style="padding: 0.75rem 1rem; width: 40px; border-bottom: 1.5px solid #e2e8f0; text-align: center;"></th>
+                                    <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 50px;">No</th>
                                     <th style="padding: 0.75rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Nama Siswa</th>
                                     <th style="padding: 0.75rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">NISN / NIS</th>
                                 </tr></thead>
                                 <tbody>
-                                    @forelse($students as $student)
+                                    @forelse($students as $index => $student)
                                         <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                                            <td style="padding: 0.75rem 1rem; text-align: center;">
+                                            <td style="padding: 0.75rem 1rem; text-align: center; vertical-align: middle;">
                                                 <input type="checkbox" name="student_ids[]" value="{{ $student->id }}" class="student-checkbox" style="width: 1rem; height: 1rem; accent-color: #6366f1; cursor: pointer;">
                                             </td>
-                                            <td style="padding: 0.75rem 1.5rem;">
+                                            <td style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">
+                                                {{ $index + 1 }}
+                                            </td>
+                                            <td style="padding: 0.75rem 1.5rem; vertical-align: middle;">
                                                 <p style="font-weight: 600; font-size: 0.8125rem; color: #1e293b; margin: 0;">{{ $student->name }}</p>
                                                 <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem; text-transform: capitalize;">{{ $student->category }}</p>
                                             </td>
-                                            <td style="padding: 0.75rem 1.5rem; font-size: 0.8125rem; color: #64748b;">{{ $student->nisn ?: '-' }} / {{ $student->nis ?: '-' }}</td>
+                                            <td style="padding: 0.75rem 1.5rem; font-size: 0.8125rem; color: #64748b; vertical-align: middle;">{{ $student->nisn ?: '-' }} / {{ $student->nis ?: '-' }}</td>
                                         </tr>
                                     @empty
-                                        <tr><td colspan="3" style="padding: 2.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8;">Tidak ada siswa di kelas ini.</td></tr>
+                                        <tr><td colspan="4" style="padding: 2.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8;">Tidak ada siswa di kelas ini.</td></tr>
                                     @endforelse
                                 </tbody>
                             </table>

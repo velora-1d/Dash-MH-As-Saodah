@@ -8,12 +8,18 @@
             </svg>
         </button>
     </div>
-    <!-- Header Logo (Statis / Tidak Ikut Scroll) -->
+    @php $schoolSetting = \App\Models\SchoolSetting::first(); @endphp
     <div class="flex items-center flex-shrink-0 px-6 py-6 group border-b border-indigo-900/40">
-        <div class="p-2 bg-amber-500 rounded-xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform duration-300">
-            <x-application-logo class="w-8 h-8 fill-current text-white" />
-        </div>
-        <span class="ml-3 text-xl font-bold text-white tracking-tight">MI As-Saodah</span>
+        @if($schoolSetting && $schoolSetting->logo_path)
+            <div class="p-1 bg-white rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-300">
+                <img src="{{ asset('storage/' . $schoolSetting->logo_path) }}" alt="Logo Sekolah" class="w-9 h-9 object-contain rounded-lg">
+            </div>
+        @else
+            <div class="p-2 bg-amber-500 rounded-xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform duration-300">
+                <span class="w-8 h-8 flex items-center justify-center text-white font-bold text-lg">MI</span>
+            </div>
+        @endif
+        <span class="ml-3 text-xl font-bold text-white tracking-tight">{{ $schoolSetting->name ?? 'MI As-Saodah' }}</span>
     </div>
 
     <!-- Navigation Area (Dinamis / Bisa di-Scroll) -->
@@ -32,24 +38,20 @@
                 <div class="pt-4 pb-2 px-4">
                     <span class="text-[10px] font-bold text-indigo-400/70 uppercase tracking-widest">Penerimaan Siswa</span>
                 </div>
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('ppdb.index') }}" class="{{ request()->routeIs('ppdb.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('ppdb.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                     </svg>
                     Penerimaan PPDB
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
                 </a>
                 @endif
 
-                @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner']))
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('re-registration.index') }}" class="{{ request()->routeIs('re-registration.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('re-registration.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                     Daftar Ulang Siswa
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
                 </a>
-                @endif
 
                 <!-- MASTER DATA -->
                 <div class="pt-4 pb-2 px-4">
@@ -90,7 +92,7 @@
                     Kategori Keuangan
                 </a>
 
-                @if(in_array(auth()->user()->role, ['kepsek', 'bendahara']))
+                @if(in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin', 'owner']))
                 <!-- KEUANGAN TATA USAHA -->
                 <div class="pt-4 pb-2 px-4 border-t border-indigo-900 mt-4">
                     <span class="text-[10px] font-bold text-indigo-400/70 uppercase tracking-widest">Keuangan & Tagihan</span>
@@ -124,12 +126,11 @@
                     Kas & Jurnal Umum
                 </a>
 
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('reports.index') }}" class="{{ request()->routeIs('reports.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('reports.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                     </svg>
                     Laporan Lengkap
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
                 </a>
 
                 <!-- PAYROLL SYSTEM -->
@@ -137,36 +138,32 @@
                     <span class="text-[10px] font-bold text-indigo-400/70 uppercase tracking-widest">Kepegawaian (HR)</span>
                 </div>
                 
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('hr.teachers.index') }}" class="{{ request()->routeIs('hr.teachers.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('hr.teachers.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                     Data Guru
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
                 </a>
 
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('hr.staff.index') }}" class="{{ request()->routeIs('hr.staff.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('hr.staff.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                     Data Staf
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
                 </a>
                 
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('hr.payroll.index') }}" class="{{ request()->routeIs('hr.payroll.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('hr.payroll.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     Slip Gaji / Payroll
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
                 </a>
 
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('inventory.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
-                    Inventaris Aset
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
+                    Inventaris Sekolah
                 </a>
                 @endif
 
@@ -177,13 +174,12 @@
                 </div>
 
                 <!-- Settings -->
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('settings.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    Pengaturan
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
+                    Pengaturan Sistem
                 </a>
                 @endif
             </nav>

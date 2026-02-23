@@ -98,7 +98,11 @@
                     <tbody>
                         @php $months = [1=>'Jan', 2=>'Feb', 3=>'Mar', 4=>'Apr', 5=>'Mei', 6=>'Jun', 7=>'Jul', 8=>'Agu', 9=>'Sep', 10=>'Okt', 11=>'Nov', 12=>'Des']; @endphp
                         @forelse ($bills as $index => $bill)
-                            <tr style="border-bottom: 1px solid #f1f5f9; {{ $bill->status == 'void' ? 'opacity: 0.45;' : '' }}transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                            <tr @style([
+                                'border-bottom: 1px solid #f1f5f9',
+                                'transition: background 0.15s ease',
+                                'opacity: 0.45' => $bill->status == 'void'
+                            ]) onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; color: #94a3b8; font-weight: 600;">{{ $bills->firstItem() + $index }}</td>
                                 <td style="padding: 1rem 1.5rem;">
                                     <div style="display: flex; align-items: center; gap: 0.75rem;">

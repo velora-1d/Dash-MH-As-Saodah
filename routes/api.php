@@ -39,3 +39,6 @@ Route::middleware(['auth:sanctum', 'entity.context'])->name('api.')->group(funct
         Route::apiResource('spp-payments', SppPaymentController::class);
     });
 });
+
+// Route Pendaftaran PPDB Online (Public)
+Route::post('ppdb/register', [\App\Http\Controllers\Api\PpdbRegistrationController::class, 'register'])->name('api.ppdb.register');

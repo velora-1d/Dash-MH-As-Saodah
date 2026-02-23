@@ -46,15 +46,18 @@ class StudentSavingController extends Controller
             $data['user_id'] = $request->user() ? $request->user()->id : 1;
             $data['status'] = 'active';
 
+            // Lock the CashAccount first to prevent concurrent modifications
             $cashAccount = CashAccount::lockForUpdate()->findOrFail($data['cash_account_id']);
 
             if ($data['type'] === 'deposit') {
                 $cashAccount->current_balance += $data['amount'];
             }
             elseif (in_array($data['type'], ['withdrawal', 'refund'])) {
-                // Kalkulasi saldo tabungan siswa saat ini
+                // Kalkulasi saldo tabungan siswa saat ini dengan pessimistic locking (`lockForUpdate`)
+                // pada row terkait agar transaksi konkuren dipaksa menunggu.
                 $studentBalance = StudentSaving::where('student_id', $data['student_id'])
                     ->where('status', 'active')
+                    ->lockForUpdate() // <- KUNCI UTAMA (Mencegah Race Condition)
                     ->selectRaw("SUM(CASE WHEN type = 'deposit' THEN amount ELSE -amount END) as balance")
                     ->value('balance') ?? 0;
 

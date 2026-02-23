@@ -48,6 +48,7 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 50px;">No</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Siswa</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Kategorisasi</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Kelas</th>
@@ -56,9 +57,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($students as $student)
+                        @forelse($students as $index => $student)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                                <td style="padding: 1rem 1.5rem;">
+                                <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $students->firstItem() + $index }}</td>
+                                <td style="padding: 1rem 1.5rem; vertical-align: middle;">
                                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                                         <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ede9fe, #e0e7ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8125rem; color: #6366f1;">{{ strtoupper(substr($student->name, 0, 1)) }}</div>
                                         <div>
@@ -69,7 +71,15 @@
                                 </td>
                                 <td style="padding: 1rem 1.5rem;">
                                     @php $catColors = ['reguler'=>['#f1f5f9','#475569'], 'yatim'=>['#fef3c7','#92400e'], 'kurang_mampu'=>['#ede9fe','#6b21a8']]; $cc = $catColors[$student->category] ?? ['#f1f5f9','#475569']; @endphp
-                                    <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: {{ $cc[1] }}; background: {{ $cc[0] }}; border-radius: 999px;">{{ ucfirst(str_replace('_', ' ', $student->category)) }}</span>
+                                    <span @style([
+                                        'display: inline-flex',
+                                        'padding: 0.25rem 0.625rem',
+                                        'font-size: 0.6875rem',
+                                        'font-weight: 600',
+                                        'border-radius: 999px',
+                                        "background: {$cc[0]}",
+                                        "color: {$cc[1]}"
+                                    ])>{{ ucfirst(str_replace('_', ' ', $student->category)) }}</span>
                                     <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.375rem;">
                                         SPP: @if($student->infaq_status == 'gratis')<span style="color: #d97706; font-weight: 600;">Gratis</span>@elseif($student->infaq_status == 'subsidi')<span style="color: #059669; font-weight: 600;">Subsidi (Rp {{ number_format($student->infaq_nominal, 0, ',', '.') }})</span>@else<span style="color: #64748b;">Bayar Penuh</span>@endif
                                     </p>
@@ -83,7 +93,16 @@
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
                                     @php $statusColors = ['aktif'=>['#d1fae5','#047857'], 'lulus'=>['#cffafe','#0e7490'], 'pindah'=>['#ffedd5','#c2410c'], 'nonaktif'=>['#e5e7eb','#6b7280']]; $sc = $statusColors[$student->status] ?? ['#e5e7eb','#6b7280']; @endphp
-                                    <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: {{ $sc[1] }}; background: {{ $sc[0] }}; border-radius: 999px; text-transform: capitalize;">{{ $student->status }}</span>
+                                    <span @style([
+                                        'display: inline-flex',
+                                        'padding: 0.25rem 0.625rem',
+                                        'font-size: 0.6875rem',
+                                        'font-weight: 600',
+                                        'border-radius: 999px',
+                                        'text-transform: capitalize',
+                                        "background: {$sc[0]}",
+                                        "color: {$sc[1]}"
+                                    ])>{{ $student->status }}</span>
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.375rem;">

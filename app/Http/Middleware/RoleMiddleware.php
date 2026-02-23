@@ -10,45 +10,38 @@ class RoleMiddleware
 {
     /**
      * Handle an incoming request.
-     * Check if user has required role within the active context.
+     * Cek apakah user memiliki role yang diizinkan.
+     * Support web (redirect) dan API (JSON response).
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      * @param  string ...$roles
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
+        /** @var \App\Models\User $user */
         $user = $request->user();
 
         if (!$user) {
-            return response()->json(['message' => 'Unauthenticated.'], 401);
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Unauthenticated.'], 401);
+            }
+            return redirect()->route('login');
         }
 
-        $entityId = $request->header('X-Entity-ID');
-        $unitId = $request->header('X-Unit-ID');
-
-        // Cari Role terkait context saat ini
-        $scopeQuery = \App\Models\UserScope::where('user_id', $user->id)
-            ->where('entity_id', $entityId);
-
-        if ($unitId) {
-            $scopeQuery->where('unit_id', $unitId);
-        }
-
-        // Ambil scope untuk diperiksa role-nya
-        $scope = $scopeQuery->first();
-
-        if (!$scope) {
-             return response()->json(['message' => 'Forbidden. Scope Context invalid.'], 403);
-        }
-
-        // Super Admin selalu memiliki akses (override)
-        if ($scope->role === 'super_admin') {
+        // Superadmin selalu memiliki akses penuh
+        if ($user->role === 'superadmin') {
             return $next($request);
         }
 
-        // Cek jika role user dari scope ini ada di dalam list yang diizinkan (parameter ...$roles)
-        if (!empty($roles) && !in_array($scope->role, $roles)) {
-            return response()->json(['message' => "Forbidden. You don't have the required role ({$scope->role}) to access this resource."], 403);
+        // Cek apakah role user termasuk dalam daftar role yang diizinkan
+        if (!empty($roles) && !in_array($user->role, $roles)) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => "Akses ditolak. Role '{$user->role}' tidak memiliki izin untuk mengakses halaman ini."
+                ], 403);
+            }
+
+            return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses ke halaman tersebut.');
         }
 
         return $next($request);

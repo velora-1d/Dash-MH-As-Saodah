@@ -11,13 +11,25 @@ class DemoDataSeeder extends Seeder
 {
     public function run(): void
     {
+        $entity = \App\Models\Entity::where('name', 'MI As-Saodah')->first();
+        $unit = \App\Models\Unit::where('name', 'MI As-Saodah')->first();
+
+        if (!$entity || !$unit) {
+            $this->command->error('Entity atau Unit MI As-Saodah tidak ditemukan. Pastikan SuperAdminSeeder atau RoleUnitUserSeeder sudah dijalankan.');
+            return;
+        }
+
         // Pastikan ada Tahun Ajaran aktif
         $ay = AcademicYear::where('is_active', true)->first();
         if (!$ay) {
             $ay = AcademicYear::create([
+                'entity_id' => $entity->id,
+                'unit_id' => $unit->id,
                 'name' => '2025/2026 Ganjil',
                 'semester' => 'ganjil',
                 'is_active' => true,
+                'start_date' => '2025-07-01',
+                'end_date' => '2025-12-31',
             ]);
         }
 
@@ -33,7 +45,10 @@ class DemoDataSeeder extends Seeder
 
         $classrooms = [];
         foreach ($kelasData as $kd) {
-            $classrooms[$kd['level']] = Classroom::create($kd);
+            $classrooms[$kd['level']] = Classroom::create(array_merge($kd, [
+                'unit_id' => $unit->id,
+                'academic_year_id' => $ay->id,
+            ]));
         }
 
         // Buat Siswa (1 per kelas = 6 siswa)
@@ -51,6 +66,8 @@ class DemoDataSeeder extends Seeder
             unset($sd['level']);
             
             Student::create(array_merge($sd, [
+                'entity_id' => $entity->id,
+                'unit_id' => $unit->id,
                 'classroom_id' => $classrooms[$level]->id,
                 'status' => 'aktif',
                 'nik' => '320100' . str_pad(rand(1000, 9999), 10, '0', STR_PAD_LEFT),

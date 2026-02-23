@@ -3,12 +3,15 @@
         <div style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%); border-radius: 1rem; overflow: hidden; position: relative;">
             <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
             <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                     <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.125rem; color: #fff; border: 1.5px solid rgba(255,255,255,0.3);">{{ strtoupper(substr($student->name, 0, 1)) }}</div>
                     <div>
                         <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Edit — {{ $student->name }}</h2>
                         <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Koreksi data identitas, kelas, dan skema pembayaran.</p>
                     </div>
+                </div>
+                <x-back-button href="{{ route('students.index') }}" label="Kembali ke Daftar" />
                 </div>
             </div>
         </div>

@@ -12,12 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('classrooms', function (Blueprint $table) {
-            $table->decimal('infaq_nominal', 15, 2)->default(0)->after('name');
+            if (!Schema::hasColumn('classrooms', 'infaq_nominal')) {
+                $table->decimal('infaq_nominal', 15, 2)->default(0)->after('name');
+            }
         });
 
         Schema::table('students', function (Blueprint $table) {
-            $table->enum('infaq_status', ['bayar', 'gratis', 'subsidi'])->default('bayar')->after('status');
-            $table->decimal('infaq_nominal', 15, 2)->nullable()->after('infaq_status');
+            if (!Schema::hasColumn('students', 'infaq_status')) {
+                $table->enum('infaq_status', ['bayar', 'gratis', 'subsidi'])->default('bayar')->after('status');
+            }
+            if (!Schema::hasColumn('students', 'infaq_nominal')) {
+                $table->decimal('infaq_nominal', 15, 2)->nullable()->after('infaq_status');
+            }
         });
     }
 

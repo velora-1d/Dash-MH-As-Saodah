@@ -14,6 +14,7 @@ class ReRegistration extends Model
         'academic_year_id',
         'student_id',
         'status',
+        'registration_source',
         'confirmed_by',
         'confirmed_at',
         'notes',

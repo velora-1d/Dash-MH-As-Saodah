@@ -18,6 +18,10 @@
                         </div>
                     </div>
                     <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <a href="{{ route('ppdb.export') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1rem; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); color: #fff; border-radius: 0.625rem; font-weight: 600; font-size: 0.6875rem; border: 1.5px solid rgba(255,255,255,0.25); text-decoration: none; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'" title="Export Data PPDB ke Excel">
+                            <svg style="width: 0.8rem; height: 0.8rem; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            Export Excel
+                        </a>
                         <a href="{{ route('ppdb.create') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border-radius: 0.625rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1.5px solid rgba(255,255,255,0.3); text-decoration: none; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.35)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
                             <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                             Tambah Manual

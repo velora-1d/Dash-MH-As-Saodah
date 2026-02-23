@@ -15,7 +15,7 @@
                             <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Kelola data siswa, kategorisasi biaya & penempatan kelas.</p>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
                         <form action="{{ route('students.index') }}" method="GET" style="display: flex; gap: 0.5rem; align-items: center;">
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/NISN..." style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 0.625rem; font-size: 0.8125rem; width: 180px; outline: none;" class="placeholder-white/60">
                             <select name="classroom_id" onchange="this.form.submit()" style="padding: 0.5rem 2rem 0.5rem 0.75rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 0.625rem; font-size: 0.8125rem; cursor: pointer; outline: none;">
@@ -23,6 +23,18 @@
                                 @foreach($classrooms as $cls)<option value="{{ $cls->id }}" {{ request('classroom_id') == $cls->id ? 'selected' : '' }} style="color: #1e293b;">{{ $cls->name }}</option>@endforeach
                             </select>
                         </form>
+                        <a href="{{ route('students.export') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1rem; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); color: #fff; border-radius: 0.625rem; font-weight: 600; font-size: 0.6875rem; border: 1.5px solid rgba(255,255,255,0.25); text-decoration: none; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'" title="Export Data Siswa ke Excel">
+                            <svg style="width: 0.8rem; height: 0.8rem; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            Export
+                        </a>
+                        <a href="{{ route('students.template') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1rem; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); color: #fff; border-radius: 0.625rem; font-weight: 600; font-size: 0.6875rem; border: 1.5px solid rgba(255,255,255,0.25); text-decoration: none; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'" title="Download Template Import">
+                            <svg style="width: 0.8rem; height: 0.8rem; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                            Template
+                        </a>
+                        <button onclick="document.getElementById('importModalSiswa').style.display='flex'" style="display: inline-flex; align-items: center; padding: 0.625rem 1rem; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); color: #fff; border-radius: 0.625rem; font-weight: 600; font-size: 0.6875rem; border: 1.5px solid rgba(255,255,255,0.25); cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'" title="Import Data Siswa dari Excel">
+                            <svg style="width: 0.8rem; height: 0.8rem; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                            Import
+                        </button>
                         <a href="{{ route('students.create') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border-radius: 0.625rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1.5px solid rgba(255,255,255,0.3); text-decoration: none; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.35)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
                             <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                             Tambah
@@ -134,4 +146,30 @@
         </div>
     </div>
     <style>::placeholder { color: rgba(255,255,255,0.6) !important; }</style>
+
+    <!-- Modal Import Siswa -->
+    <div id="importModalSiswa" style="display: none; position: fixed; inset: 0; z-index: 50; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);" onclick="if(event.target===this)this.style.display='none'">
+        <div style="background: #fff; border-radius: 1rem; padding: 2rem; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.125rem; color: #1e293b; margin: 0;">Import Data Siswa</h3>
+                <button onclick="document.getElementById('importModalSiswa').style.display='none'" style="background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 1.25rem;">✕</button>
+            </div>
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.25rem;">
+                <p style="font-size: 0.75rem; color: #166534; margin: 0;">💡 <strong>Tips:</strong> Download template terlebih dahulu agar format kolom sesuai.</p>
+                <a href="{{ route('students.template') }}" style="display: inline-flex; align-items: center; margin-top: 0.5rem; font-size: 0.75rem; font-weight: 600; color: #059669; text-decoration: underline;">
+                    <svg style="width: 0.75rem; height: 0.75rem; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    Download Template Excel
+                </a>
+            </div>
+            <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Pilih File Excel (.xlsx, .xls, .csv)</label>
+                <input type="file" name="file" accept=".xlsx,.xls,.csv" required style="width: 100%; box-sizing: border-box; padding: 0.625rem; border: 1.5px dashed #cbd5e1; border-radius: 0.625rem; font-size: 0.8125rem; margin-bottom: 1.25rem; background: #f8fafc;">
+                <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                    <button type="button" onclick="document.getElementById('importModalSiswa').style.display='none'" style="padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 0.625rem; cursor: pointer;">Batal</button>
+                    <button type="submit" style="padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.625rem; cursor: pointer;">Import Sekarang</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </x-app-layout>

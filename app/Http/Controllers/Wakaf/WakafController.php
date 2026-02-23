@@ -52,7 +52,7 @@ class WakafController extends Controller
     {
         $donors = WakafDonor::orderBy('name')->get();
         $purposes = WakafPurpose::orderBy('name')->get();
-        $cashAccounts = CashAccount::where('is_active', true)->orderBy('name')->get();
+        $cashAccounts = CashAccount::orderBy('name')->get();
         $categories = TransactionCategory::where('type', 'in')->orderBy('name')->get();
 
         return view('wakaf.create', compact('donors', 'purposes', 'cashAccounts', 'categories'));
@@ -102,7 +102,7 @@ class WakafController extends Controller
 
             // Update saldo kas
             $cash = CashAccount::find($request->cash_account_id);
-            $cash->increment('current_balance', $request->amount);
+            $cash->increment('balance', $request->amount);
         });
 
         return redirect()->route('wakaf.index')->with('success', 'Penerimaan wakaf berhasil dicatat.');
@@ -181,7 +181,7 @@ class WakafController extends Controller
 
         DB::transaction(function () use ($transaction) {
             $transaction->update(['status' => 'void']);
-            CashAccount::find($transaction->cash_account_id)?->decrement('current_balance', $transaction->amount);
+            CashAccount::find($transaction->cash_account_id)?->decrement('balance', $transaction->amount);
         });
 
         return back()->with('success', 'Transaksi wakaf berhasil di-void.');

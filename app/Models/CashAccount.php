@@ -7,11 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class CashAccount extends Model
 {
     protected $fillable = [
-        'unit_id',
         'name',
-        'initial_balance',
-        'current_balance',
-        'is_active',
+        'balance',
     ];
 
     public function unit()

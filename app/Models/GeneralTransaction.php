@@ -15,14 +15,14 @@ class GeneralTransaction extends Model
         'wakaf_purpose_id',
         'type',
         'amount',
-        'transaction_date',
+        'date',
         'description',
         'status',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'transaction_date' => 'date',
+        'date' => 'date',
     ];
 
     public function wakafDonor()

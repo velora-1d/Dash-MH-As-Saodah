@@ -63,9 +63,9 @@
                         @error('category_id')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label for="transaction_date" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tanggal <span style="color: #e11d48;">*</span></label>
-                        <input type="date" name="transaction_date" id="transaction_date" required value="{{ old('transaction_date', date('Y-m-d')) }}" style="width: 100%; box-sizing: border-box;">
-                        @error('transaction_date')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                        <label for="date" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tanggal <span style="color: #e11d48;">*</span></label>
+                        <input type="date" name="date" id="date" required value="{{ old('date', date('Y-m-d')) }}" style="width: 100%; box-sizing: border-box;">
+                        @error('date')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <div>
                         <label for="description" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Keterangan <span style="color: #94a3b8; font-weight: 400;">(Opsional)</span></label>

@@ -21,7 +21,7 @@ class WakafController extends Controller
     {
         $query = GeneralTransaction::with(['wakafDonor', 'wakafPurpose', 'cashAccount', 'category', 'user'])
             ->whereNotNull('wakaf_donor_id')
-            ->orderByDesc('transaction_date')
+            ->orderByDesc('date')
             ->orderByDesc('id');
 
         if ($request->filled('purpose_id')) {
@@ -36,8 +36,8 @@ class WakafController extends Controller
         $totalPurposes = WakafPurpose::count();
         $thisMonth = GeneralTransaction::whereNotNull('wakaf_donor_id')
             ->where('status', 'valid')
-            ->whereMonth('transaction_date', now()->month)
-            ->whereYear('transaction_date', now()->year)
+            ->whereMonth('date', now()->month)
+            ->whereYear('date', now()->year)
             ->sum('amount');
 
         $purposes = WakafPurpose::all();
@@ -70,7 +70,7 @@ class WakafController extends Controller
             'wakaf_purpose_id' => 'required|exists:wakaf_purposes,id',
             'cash_account_id' => 'required|exists:cash_accounts,id',
             'category_id' => 'required|exists:transaction_categories,id',
-            'transaction_date' => 'required|date',
+            'date' => 'required|date',
             'description' => 'nullable|string',
         ]);
 
@@ -95,7 +95,7 @@ class WakafController extends Controller
                 'user_id' => Auth::id(),
                 'type' => 'in',
                 'amount' => $request->amount,
-                'transaction_date' => $request->transaction_date,
+                'date' => $request->date,
                 'description' => $request->description ?? 'Penerimaan Wakaf dari ' . $donor->name,
                 'status' => 'valid',
             ]);

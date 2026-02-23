@@ -90,7 +90,7 @@
                     <tbody>
                         @forelse($transactions as $trx)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #1e293b; font-weight: 500;">{{ $trx->transaction_date?->format('d M Y') ?? '-' }}</td>
+                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #1e293b; font-weight: 500;">{{ $trx->date?->format('d M Y') ?? '-' }}</td>
                                 <td style="padding: 0.875rem 1.5rem;">
                                     <div style="display: flex; align-items: center; gap: 0.625rem;">
                                         <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: #059669;">{{ strtoupper(substr($trx->wakafDonor->name ?? '?', 0, 1)) }}</div>

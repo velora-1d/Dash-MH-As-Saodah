@@ -47,32 +47,24 @@
                         <!-- Metode Pembayaran -->
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">Metode Pembayaran <span class="text-rose-500">*</span></label>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <label class="cursor-pointer">
-                                    <input type="radio" name="payment_method" value="tunai" class="peer sr-only" {{ old('payment_method', 'tunai') === 'tunai' ? 'checked' : '' }}>
-                                    <div class="peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:ring-2 peer-checked:ring-emerald-500/20 border-2 border-gray-200 rounded-xl p-4 text-center transition-all hover:border-emerald-300">
-                                        <svg class="w-8 h-8 mx-auto mb-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                                        <p class="text-sm font-bold text-gray-700">Tunai</p>
-                                        <p class="text-xs text-gray-500 mt-1">Bayar langsung</p>
-                                    </div>
-                                </label>
-                                <label class="cursor-pointer">
-                                    <input type="radio" name="payment_method" value="transfer" class="peer sr-only" {{ old('payment_method') === 'transfer' ? 'checked' : '' }}>
-                                    <div class="peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:ring-2 peer-checked:ring-indigo-500/20 border-2 border-gray-200 rounded-xl p-4 text-center transition-all hover:border-indigo-300">
-                                        <svg class="w-8 h-8 mx-auto mb-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-                                        <p class="text-sm font-bold text-gray-700">Transfer</p>
-                                        <p class="text-xs text-gray-500 mt-1">Via rekening bank</p>
-                                    </div>
-                                </label>
-                                <label class="cursor-pointer">
-                                    <input type="radio" name="payment_method" value="tabungan" class="peer sr-only" {{ old('payment_method') === 'tabungan' ? 'checked' : '' }}>
-                                    <div class="peer-checked:border-amber-500 peer-checked:bg-amber-50 peer-checked:ring-2 peer-checked:ring-amber-500/20 border-2 border-gray-200 rounded-xl p-4 text-center transition-all hover:border-amber-300">
-                                        <svg class="w-8 h-8 mx-auto mb-2 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                        <p class="text-sm font-bold text-gray-700">Potong Tabungan</p>
-                                        <p class="text-xs text-amber-600 mt-1 font-bold">Saldo: Rp {{ number_format($savingsBalance, 0, ',', '.') }}</p>
-                                    </div>
-                                </label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="payment-methods">
+                                <div class="payment-option selected" data-value="tunai" onclick="selectPayment(this)">
+                                    <svg class="w-8 h-8 mx-auto mb-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                    <p class="text-sm font-bold text-gray-700">Tunai</p>
+                                    <p class="text-xs text-gray-500 mt-1">Bayar langsung</p>
+                                </div>
+                                <div class="payment-option" data-value="transfer" onclick="selectPayment(this)">
+                                    <svg class="w-8 h-8 mx-auto mb-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                                    <p class="text-sm font-bold text-gray-700">Transfer</p>
+                                    <p class="text-xs text-gray-500 mt-1">Via rekening bank</p>
+                                </div>
+                                <div class="payment-option" data-value="tabungan" onclick="selectPayment(this)">
+                                    <svg class="w-8 h-8 mx-auto mb-2 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    <p class="text-sm font-bold text-gray-700">Potong Tabungan</p>
+                                    <p class="text-xs text-amber-600 mt-1 font-bold">Saldo: Rp {{ number_format($savingsBalance, 0, ',', '.') }}</p>
+                                </div>
                             </div>
+                            <input type="hidden" name="payment_method" id="payment_method" value="tunai">
                             @error('payment_method')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                         </div>
 
@@ -81,7 +73,7 @@
                             <div>
                                 <label for="amount" class="block text-sm font-bold text-gray-700">Jumlah Bayar (Rp) <span class="text-rose-500">*</span></label>
                                 <input type="number" name="amount" id="amount" value="{{ old('amount', $remaining) }}" min="1000" max="{{ $remaining }}" step="1000" required
-                                    class="mt-2 block w-full">
+                                    class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm">
                                 @error('amount')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                             </div>
 
@@ -89,17 +81,17 @@
                             <div>
                                 <label for="date" class="block text-sm font-bold text-gray-700">Tanggal Pembayaran <span class="text-rose-500">*</span></label>
                                 <input type="date" name="date" id="date" value="{{ old('date', date('Y-m-d')) }}" required
-                                    class="mt-2 block w-full">
+                                    class="mt-2 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm">
                                 @error('date')<p class="text-rose-500 text-xs italic mt-2">{{ $message }}</p>@enderror
                             </div>
                         </div>
                     </div>
 
                     <div class="mt-10 flex items-center justify-end gap-x-3 border-t border-gray-100 pt-6">
-                        <a href="{{ route('infaq.bills.index') }}" class="inline-flex items-center px-4 py-2 bg-rose-50 border border-rose-200 rounded-xl font-bold text-xs text-rose-600 uppercase tracking-widest shadow-sm hover:bg-rose-100 active:bg-rose-200 outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <a href="{{ route('infaq.bills.index') }}" class="inline-flex items-center px-4 py-2 bg-rose-50 border border-rose-200 rounded-xl font-bold text-xs text-rose-600 uppercase tracking-widest shadow-sm hover:bg-rose-100 transition ease-in-out duration-150">
                             Batal
                         </a>
-                        <button type="submit" class="inline-flex items-center px-6 py-3 bg-emerald-600 border border-transparent rounded-xl font-bold text-sm text-white uppercase tracking-widest hover:bg-emerald-700 active:bg-emerald-800 outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md shadow-emerald-500/30">
+                        <button type="submit" style="background-color: #059669; color: #ffffff;" class="inline-flex items-center px-6 py-3 border border-transparent rounded-xl font-bold text-sm uppercase tracking-widest hover:opacity-90 shadow-md transition ease-in-out duration-150">
                             <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
@@ -110,4 +102,32 @@
             @endif
         </div>
     </div>
+
+    <style>
+        .payment-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .payment-option:hover {
+            border-color: #a5b4fc;
+            background-color: #f5f3ff;
+        }
+        .payment-option.selected {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+    </style>
+
+    <script>
+        function selectPayment(el) {
+            document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('payment_method').value = el.dataset.value;
+        }
+    </script>
 </x-app-layout>

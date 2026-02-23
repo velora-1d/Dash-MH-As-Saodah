@@ -117,12 +117,11 @@
                     Wakaf & Donasi
                 </a>
 
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('journal.index') }}" class="{{ request()->routeIs('journal.*') ? 'bg-indigo-900 border-indigo-500 text-indigo-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('journal.*') ? 'text-indigo-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                     Kas & Jurnal Umum
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
                 </a>
 
                 <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">

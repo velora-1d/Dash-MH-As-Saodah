@@ -44,15 +44,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('tabungan/{student}', [\App\Http\Controllers\Tabungan\TabunganController::class, 'store'])->name('tabungan.store');
     Route::post('tabungan/mutation/{mutation}/void', [\App\Http\Controllers\Tabungan\TabunganController::class, 'void'])->name('tabungan.void');
 
-    // Wakaf & Donasi
-    Route::get('wakaf', [\App\Http\Controllers\Wakaf\WakafController::class, 'index'])->name('wakaf.index');
-    Route::get('wakaf/create', [\App\Http\Controllers\Wakaf\WakafController::class, 'create'])->name('wakaf.create');
-    Route::post('wakaf', [\App\Http\Controllers\Wakaf\WakafController::class, 'store'])->name('wakaf.store');
-    Route::get('wakaf/donors', [\App\Http\Controllers\Wakaf\WakafController::class, 'donors'])->name('wakaf.donors');
-    Route::get('wakaf/purposes', [\App\Http\Controllers\Wakaf\WakafController::class, 'purposes'])->name('wakaf.purposes');
-    Route::post('wakaf/purposes', [\App\Http\Controllers\Wakaf\WakafController::class, 'storePurpose'])->name('wakaf.purposes.store');
-    Route::delete('wakaf/purposes/{purpose}', [\App\Http\Controllers\Wakaf\WakafController::class, 'destroyPurpose'])->name('wakaf.purposes.destroy');
-    Route::post('wakaf/{transaction}/void', [\App\Http\Controllers\Wakaf\WakafController::class, 'void'])->name('wakaf.void');
+    // Modul Wakaf & Donasi (Non-SPP, Rekening Terikat)
+    Route::group(['prefix' => 'wakaf', 'as' => 'wakaf.'], function () {
+        Route::get('/', [WakafController::class, 'index'])->name('index');
+        Route::get('/create', [WakafController::class, 'create'])->name('create');
+        Route::post('/', [WakafController::class, 'store'])->name('store');
+        Route::get('/donors', [WakafController::class, 'donors'])->name('donors');
+        Route::get('/purposes', [WakafController::class, 'purposes'])->name('purposes');
+        Route::post('/purposes', [WakafController::class, 'storePurpose'])->name('purposes.store');
+        Route::delete('/purposes/{purpose}', [WakafController::class, 'destroyPurpose'])->name('purposes.destroy');
+        Route::post('/{transaction}/void', [WakafController::class, 'void'])->name('void');
+    });
+
+    // Modul Kas & Jurnal Umum (Pemasukan BOS/Bantuan & Pengeluaran Operasional)
+    Route::group(['prefix' => 'journal', 'as' => 'journal.'], function () {
+        Route::get('/', [\App\Http\Controllers\Journal\CashJournalController::class, 'index'])->name('index');
+        Route::get('/create', [\App\Http\Controllers\Journal\CashJournalController::class, 'create'])->name('create');
+        Route::post('/', [\App\Http\Controllers\Journal\CashJournalController::class, 'store'])->name('store');
+        Route::get('/categories', [\App\Http\Controllers\Journal\CashJournalController::class, 'categories'])->name('categories');
+        Route::post('/categories', [\App\Http\Controllers\Journal\CashJournalController::class, 'storeCategory'])->name('categories.store');
+        Route::delete('/categories/{category}', [\App\Http\Controllers\Journal\CashJournalController::class, 'destroyCategory'])->name('categories.destroy');
+        Route::post('/{transaction}/void', [\App\Http\Controllers\Journal\CashJournalController::class, 'void'])->name('void');
+    });
 });
 
 Route::middleware('auth')->group(function () {

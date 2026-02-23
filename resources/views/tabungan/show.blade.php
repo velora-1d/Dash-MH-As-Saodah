@@ -74,7 +74,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-right text-sm font-bold" style="color: {{ $m->type === 'in' ? '#059669' : '#e11d48' }};">
+                                <td class="px-6 py-4 text-right text-sm font-bold @if($m->type === 'in') text-emerald-600 @else text-rose-600 @endif">
                                     {{ $m->type === 'in' ? '+' : '-' }} Rp {{ number_format($m->amount, 0, ',', '.') }}
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $m->description ?: '-' }}</td>

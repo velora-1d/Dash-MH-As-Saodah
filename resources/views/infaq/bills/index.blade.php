@@ -242,6 +242,8 @@
                     btn.closest('form').submit();
                 }
             });
+        }
+
         function confirmRevert(btn) {
             Swal.fire({
                 title: 'Buka Kembali Tagihan?',

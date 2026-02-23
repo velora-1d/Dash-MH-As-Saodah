@@ -161,11 +161,11 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                         <div class="flex justify-center space-x-2">
                                             @if($bill->status == 'belum_lunas')
-                                                <button title="Bayar Tagihan Ini" class="text-emerald-500 hover:text-emerald-700 transition-colors p-1.5 bg-emerald-50 hover:bg-emerald-100 rounded-lg">
+                                                <a href="{{ route('infaq.payments.create', $bill->id) }}" title="Bayar Tagihan Ini" class="text-emerald-500 hover:text-emerald-700 transition-colors p-1.5 bg-emerald-50 hover:bg-emerald-100 rounded-lg">
                                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                                     </svg>
-                                                </button>
+                                                </a>
                                                 
                                                 <form action="{{ route('infaq.bills.void', $bill->id) }}" method="POST" class="inline" onsubmit="return confirm('Anda yakin ingin MEMBATALKAN tagihan ini? Data ini akan menjadi Void.');">
                                                     @csrf

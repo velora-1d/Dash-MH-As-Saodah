@@ -6,31 +6,44 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentSaving extends Model
 {
+    protected $table = 'student_savings_mutations';
+
     protected $fillable = [
         'student_id',
-        'unit_id',
-        'cash_account_id',
-        'user_id',
         'type',
         'amount',
-        'transaction_date',
+        'date',
+        'description',
         'status',
+        'user_id',
+    ];
+
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'date' => 'date',
     ];
 
     public function student()
     {
         return $this->belongsTo(Student::class);
     }
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class);
-    }
-    public function cashAccount()
-    {
-        return $this->belongsTo(CashAccount::class);
-    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Scope aktif (tidak void)
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    // Hitung saldo siswa berdasarkan mutasi aktif
+    public static function getBalance(int $studentId): float
+    {
+        $in = self::where('student_id', $studentId)->active()->where('type', 'in')->sum('amount');
+        $out = self::where('student_id', $studentId)->active()->where('type', 'out')->sum('amount');
+        return $in - $out;
     }
 }

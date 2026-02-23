@@ -42,4 +42,9 @@ class Student extends Model
     {
         return $this->hasMany(SppBill::class, 'student_id');
     }
+
+    public function savingMutations()
+    {
+        return $this->hasMany(StudentSaving::class, 'student_id');
+    }
 }

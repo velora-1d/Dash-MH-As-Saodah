@@ -103,12 +103,11 @@
                     Manajemen Infaq / SPP
                 </a>
 
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('tabungan.index') }}" class="{{ request()->routeIs('tabungan.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('tabungan.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
                     Tabungan Siswa
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
                 </a>
 
                 <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">

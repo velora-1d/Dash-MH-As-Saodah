@@ -18,125 +18,313 @@
 
         <form action="{{ route('students.update', $student->id) }}" method="POST">
             @csrf @method('PUT')
-            <!-- Biodata -->
+
+            <!-- A. Identitas Murid -->
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 1.5rem;">
                 <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
                     <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%;"></div>
-                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Biodata Siswa</h4>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">A. Identitas Murid</h4>
                 </div>
                 <div style="padding: 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
                     <div style="grid-column: span 2;">
-                        <label for="name" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nama Lengkap <span style="color: #e11d48;">*</span></label>
-                        <input type="text" name="name" id="name" required value="{{ old('name', $student->name) }}" style="width: 100%; box-sizing: border-box;">
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nama Lengkap <span style="color: #e11d48;">*</span></label>
+                        <input type="text" name="name" required value="{{ old('name', $student->name) }}" style="width: 100%; box-sizing: border-box;">
                         @error('name')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label for="nisn" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">NISN</label>
-                        <input type="number" name="nisn" id="nisn" value="{{ old('nisn', $student->nisn) }}" style="width: 100%; box-sizing: border-box;">
-                        @error('nisn')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tempat Lahir</label>
+                        <input type="text" name="birth_place" value="{{ old('birth_place', $student->birth_place) }}" style="width: 100%; box-sizing: border-box;">
                     </div>
                     <div>
-                        <label for="nis" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">NIS</label>
-                        <input type="number" name="nis" id="nis" value="{{ old('nis', $student->nis) }}" style="width: 100%; box-sizing: border-box;">
-                        @error('nis')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tanggal Lahir</label>
+                        <input type="date" name="birth_date" value="{{ old('birth_date', optional($student->birth_date)->format('Y-m-d')) }}" style="width: 100%; box-sizing: border-box;">
                     </div>
                     <div>
-                        <label for="nik" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">NIK</label>
-                        <input type="number" name="nik" id="nik" value="{{ old('nik', $student->nik) }}" style="width: 100%; box-sizing: border-box;">
-                        @error('nik')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">NIK (No. Induk Kependudukan)</label>
+                        <input type="number" name="nik" value="{{ old('nik', $student->nik) }}" style="width: 100%; box-sizing: border-box;">
                     </div>
                     <div>
-                        <label for="no_kk" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">No. KK</label>
-                        <input type="number" name="no_kk" id="no_kk" value="{{ old('no_kk', $student->no_kk) }}" style="width: 100%; box-sizing: border-box;">
-                        @error('no_kk')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">No. KK</label>
+                        <input type="number" name="no_kk" value="{{ old('no_kk', $student->no_kk) }}" style="width: 100%; box-sizing: border-box;">
                     </div>
                     <div>
-                        <label for="gender" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Jenis Kelamin <span style="color: #e11d48;">*</span></label>
-                        <select id="gender" name="gender" required style="width: 100%; box-sizing: border-box;">
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">NISN</label>
+                        <input type="number" name="nisn" value="{{ old('nisn', $student->nisn) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">NIS (Lokal)</label>
+                        <input type="number" name="nis" value="{{ old('nis', $student->nis) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Status dalam Keluarga</label>
+                        <input type="text" name="family_status" value="{{ old('family_status', $student->family_status) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Anak Ke-</label>
+                                <input type="number" name="child_position" min="1" value="{{ old('child_position', $student->child_position) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Jumlah Saudara</label>
+                                <input type="number" name="sibling_count" min="0" value="{{ old('sibling_count', $student->sibling_count) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Jenis Kelamin <span style="color: #e11d48;">*</span></label>
+                        <select name="gender" required style="width: 100%; box-sizing: border-box;">
                             <option value="L" {{ old('gender', $student->gender) == 'L' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="P" {{ old('gender', $student->gender) == 'P' ? 'selected' : '' }}>Perempuan</option>
                         </select>
-                        @error('gender')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Agama</label>
+                        <input type="text" name="religion" value="{{ old('religion', $student->religion ?? 'Islam') }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Alamat Murid</label>
+                        <textarea name="address" rows="2" style="width: 100%; box-sizing: border-box;">{{ old('address', $student->address) }}</textarea>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Desa / Kelurahan</label>
+                        <input type="text" name="village" value="{{ old('village', $student->village) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Kecamatan</label>
+                        <input type="text" name="district" value="{{ old('district', $student->district) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tempat Tinggal Siswa</label>
+                        <select name="residence_type" style="width: 100%; box-sizing: border-box;">
+                            <option value="" disabled selected>-- Pilih --</option>
+                            <option value="Orang tua" {{ old('residence_type', $student->residence_type) == 'Orang tua' ? 'selected' : '' }}>Bersama Orang Tua</option>
+                            <option value="Kerabat" {{ old('residence_type', $student->residence_type) == 'Kerabat' ? 'selected' : '' }}>Bersama Kerabat/Wali</option>
+                            <option value="Kos" {{ old('residence_type', $student->residence_type) == 'Kos' ? 'selected' : '' }}>Kos / Asrama</option>
+                            <option value="Lainnya" {{ old('residence_type', $student->residence_type) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Alat Transportasi</label>
+                        <select name="transportation" style="width: 100%; box-sizing: border-box;">
+                            <option value="" disabled selected>-- Pilih --</option>
+                            <option value="Motor" {{ old('transportation', $student->transportation) == 'Motor' ? 'selected' : '' }}>Motor</option>
+                            <option value="Jalan kaki" {{ old('transportation', $student->transportation) == 'Jalan kaki' ? 'selected' : '' }}>Jalan Kaki</option>
+                            <option value="Jemputan Sekolah" {{ old('transportation', $student->transportation) == 'Jemputan Sekolah' ? 'selected' : '' }}>Jemputan Sekolah</option>
+                            <option value="Kendaraan Umum" {{ old('transportation', $student->transportation) == 'Kendaraan Umum' ? 'selected' : '' }}>Angkutan Umum</option>
+                            <option value="Lainnya" {{ old('transportation', $student->transportation) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">No. HP Siswa (Jika Ada)</label>
+                        <input type="text" name="student_phone" value="{{ old('student_phone', $student->student_phone) }}" style="width: 100%; box-sizing: border-box;">
                     </div>
                 </div>
             </div>
 
-            <!-- Administrasi -->
+            <!-- B. Data Periodik -->
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 1.5rem;">
                 <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
-                    <div style="width: 8px; height: 8px; background: #059669; border-radius: 50%;"></div>
-                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Status & Administrasi</h4>
+                    <div style="width: 8px; height: 8px; background: #0ea5e9; border-radius: 50%;"></div>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">B. Data Periodik Fisik</h4>
+                </div>
+                <div style="padding: 2rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tinggi Badan (cm)</label>
+                        <input type="number" name="height" min="1" value="{{ old('height', $student->height) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Berat Badan (kg)</label>
+                        <input type="number" name="weight" min="1" value="{{ old('weight', $student->weight) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Jarak ke Sekolah</label>
+                        <select name="distance_to_school" style="width: 100%; box-sizing: border-box;">
+                            <option value="">-- Pilih Jarak --</option>
+                            <option value="< 1 km" {{ old('distance_to_school', $student->distance_to_school) == '< 1 km' ? 'selected' : '' }}>Kurang dari 1 km</option>
+                            <option value="1-3 km" {{ old('distance_to_school', $student->distance_to_school) == '1-3 km' ? 'selected' : '' }}>1 - 3 km</option>
+                            <option value="3-5 km" {{ old('distance_to_school', $student->distance_to_school) == '3-5 km' ? 'selected' : '' }}>3 - 5 km</option>
+                            <option value="> 5 km" {{ old('distance_to_school', $student->distance_to_school) == '> 5 km' ? 'selected' : '' }}>Lebih dari 5 km</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Waktu Tempuh (Menit)</label>
+                        <input type="number" name="travel_time" min="1" value="{{ old('travel_time', $student->travel_time) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- C. Data Orang Tua -->
+            <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 1.5rem;">
+                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: #eab308; border-radius: 50%;"></div>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">C. Identitas Orang Tua</h4>
+                </div>
+                
+                <div style="padding: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <!-- Kolom Ayah -->
+                    <div style="background: #f8fafc; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+                        <h5 style="font-weight: 700; color: #475569; border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.5rem; margin-bottom: 1rem;">Data Ayah Kandung</h5>
+                        <div style="display: grid; gap: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.25rem;">Nama Ayah</label>
+                                <input type="text" name="father_name" value="{{ old('father_name', $student->father_name) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.25rem;">NIK Ayah</label>
+                                <input type="number" name="father_nik" value="{{ old('father_nik', $student->father_nik) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <div><label style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Tempat Lahir</label><input type="text" name="father_birth_place" value="{{ old('father_birth_place', $student->father_birth_place) }}" style="width: 100%; box-sizing: border-box;"></div>
+                                <div><label style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Tgl Lahir</label><input type="date" name="father_birth_date" value="{{ old('father_birth_date', optional($student->father_birth_date)->format('Y-m-d')) }}" style="width: 100%; box-sizing: border-box;"></div>
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.25rem;">Pendidikan</label>
+                                <input type="text" name="father_education" value="{{ old('father_education', $student->father_education) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.25rem;">Pekerjaan</label>
+                                <input type="text" name="father_occupation" value="{{ old('father_occupation', $student->father_occupation) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kolom Ibu -->
+                    <div style="background: #f8fafc; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+                        <h5 style="font-weight: 700; color: #475569; border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.5rem; margin-bottom: 1rem;">Data Ibu Kandung</h5>
+                        <div style="display: grid; gap: 1rem;">
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.25rem;">Nama Ibu</label>
+                                <input type="text" name="mother_name" value="{{ old('mother_name', $student->mother_name) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.25rem;">NIK Ibu</label>
+                                <input type="number" name="mother_nik" value="{{ old('mother_nik', $student->mother_nik) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <div><label style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Tempat Lahir</label><input type="text" name="mother_birth_place" value="{{ old('mother_birth_place', $student->mother_birth_place) }}" style="width: 100%; box-sizing: border-box;"></div>
+                                <div><label style="display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem;">Tgl Lahir</label><input type="date" name="mother_birth_date" value="{{ old('mother_birth_date', optional($student->mother_birth_date)->format('Y-m-d')) }}" style="width: 100%; box-sizing: border-box;"></div>
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.25rem;">Pendidikan</label>
+                                <input type="text" name="mother_education" value="{{ old('mother_education', $student->mother_education) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.25rem;">Pekerjaan</label>
+                                <input type="text" name="mother_occupation" value="{{ old('mother_occupation', $student->mother_occupation) }}" style="width: 100%; box-sizing: border-box;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">No. Kontak Ortu (WA/HP Aktif)</label>
+                            <input type="text" name="parent_phone" value="{{ old('parent_phone', $student->parent_phone) }}" style="width: 100%; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Penghasilan Rata-rata Gabungan</label>
+                            <select name="parent_income" style="width: 100%; box-sizing: border-box;">
+                                <option value="">-- Pilih Range --</option>
+                                <option value="< 1 jt" {{ old('parent_income', $student->parent_income) == '< 1 jt' ? 'selected' : '' }}>Kurang dari Rp 1.000.000</option>
+                                <option value="1-2 jt" {{ old('parent_income', $student->parent_income) == '1-2 jt' ? 'selected' : '' }}>Rp 1.000.000 - Rp 2.000.000</option>
+                                <option value="2-3 jt" {{ old('parent_income', $student->parent_income) == '2-3 jt' ? 'selected' : '' }}>Rp 2.000.000 - Rp 3.000.000</option>
+                                <option value="> 3 jt" {{ old('parent_income', $student->parent_income) == '> 3 jt' ? 'selected' : '' }}>Lebih dari Rp 3.000.000</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- D. Data Wali -->
+            <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 1.5rem;">
+                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: #ec4899; border-radius: 50%;"></div>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">D. Wali Murid (Jika Bersama Wali)</h4>
+                    <span style="font-size: 0.75rem; color:#94a3b8; margin-left: auto;">Kosongkan jika bersama orang tua kandung.</span>
                 </div>
                 <div style="padding: 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
                     <div style="grid-column: span 2;">
-                        <label for="category" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Kategori Siswa <span style="color: #e11d48;">*</span></label>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nama Wali</label>
+                        <input type="text" name="guardian_name" value="{{ old('guardian_name', $student->guardian_name) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">NIK Wali</label>
+                        <input type="number" name="guardian_nik" value="{{ old('guardian_nik', $student->guardian_nik) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div><label style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.5rem;">Tempat Lahir</label><input type="text" name="guardian_birth_place" value="{{ old('guardian_birth_place', $student->guardian_birth_place) }}" style="width: 100%; box-sizing: border-box;"></div>
+                            <div><label style="display: block; font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.5rem;">Tgl Lahir</label><input type="date" name="guardian_birth_date" value="{{ old('guardian_birth_date', optional($student->guardian_birth_date)->format('Y-m-d')) }}" style="width: 100%; box-sizing: border-box;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Pendidikan</label>
+                        <input type="text" name="guardian_education" value="{{ old('guardian_education', $student->guardian_education) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Pekerjaan</label>
+                        <input type="text" name="guardian_occupation" value="{{ old('guardian_occupation', $student->guardian_occupation) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">No. Kontak Wali</label>
+                        <input type="text" name="guardian_phone" value="{{ old('guardian_phone', $student->guardian_phone) }}" style="width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Alamat Wali</label>
+                        <textarea name="guardian_address" rows="2" style="width: 100%; box-sizing: border-box;">{{ old('guardian_address', $student->guardian_address) }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E. Administrasi Server/Sekolah -->
+            <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 1.5rem;">
+                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: #059669; border-radius: 50%;"></div>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">E. Status & Administrasi Internal</h4>
+                </div>
+                <div style="padding: 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                    <div style="grid-column: span 2;">
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Kategori Siswa <span style="color: #e11d48;">*</span></label>
                         <select id="category" name="category" required style="width: 100%; box-sizing: border-box;">
                             <option value="reguler" {{ old('category', $student->category) == 'reguler' ? 'selected' : '' }}>Reguler</option>
                             <option value="yatim" {{ old('category', $student->category) == 'yatim' ? 'selected' : '' }}>Yatim / Piatu</option>
                             <option value="kurang_mampu" {{ old('category', $student->category) == 'kurang_mampu' ? 'selected' : '' }}>Kurang Mampu</option>
                         </select>
-                        @error('category')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label for="classroom_id" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Kelas</label>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Kelas (Bisa diaturoleh TU nanti)</label>
                         <select id="classroom_id" name="classroom_id" style="width: 100%; box-sizing: border-box;">
                             <option value="">-- Belum Set --</option>
                             @foreach($classrooms as $cls)<option value="{{ $cls->id }}" {{ old('classroom_id', $student->classroom_id) == $cls->id ? 'selected' : '' }}>Tingkat {{ $cls->level }} : {{ $cls->name }}</option>@endforeach
                         </select>
-                        @error('classroom_id')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label for="status" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Status <span style="color: #e11d48;">*</span></label>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Status <span style="color: #e11d48;">*</span></label>
                         <select id="status" name="status" required style="width: 100%; box-sizing: border-box;">
                             <option value="aktif" {{ old('status', $student->status) == 'aktif' ? 'selected' : '' }}>Aktif</option>
                             <option value="lulus" {{ old('status', $student->status) == 'lulus' ? 'selected' : '' }}>Lulus</option>
                             <option value="pindah" {{ old('status', $student->status) == 'pindah' ? 'selected' : '' }}>Pindah</option>
                             <option value="nonaktif" {{ old('status', $student->status) == 'nonaktif' ? 'selected' : '' }}>Non-Aktif</option>
                         </select>
-                        @error('status')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <div style="grid-column: span 2;">
+                        <div style="padding: 1rem; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.625rem; font-size: 0.8125rem; color: #3730a3; margin-bottom: 1rem;">
+                            ℹ️ Yatim → otomatis <strong>Gratis</strong>. Reguler → otomatis <strong>Bayar Penuh</strong>. Ubah manual hanya jika ada pengecualian.
+                        </div>
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
                             <div>
-                                <label for="infaq_status" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Skema SPP <span style="color: #e11d48;">*</span></label>
+                                <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Skema SPP / Infaq <span style="color: #e11d48;">*</span></label>
                                 <select id="infaq_status" name="infaq_status" required style="width: 100%; box-sizing: border-box;">
                                     <option value="bayar" {{ old('infaq_status', $student->infaq_status) == 'bayar' ? 'selected' : '' }}>Bayar Normal</option>
                                     <option value="subsidi" {{ old('infaq_status', $student->infaq_status) == 'subsidi' ? 'selected' : '' }}>Subsidi</option>
                                     <option value="gratis" {{ old('infaq_status', $student->infaq_status) == 'gratis' ? 'selected' : '' }}>Gratis</option>
                                 </select>
-                                @error('infaq_status')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                             </div>
                             <div id="infaq_nominal_container" class="{{ old('infaq_status', $student->infaq_status) == 'subsidi' ? '' : 'hidden' }}">
-                                <label for="infaq_nominal" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nominal Subsidi (Rp)</label>
+                                <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nominal Subsidi (Rp)</label>
                                 <input type="number" name="infaq_nominal" id="infaq_nominal" min="0" step="1000" value="{{ old('infaq_nominal', $student->infaq_nominal) }}" style="width: 100%; box-sizing: border-box;">
-                                @error('infaq_nominal')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Data Wali -->
-            <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 1.5rem;">
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
-                    <div style="width: 8px; height: 8px; background: #d97706; border-radius: 50%;"></div>
-                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Data Orang Tua / Wali</h4>
-                </div>
-                <div style="padding: 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-                    <div style="grid-column: span 2;">
-                        <label for="parent_name" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nama Wali</label>
-                        <input type="text" name="parent_name" id="parent_name" value="{{ old('parent_name', $student->parent_name) }}" style="width: 100%; box-sizing: border-box;">
-                        @error('parent_name')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
-                    </div>
-                    <div>
-                        <label for="parent_phone" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">No. WA / HP</label>
-                        <input type="text" name="parent_phone" id="parent_phone" value="{{ old('parent_phone', $student->parent_phone) }}" style="width: 100%; box-sizing: border-box;">
-                        @error('parent_phone')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
-                    </div>
-                    <div>
-                        <label for="address" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Alamat</label>
-                        <textarea name="address" id="address" rows="2" style="width: 100%; box-sizing: border-box;">{{ old('address', $student->address) }}</textarea>
-                        @error('address')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                 </div>
             </div>
@@ -154,9 +342,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const cat = document.getElementById('category'), infaq = document.getElementById('infaq_status'), nomCon = document.getElementById('infaq_nominal_container'), nomIn = document.getElementById('infaq_nominal');
-            function toggle() { if (infaq.value === 'subsidi') { nomCon.classList.remove('hidden'); nomIn.setAttribute('required','required'); } else { nomCon.classList.add('hidden'); nomIn.removeAttribute('required'); } }
-            function autoAdjust() { if (cat.value === 'yatim') infaq.value = 'gratis'; else if (cat.value === 'reguler') infaq.value = 'bayar'; toggle(); }
+            const cat = document.getElementById('category');
+            const infaq = document.getElementById('infaq_status');
+            const nomCon = document.getElementById('infaq_nominal_container');
+            const nomIn = document.getElementById('infaq_nominal');
+            
+            function toggle() { 
+                if (infaq.value === 'subsidi') { 
+                    nomCon.classList.remove('hidden'); 
+                    nomIn.setAttribute('required','required'); 
+                } else { 
+                    nomCon.classList.add('hidden'); 
+                    nomIn.removeAttribute('required'); 
+                } 
+            }
+            
+            function autoAdjust() { 
+                if (cat.value === 'yatim') infaq.value = 'gratis'; 
+                else if (cat.value === 'reguler') infaq.value = 'bayar'; 
+                toggle(); 
+            }
+            
             infaq.addEventListener('change', toggle);
             cat.addEventListener('change', autoAdjust);
         });

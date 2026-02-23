@@ -38,12 +38,18 @@
                         @error('amount')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label for="wakaf_purpose_id" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tujuan Wakaf <span style="color: #e11d48;">*</span></label>
-                        <select name="wakaf_purpose_id" id="wakaf_purpose_id" required style="width: 100%; box-sizing: border-box;">
-                            <option value="" disabled selected>-- Pilih Tujuan --</option>
-                            @foreach($purposes as $p)<option value="{{ $p->id }}" {{ old('wakaf_purpose_id') == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>@endforeach
-                        </select>
-                        @error('wakaf_purpose_id')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                        <label for="wakaf_purpose" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tujuan Wakaf <span style="color: #e11d48;">*</span></label>
+                        <div style="position: relative;">
+                            <input list="purpose_names" name="wakaf_purpose" id="wakaf_purpose" required value="{{ old('wakaf_purpose') }}" placeholder="Pilih atau ketik tujuan wakaf baru..." style="width: 100%; box-sizing: border-box; padding-left: 2.25rem;">
+                            <svg style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); width: 1.25rem; height: 1.25rem; color: #94a3b8;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                        </div>
+                        <datalist id="purpose_names">
+                            @foreach($purposes as $purpose)
+                                <option value="{{ $purpose->name }}"></option>
+                            @endforeach
+                        </datalist>
+                        <p style="font-size: 0.6875rem; color: #64748b; margin-top: 0.375rem;">Dipilih dari daftar atau ketik untuk membuat tujuan baru.</p>
+                        @error('wakaf_purpose')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <!-- Kas & Tanggal -->
                     <div>

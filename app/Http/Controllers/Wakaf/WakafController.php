@@ -67,7 +67,7 @@ class WakafController extends Controller
             'donor_name' => 'required|string|max:255',
             'donor_phone' => 'nullable|string|max:20',
             'amount' => 'required|numeric|min:1000',
-            'wakaf_purpose_id' => 'required|exists:wakaf_purposes,id',
+            'wakaf_purpose' => 'required|string|max:255',
             'cash_account_id' => 'required|exists:cash_accounts,id',
             'category_id' => 'required|exists:transaction_categories,id',
             'date' => 'required|date',
@@ -86,10 +86,15 @@ class WakafController extends Controller
                 $donor->update(['phone' => $request->donor_phone]);
             }
 
+            // Auto-register tujuan wakaf jika belum ada
+            $purpose = WakafPurpose::firstOrCreate(
+                ['name' => $request->wakaf_purpose]
+            );
+
             // Simpan transaksi wakaf
             GeneralTransaction::create([
                 'wakaf_donor_id' => $donor->id,
-                'wakaf_purpose_id' => $request->wakaf_purpose_id,
+                'wakaf_purpose_id' => $purpose->id,
                 'category_id' => $request->category_id,
                 'cash_account_id' => $request->cash_account_id,
                 'user_id' => Auth::id(),

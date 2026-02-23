@@ -177,8 +177,18 @@
                                                         Void
                                                     </button>
                                                 </form>
+                                            @elseif($bill->status == 'lunas')
+                                                <form action="{{ route('infaq.bills.revert', $bill->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    <button type="button" onclick="confirmRevert(this)" title="Kembalikan ke Belum Lunas" class="inline-flex items-center px-3 py-1.5 text-xs font-bold text-amber-600 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors border border-amber-200">
+                                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                                        </svg>
+                                                        Buka Kembali
+                                                    </button>
+                                                </form>
                                             @else
-                                                <span class="text-gray-300">-</span>
+                                                <span class="text-gray-300">—</span>
                                             @endif
                                         </div>
                                     </td>
@@ -219,6 +229,28 @@
                 confirmButtonColor: '#e11d48',
                 cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Ya, Void Tagihan',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                focusCancel: true,
+                customClass: {
+                    popup: 'rounded-2xl',
+                    confirmButton: 'rounded-xl font-bold text-sm px-6 py-2',
+                    cancelButton: 'rounded-xl font-bold text-sm px-6 py-2',
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btn.closest('form').submit();
+                }
+            });
+        function confirmRevert(btn) {
+            Swal.fire({
+                title: 'Buka Kembali Tagihan?',
+                html: '<p class="text-sm text-gray-600">Status tagihan akan dikembalikan ke <strong class="text-amber-600">Belum Lunas</strong>.<br>Gunakan ini jika terjadi kesalahan input.</p>',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#d97706',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Buka Kembali',
                 cancelButtonText: 'Batal',
                 reverseButtons: true,
                 focusCancel: true,

@@ -166,6 +166,20 @@ class InfaqBillController extends Controller
     }
 
     /**
+     * Revert tagihan lunas kembali ke belum_lunas (koreksi salah input).
+     */
+    public function revert(SppBill $sppBill)
+    {
+        if ($sppBill->status !== 'lunas') {
+            return back()->with('error', 'Hanya tagihan berstatus LUNAS yang bisa di-revert.');
+        }
+
+        $sppBill->update(['status' => 'belum_lunas']);
+
+        return back()->with('success', 'Status tagihan berhasil dikembalikan ke Belum Lunas.');
+    }
+
+    /**
      * Helper to get month name.
      */
     private function getMonthName($monthNumber)

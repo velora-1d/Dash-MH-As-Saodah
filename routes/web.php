@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('infaq/bills/generate', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'createGenerate'])->name('infaq.bills.generate.create');
     Route::post('infaq/bills/generate', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'storeGenerate'])->name('infaq.bills.generate.store');
     Route::post('infaq/bills/{sppBill}/void', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'void'])->name('infaq.bills.void');
+    Route::post('infaq/bills/{sppBill}/revert', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'revert'])->name('infaq.bills.revert');
     Route::get('infaq/payments/{bill}/create', [\App\Http\Controllers\Infaq\InfaqPaymentController::class, 'create'])->name('infaq.payments.create');
     Route::post('infaq/payments/{bill}', [\App\Http\Controllers\Infaq\InfaqPaymentController::class, 'store'])->name('infaq.payments.store');
 

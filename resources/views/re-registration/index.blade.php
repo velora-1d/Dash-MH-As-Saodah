@@ -2,6 +2,46 @@
     <div class="space-y-6">
         <!-- Flash Messages -->
         
+        <!-- Hero Header -->
+        <div style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%); border-radius: 1rem; overflow: hidden; position: relative;">
+            <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+            <div style="position: absolute; right: 80px; bottom: -40px; width: 150px; height: 150px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+            <div style="padding: 2rem; position: relative; z-index: 10;">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3);">
+                            <svg style="width: 22px; height: 22px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+                        </div>
+                        <div>
+                            <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Pendaftaran Ulang Siswa</h2>
+                            <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Kelola konfirmasi daftar ulang siswa untuk tahun ajaran baru.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <form action="{{ route('re-registration.index') }}" method="GET" style="display: flex; gap: 0.5rem; align-items: center;">
+                            <select name="academic_year_id" onchange="this.form.submit()" style="padding: 0.5rem 2rem 0.5rem 0.75rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 0.625rem; font-size: 0.8125rem; cursor: pointer; outline: none;">
+                                <option value="" style="color: #1e293b;">Pilih Tahun Ajaran</option>
+                                @foreach($academicYears as $year)
+                                    <option value="{{ $year->id }}" {{ ($activeYear && $activeYear->id == $year->id) ? 'selected' : '' }} style="color: #1e293b;">{{ $year->name }}</option>
+                                @endforeach
+                            </select>
+                        </form>
+                        
+                        @if($activeYear)
+                        <form action="{{ route('re-registration.generate') }}" method="POST" style="margin: 0;" onsubmit="return confirm('Generate data daftar ulang untuk tahun ajaran aktif?');">
+                            @csrf
+                            <input type="hidden" name="academic_year_id" value="{{ $activeYear->id }}">
+                            <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border-radius: 0.625rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1.5px solid rgba(255,255,255,0.3); text-decoration: none; transition: all 0.2s ease; cursor: pointer;" onmouseover="this.style.background='rgba(255,255,255,0.35)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                                <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                                Generate Batch
+                            </button>
+                        </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Statistik -->
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">

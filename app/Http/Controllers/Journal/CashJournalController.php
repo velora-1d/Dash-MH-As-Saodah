@@ -9,6 +9,8 @@ use App\Models\TransactionCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Exports\JournalsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CashJournalController extends Controller
 {
@@ -191,5 +193,10 @@ class CashJournalController extends Controller
 
         $category->delete();
         return redirect()->route('journal.categories')->with('success', 'Kategori berhasil dihapus.');
+    }
+
+    public function export()
+    {
+        return Excel::download(new JournalsExport, 'jurnal-kas-' . date('Y-m-d') . '.xlsx');
     }
 }

@@ -8,6 +8,8 @@ use App\Models\AcademicYear;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\PpdbExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -224,5 +226,10 @@ class PpdbController extends Controller
             Log::error('Gagal konversi PPDB ke siswa: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal mengkonversi data ke siswa.');
         }
+    }
+
+    public function export()
+    {
+        return Excel::download(new PpdbExport, 'data-ppdb-' . date('Y-m-d') . '.xlsx');
     }
 }

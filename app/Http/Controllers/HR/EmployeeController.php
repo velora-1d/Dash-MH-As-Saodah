@@ -5,6 +5,10 @@ namespace App\Http\Controllers\HR;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Exports\EmployeesExport;
+use App\Exports\EmployeesTemplateExport;
+use App\Imports\EmployeesImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -122,5 +126,36 @@ class EmployeeController extends Controller
 
         $teacher->delete();
         return redirect()->route('hr.teachers.index')->with('success', 'Data Guru berhasil dihapus.');
+    }
+
+    public function export()
+    {
+        return Excel::download(new EmployeesExport, 'data-guru-' . date('Y-m-d') . '.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:5120',
+        ]);
+
+        try {
+            Excel::import(new EmployeesImport, $request->file('file'));
+            return back()->with('success', 'Data guru berhasil diimpor dari file Excel.');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $errorMsg = 'Gagal impor. Periksa baris: ';
+            foreach ($failures as $failure) {
+                $errorMsg .= 'Baris ' . $failure->row() . ' (' . implode(', ', $failure->errors()) . '), ';
+            }
+            return back()->with('error', rtrim($errorMsg, ', '));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat impor: ' . $e->getMessage());
+        }
+    }
+
+    public function downloadTemplate()
+    {
+        return Excel::download(new EmployeesTemplateExport, 'template-import-guru.xlsx');
     }
 }

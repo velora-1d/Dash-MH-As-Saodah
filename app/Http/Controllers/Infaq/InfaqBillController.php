@@ -9,6 +9,8 @@ use App\Models\AcademicYear;
 use App\Models\Classroom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Exports\InfaqExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InfaqBillController extends Controller
 {
@@ -191,5 +193,10 @@ class InfaqBillController extends Controller
         ];
 
         return $months[$monthNumber] ?? 'Bulan Tidak Diketahui';
+    }
+
+    public function export()
+    {
+        return Excel::download(new InfaqExport, 'rekap-infaq-' . date('Y-m-d') . '.xlsx');
     }
 }

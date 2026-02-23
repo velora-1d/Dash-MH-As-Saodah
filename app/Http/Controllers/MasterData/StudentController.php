@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 use App\Models\Student;
 use App\Models\Classroom;
+use App\Exports\StudentsExport;
+use App\Exports\StudentsTemplateExport;
+use App\Imports\StudentsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -179,5 +183,36 @@ class StudentController extends Controller
     {
         $student->delete();
         return redirect()->route('students.index')->with('success', 'Data Siswa tersebut berhasil dihapus dari sistem.');
+    }
+
+    public function export()
+    {
+        return Excel::download(new StudentsExport, 'data-siswa-' . date('Y-m-d') . '.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:5120',
+        ]);
+
+        try {
+            Excel::import(new StudentsImport, $request->file('file'));
+            return back()->with('success', 'Data siswa berhasil diimpor dari file Excel.');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $errorMsg = 'Gagal impor. Periksa baris: ';
+            foreach ($failures as $failure) {
+                $errorMsg .= 'Baris ' . $failure->row() . ' (' . implode(', ', $failure->errors()) . '), ';
+            }
+            return back()->with('error', rtrim($errorMsg, ', '));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat impor: ' . $e->getMessage());
+        }
+    }
+
+    public function downloadTemplate()
+    {
+        return Excel::download(new StudentsTemplateExport, 'template-import-siswa.xlsx');
     }
 }

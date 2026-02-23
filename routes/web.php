@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [\App\Http\Controllers\Ppdb\PpdbController::class, 'index'])->name('index');
         Route::get('/create', [\App\Http\Controllers\Ppdb\PpdbController::class, 'create'])->name('create');
         Route::post('/', [\App\Http\Controllers\Ppdb\PpdbController::class, 'store'])->name('store');
+        Route::get('/export', [\App\Http\Controllers\Ppdb\PpdbController::class, 'export'])->name('export');
         Route::get('/{ppdb}', [\App\Http\Controllers\Ppdb\PpdbController::class, 'show'])->name('show');
 
         // Approve/Reject/Convert hanya untuk kepsek & admin
@@ -54,6 +55,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =============================================
     Route::resource('master-data/academic-years', AcademicYearController::class)->except('show');
     Route::resource('master-data/classrooms', ClassroomController::class)->except('show');
+    // Export/Import/Template Siswa (HARUS sebelum resource agar tidak terganggu wildcard)
+    Route::get('master-data/students/export', [\App\Http\Controllers\MasterData\StudentController::class, 'export'])->name('students.export');
+    Route::get('master-data/students/template', [\App\Http\Controllers\MasterData\StudentController::class, 'downloadTemplate'])->name('students.template');
+    Route::post('master-data/students/import', [\App\Http\Controllers\MasterData\StudentController::class, 'import'])->name('students.import');
     Route::resource('master-data/students', StudentController::class);
     Route::resource('master-data/transaction-categories', TransactionCategoryController::class)->except('show');
 
@@ -73,6 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('infaq/bills/{sppBill}/revert', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'revert'])->name('infaq.bills.revert');
         Route::get('infaq/payments/{bill}/create', [\App\Http\Controllers\Infaq\InfaqPaymentController::class, 'create'])->name('infaq.payments.create');
         Route::post('infaq/payments/{bill}', [\App\Http\Controllers\Infaq\InfaqPaymentController::class, 'store'])->name('infaq.payments.store');
+        Route::get('infaq/bills/export', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'export'])->name('infaq.bills.export');
 
         // Tabungan Siswa
         Route::get('tabungan', [\App\Http\Controllers\Tabungan\TabunganController::class, 'index'])->name('tabungan.index');
@@ -102,6 +108,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/categories', [\App\Http\Controllers\Journal\CashJournalController::class, 'storeCategory'])->name('categories.store');
             Route::delete('/categories/{category}', [\App\Http\Controllers\Journal\CashJournalController::class, 'destroyCategory'])->name('categories.destroy');
             Route::post('/{transaction}/void', [\App\Http\Controllers\Journal\CashJournalController::class, 'void'])->name('void');
+            Route::get('/export', [\App\Http\Controllers\Journal\CashJournalController::class, 'export'])->name('export');
         });
     });
 
@@ -115,6 +122,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('hr/staff', \App\Http\Controllers\HR\StaffController::class)->names('hr.staff')->parameters([
             'staff' => 'staff'
         ]);
+
+        // Export/Import/Template Guru
+        Route::get('hr/teachers/export', [EmployeeController::class, 'export'])->name('hr.teachers.export');
+        Route::get('hr/teachers/template', [EmployeeController::class, 'downloadTemplate'])->name('hr.teachers.template');
+        Route::post('hr/teachers/import', [EmployeeController::class, 'import'])->name('hr.teachers.import');
 
         Route::group(['prefix' => 'hr/payroll', 'as' => 'hr.payroll.'], function () {
             Route::get('/', [\App\Http\Controllers\HR\PayrollController::class, 'index'])->name('index');

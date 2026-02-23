@@ -110,12 +110,11 @@
                     Tabungan Siswa
                 </a>
 
-                <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">
-                    <svg class="text-indigo-500/40 mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('wakaf.index') }}" class="{{ request()->routeIs('wakaf.*') ? 'bg-indigo-900 border-amber-500 text-amber-400' : 'text-indigo-200 border-transparent hover:bg-indigo-900 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200">
+                    <svg class="mr-3 flex-shrink-0 h-5 w-5 transition-colors {{ request()->routeIs('wakaf.*') ? 'text-amber-400' : 'text-indigo-400 group-hover:text-indigo-300' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
                     </svg>
                     Wakaf & Donasi
-                    <span class="ml-auto text-[8px] font-bold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full">SOON</span>
                 </a>
 
                 <a href="#" class="text-indigo-200/50 border-transparent group flex items-center px-4 py-3 text-sm font-bold rounded-xl border-l-4 transition-all duration-200 cursor-not-allowed">

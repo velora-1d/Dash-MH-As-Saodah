@@ -43,6 +43,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('tabungan/{student}/create', [\App\Http\Controllers\Tabungan\TabunganController::class, 'create'])->name('tabungan.create');
     Route::post('tabungan/{student}', [\App\Http\Controllers\Tabungan\TabunganController::class, 'store'])->name('tabungan.store');
     Route::post('tabungan/mutation/{mutation}/void', [\App\Http\Controllers\Tabungan\TabunganController::class, 'void'])->name('tabungan.void');
+
+    // Wakaf & Donasi
+    Route::get('wakaf', [\App\Http\Controllers\Wakaf\WakafController::class, 'index'])->name('wakaf.index');
+    Route::get('wakaf/create', [\App\Http\Controllers\Wakaf\WakafController::class, 'create'])->name('wakaf.create');
+    Route::post('wakaf', [\App\Http\Controllers\Wakaf\WakafController::class, 'store'])->name('wakaf.store');
+    Route::get('wakaf/donors', [\App\Http\Controllers\Wakaf\WakafController::class, 'donors'])->name('wakaf.donors');
+    Route::get('wakaf/purposes', [\App\Http\Controllers\Wakaf\WakafController::class, 'purposes'])->name('wakaf.purposes');
+    Route::post('wakaf/purposes', [\App\Http\Controllers\Wakaf\WakafController::class, 'storePurpose'])->name('wakaf.purposes.store');
+    Route::delete('wakaf/purposes/{purpose}', [\App\Http\Controllers\Wakaf\WakafController::class, 'destroyPurpose'])->name('wakaf.purposes.destroy');
+    Route::post('wakaf/{transaction}/void', [\App\Http\Controllers\Wakaf\WakafController::class, 'void'])->name('wakaf.void');
 });
 
 Route::middleware('auth')->group(function () {

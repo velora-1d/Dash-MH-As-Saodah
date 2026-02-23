@@ -11,12 +11,29 @@ class GeneralTransaction extends Model
         'category_id',
         'cash_account_id',
         'user_id',
+        'wakaf_donor_id',
+        'wakaf_purpose_id',
         'type',
         'amount',
         'transaction_date',
         'description',
         'status',
     ];
+
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'transaction_date' => 'date',
+    ];
+
+    public function wakafDonor()
+    {
+        return $this->belongsTo(WakafDonor::class);
+    }
+
+    public function wakafPurpose()
+    {
+        return $this->belongsTo(WakafPurpose::class);
+    }
 
     public function unit()
     {

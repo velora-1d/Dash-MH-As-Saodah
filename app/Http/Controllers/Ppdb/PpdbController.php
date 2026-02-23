@@ -63,7 +63,7 @@ class PpdbController extends Controller
             'gender' => 'required|in:L,P',
             'birth_date' => 'nullable|date',
             'birth_place' => 'nullable|string|max:255',
-            'nik' => 'nullable|string|max:20',
+            'nik' => 'nullable|string|max:20|unique:ppdb_registrations,nik',
             'no_kk' => 'nullable|string|max:20',
             'parent_name' => 'nullable|string|max:255',
             'parent_phone' => 'nullable|string|max:20',

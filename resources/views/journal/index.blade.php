@@ -52,12 +52,8 @@
         </div>
 
         <!-- Flash Messages -->
-        @if (session('success'))
-            <div style="background: #ecfdf5; border: 1px solid #10b981; color: #065f46; padding: 1rem; border-radius: 0.5rem;">{{ session('success') }}</div>
-        @endif
-        @if (session('error'))
-            <div style="background: #fef2f2; border: 1px solid #e11d48; color: #991b1b; padding: 1rem; border-radius: 0.5rem;">{{ session('error') }}</div>
-        @endif
+        
+        
 
         <!-- Filter & Transaksi -->
         <div style="background: #ffffff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">

@@ -45,7 +45,7 @@ class StudentController extends Controller
         $validated = $request->validate([
             'nisn' => 'nullable|string|unique:students,nisn|max:20',
             'nis' => 'nullable|string|unique:students,nis|max:20',
-            'nik' => 'nullable|string|max:20',
+            'nik' => 'nullable|string|unique:students,nik|max:20',
             'no_kk' => 'nullable|string|max:20',
             'name' => 'required|string|max:255',
             'gender' => 'required|in:L,P',
@@ -80,7 +80,7 @@ class StudentController extends Controller
         $validated = $request->validate([
             'nisn' => 'nullable|string|max:20|unique:students,nisn,' . $student->id,
             'nis' => 'nullable|string|max:20|unique:students,nis,' . $student->id,
-            'nik' => 'nullable|string|max:20',
+            'nik' => 'nullable|string|max:20|unique:students,nik,' . $student->id,
             'no_kk' => 'nullable|string|max:20',
             'name' => 'required|string|max:255',
             'gender' => 'required|in:L,P',

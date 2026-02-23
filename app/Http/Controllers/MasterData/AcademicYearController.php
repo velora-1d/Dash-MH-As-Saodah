@@ -22,7 +22,7 @@ class AcademicYearController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:academic_years,name',
             'semester' => 'required|in:ganjil,genap',
             'is_active' => 'boolean'
         ]);
@@ -53,7 +53,7 @@ class AcademicYearController extends Controller
     public function update(Request $request, AcademicYear $academicYear)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:academic_years,name,' . $academicYear->id,
             'semester' => 'required|in:ganjil,genap',
             'is_active' => 'boolean'
         ]);

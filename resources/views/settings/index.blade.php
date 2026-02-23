@@ -34,9 +34,7 @@
             </div>
         </div>
 
-        @if (session('success'))
-            <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.875rem 1.25rem; border-radius: 0.75rem; font-size: 0.8125rem; font-weight: 500;">{{ session('success') }}</div>
-        @endif
+        
 
         <!-- Tab 1: Profil Madrasah -->
         <section id="tab-profil">

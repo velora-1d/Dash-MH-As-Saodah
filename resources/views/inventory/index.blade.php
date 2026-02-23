@@ -27,87 +27,9 @@
             </div>
         </div>
 
-        @if(session('success'))
-            <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); color: #166534; padding: 1rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; gap: 0.75rem; animation: slideIn 0.3s ease;">
-                <svg style="width: 1.25rem; height: 1.25rem; color: #16a34a;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {{ session('success') }}
-            </div>
-        @endif
+        
 
-        @if($errors->any())
-            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #991b1b; padding: 1rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; gap: 0.75rem; animation: slideIn 0.3s ease;">
-                <svg style="width: 1.25rem; height: 1.25rem; color: #dc2626;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Terdapat kesalahan pada input form.
-            </div>
-        @endif
-
-        <div style="background: #ffffff; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border: 1px solid #f1f5f9; overflow: hidden;">
-            <!-- Actions Bar -->
-            <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: #faf8fd;">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #0ea5e9, #6366f1); border-radius: 50%;"></div>
-                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Sirkulasi Inventaris</h4>
-                </div>
-                
-                <div style="display: flex; gap: 0.75rem; align-items: center;">
-                    <form action="{{ route('inventory.index') }}" method="GET" style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, kode, lokasi..." style="padding: 0.5rem 1rem; font-size: 0.8125rem; border: 1px solid #e2e8f0; border-radius: 0.625rem; width: 200px; outline: none; transition: border-color 0.15s ease;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
-                        
-                        <select name="category" onchange="this.form.submit()" style="padding: 0.5rem 2rem 0.5rem 1rem; font-size: 0.8125rem; border: 1px solid #e2e8f0; border-radius: 0.625rem; outline: none; background: #ffffff; cursor: pointer;">
-                            <option value="">Semua Kategori</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
-                            @endforeach
-                        </select>
-                        
-                        <select name="condition" onchange="this.form.submit()" style="padding: 0.5rem 2rem 0.5rem 1rem; font-size: 0.8125rem; border: 1px solid #e2e8f0; border-radius: 0.625rem; outline: none; background: #ffffff; cursor: pointer;">
-                            <option value="">Semua Kondisi</option>
-                            <option value="Baik" {{ request('condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
-                            <option value="Rusak Ringan" {{ request('condition') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
-                            <option value="Rusak Berat" {{ request('condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
-                        </select>
-                    </form>
-
-                    <a href="{{ route('inventory.create') }}" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #0ea5e9, #3b82f6); color: white; padding: 0.5rem 1.25rem; border-radius: 0.625rem; font-size: 0.8125rem; font-weight: 600; text-decoration: none; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(14, 165, 233, 0.2);" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(14, 165, 233, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(14, 165, 233, 0.2)'">
-                        <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Aset Baru
-                    </a>
-                </div>
-            </div>
-
-            <!-- Table -->
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                        <tr>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; width: 50px; text-align: center;">No</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;">Kode / Item</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;">Kategori</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; text-align: center;">Jumlah Stok</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; text-align: center;">Kondisi</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; text-align: right;">Estimasi Nilai</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; text-align: right;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody style="font-size: 0.875rem;">
-                        @forelse($inventories as $index => $item)
-                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background-color 0.15s ease;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
-                            <td style="padding: 1.25rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $inventories->firstItem() + $index }}</td>
-                            <td style="padding: 1.25rem 1.5rem; vertical-align: middle;">
-                                <div style="font-weight: 700; color: #0ea5e9; font-size: 0.8125rem; font-family: monospace;">{{ $item->item_code ?? 'TBA' }}</div>
-                                <div style="font-weight: 600; color: #1e293b; margin-top: 0.25rem;">{{ $item->name }}</div>
-                                @if($item->location)
-                                    <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
-                                        <svg style="width: 12px; height: 12px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                                        {{ $item->location }}
-                                    </div>
-                                @endif
+        
                             </td>
                             <td style="padding: 1.25rem 1.5rem;">
                                 <span style="background: #f1f5f9; color: #475569; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">

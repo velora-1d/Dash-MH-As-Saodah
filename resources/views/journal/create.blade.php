@@ -18,12 +18,7 @@
             </div>
         </div>
 
-        @if (session('error'))
-            <div style="background: #fef2f2; border-left: 4px solid #e11d48; color: #991b1b; padding: 1rem 1.25rem; border-radius: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 0.75rem;">
-                <svg style="width: 1.25rem; height: 1.25rem; color: #e11d48; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                <div style="font-size: 0.875rem; font-weight: 500;">{{ session('error') }}</div>
-            </div>
-        @endif
+        
 
         <div style="background: #ffffff; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03); overflow: hidden;">
             

@@ -1,65 +1,7 @@
 <x-app-layout>
     <div class="space-y-6">
         <!-- Flash Messages -->
-        @if(session('success'))
-        <div style="padding: 1rem 1.25rem; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.75rem; color: #047857; font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
-            <svg style="width: 18px; height: 18px; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            {{ session('success') }}
-        </div>
-        @endif
-        @if(session('error'))
-        <div style="padding: 1rem 1.25rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 0.75rem; color: #b91c1c; font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
-            <svg style="width: 18px; height: 18px; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            {{ session('error') }}
-        </div>
-        @endif
-        <!-- Hero Header -->
-        <div style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%); border-radius: 1rem; overflow: hidden; position: relative;">
-            <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
-            <div style="position: absolute; right: 80px; bottom: -40px; width: 150px; height: 150px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-            <div style="padding: 2rem; position: relative; z-index: 10;">
-                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
-                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                        <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3);">
-                            <svg style="width: 22px; height: 22px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
-                        </div>
-                        <div>
-                            <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.25rem; color: #fff; margin: 0;">Daftar Ulang Siswa</h2>
-                            <p style="font-size: 0.8125rem; color: rgba(255,255,255,0.7); margin-top: 0.125rem;">Verifikasi siswa yang melanjutkan ke tahun ajaran berikutnya.</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <!-- Filter Tahun Ajaran -->
-                        <div style="background: rgba(255,255,255,0.08); padding: 0.375rem; border-radius: 0.625rem; border: 1px solid rgba(255,255,255,0.12);">
-                            <form action="{{ route('re-registration.index') }}" method="GET" style="display: flex; align-items: center;">
-                                <select name="academic_year_id" onchange="this.form.submit()" style="font-size: 0.75rem; font-weight: 600; color: #fff; border: none; background: transparent; padding: 0.5rem 2rem 0.5rem 0.75rem; cursor: pointer; outline: none; -webkit-appearance: none; appearance: none;">
-                                    <option value="" style="color: #1e293b;">Semua Tahun Ajaran</option>
-                                    @foreach($academicYears as $year)
-                                        <option value="{{ $year->id }}" style="color: #1e293b;" {{ ($activeYear && $activeYear->id == $year->id) ? 'selected' : '' }}>
-                                            {{ $year->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </form>
-                        </div>
-                        @if($activeYear)
-                        <form action="{{ route('re-registration.generate') }}" method="POST" style="display: inline;">
-                            @csrf
-                            <input type="hidden" name="academic_year_id" value="{{ $activeYear->id }}">
-                            <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; color: #7c3aed; border-radius: 0.625rem; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; background: #fff; border: none; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
-                                <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                                Generate Batch
-                            </button>
-                        </form>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @if (session('success'))
-            <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.875rem 1.25rem; border-radius: 0.75rem; font-size: 0.8125rem; font-weight: 500;">{{ session('success') }}</div>
-        @endif
+        
 
         <!-- Statistik -->
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">

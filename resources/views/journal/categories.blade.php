@@ -18,18 +18,8 @@
             </button>
         </div>
 
-        @if (session('success'))
-            <div style="background: #ecfdf5; border-left: 4px solid #10b981; color: #065f46; padding: 1rem 1.25rem; border-radius: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 0.75rem;">
-                <svg style="width: 1.25rem; height: 1.25rem; color: #10b981; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                <div style="font-size: 0.875rem; font-weight: 500;">{{ session('success') }}</div>
-            </div>
-        @endif
-        @if (session('error'))
-            <div style="background: #fef2f2; border-left: 4px solid #e11d48; color: #991b1b; padding: 1rem 1.25rem; border-radius: 0.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 0.75rem;">
-                <svg style="width: 1.25rem; height: 1.25rem; color: #e11d48; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                <div style="font-size: 0.875rem; font-weight: 500;">{{ session('error') }}</div>
-            </div>
-        @endif
+        
+        
 
         <div style="background: #ffffff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
             <div style="overflow-x: auto;">

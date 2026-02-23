@@ -405,6 +405,9 @@
             {{-- Header --}}
             @include('layouts.header')
 
+            {{-- Aesthetic Notifications --}}
+            @include('components.flash-messages')
+
             {{-- Main Content --}}
             <main class="flex-1 overflow-y-auto focus:outline-none p-4 lg:p-6">
                 @isset($header)

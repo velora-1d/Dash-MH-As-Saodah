@@ -20,14 +20,7 @@
             </div>
         </div>
 
-        @if(session('success'))
-        <div style="padding: 1rem 1.25rem; background: #ecfdf5; border-left: 4px solid #10b981; border-radius: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
-            <div style="width: 24px; height: 24px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
-                <svg style="width: 14px; height: 14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
-            </div>
-            <p style="color: #065f46; font-size: 0.875rem; font-weight: 500; margin: 0;">{{ session('success') }}</p>
-        </div>
-        @endif
+        
 
         <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; align-items: start;">
             

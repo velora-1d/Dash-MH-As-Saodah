@@ -30,9 +30,7 @@
             </div>
         </div>
 
-        @if (session('success'))
-            <div style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.875rem 1.25rem; border-radius: 0.75rem; font-size: 0.8125rem; font-weight: 500;">{{ session('success') }}</div>
-        @endif
+        
 
         <!-- Tabel Siswa -->
         <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">

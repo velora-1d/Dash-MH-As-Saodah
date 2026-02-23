@@ -17,15 +17,7 @@
             </div>
         </div>
 
-        @if ($errors->any())
-            <div style="background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 0.875rem 1.25rem; border-radius: 0.75rem; font-size: 0.8125rem; font-weight: 500;">
-                <ul style="margin: 0; padding-left: 1rem;">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        
 
         <form action="{{ route('ppdb.store') }}" method="POST">
             @csrf

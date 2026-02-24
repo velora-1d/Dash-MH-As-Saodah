@@ -82,7 +82,7 @@ class InfaqBillController extends Controller
         $months = $request->months;
 
         // Fetch academic year to calculate correct calendar year per month
-        $academicYear = \App\Models\AcademicYear::findOrFail($academicYearId);
+        $academicYear = AcademicYear::findOrFail($academicYearId);
         // Parse start year from academic year name (e.g. "2025/2026 Ganjil" → 2025)
         preg_match('/(\d{4})/', $academicYear->name, $matches);
         $startYear = isset($matches[1]) ? (int) $matches[1] : (int) date('Y');

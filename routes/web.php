@@ -178,14 +178,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/profile', 'updateProfile')->name('profile.update');
 
-        // Manajemen User (Kepsek & Admin)
-        Route::middleware('role:kepsek,admin')->group(function () {
+        // Manajemen User (Kepsek, Admin, Superadmin & Operator)
+        Route::middleware('role:kepsek,admin,superadmin,operator')->group(function () {
             Route::get('/users/create', 'createUser')->name('users.create');
             Route::post('/users', 'storeUser')->name('users.store');
             Route::get('/users/{user}/edit', 'editUser')->name('users.edit');
             Route::put('/users/{user}', 'updateUser')->name('users.update');
             Route::post('/users/{user}/toggle', 'toggleUserStatus')->name('users.toggle');
             Route::post('/users/{user}/reset-password', 'resetPassword')->name('users.reset-password');
+
+            // Manajemen Menu
+            Route::resource('menus', \App\Http\Controllers\Setting\MenuController::class)->except(['show']);
         });
     });
 });

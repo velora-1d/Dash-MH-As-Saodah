@@ -1,55 +1,70 @@
 # Panduan Deployment MH As-Saodah
 
-Dokumen ini berisi langkah-langkah untuk mendeploy aplikasi MH As-Saodah.
+Aplikasi ini menggunakan **Laravel + Blade** dan dideploy langsung ke VPS.
 
-## 1. Frontend (Vercel)
+## Stack Produksi
 
-Aplikasi Frontend menggunakan **Next.js** dan disarankan dideploy ke **Vercel**.
-
-### Langkah-langkah:
-1. Masuk ke [Dashboard Vercel](https://vercel.com/dashboard).
-2. Klik **New Project** dan hubungkan ke repository GitHub Bapak.
-3. Pada bagian **Root Directory**, klik Edit dan pilih folder `Profil MH As-Saodah`.
-4. Pada **Framework Preset**, pastikan terpilih **Next.js**.
-5. Masukkan **Environment Variables** (lihat file `web/.env.local` sebagai referensi):
-   - `NEXT_PUBLIC_API_URL`: URL API Backend Bapak (contoh: `https://api.assaodah.com/api`).
-6. Klik **Deploy**.
+- **Web Server**: Nginx
+- **PHP**: 8.4-FPM
+- **Database**: PostgreSQL (peer auth via unix socket)
+- **Domain**: `assaodah.santrix.my.id` (HTTPS via Certbot)
+- **Root**: `/var/www/dashboard-mh/public`
 
 ---
 
-## 2. Backend (VPS)
+## Langkah Deploy (Update)
 
-Aplikasi Backend menggunakan **Laravel** dan dideploy menggunakan **Docker Compose** di VPS.
+### 1. Rsync Kode Terbaru ke VPS
 
-### Persiapan VPS:
-Pastikan VPS Bapak sudah terinstall:
-- Docker
-- Docker Compose
+```bash
+rsync -avz --delete \
+  --exclude='.env' \
+  --exclude='storage/' \
+  --exclude='vendor/' \
+  --exclude='node_modules/' \
+  --exclude='.git/' \
+  --exclude='bootstrap/cache/' \
+  /path/lokal/dashboard-MH/ \
+  ubuntu@43.156.132.218:/home/ubuntu/dashboard-mh/
+```
 
-### Langkah-langkah:
-1. Clone repository ke VPS:
-   ```bash
-   git clone https://github.com/velora-1d/MH-As-Saodah-FE-BE.git
-   cd MH-As-Saodah-FE-BE/dashboard-MH
-   ```
-2. Siapkan file `.env` di folder `dashboard-MH`:
-   ```bash
-   cp .env.example .env
-   # Edit .env dan sesuaikan DB_HOST=pgsql, DB_USERNAME, DB_PASSWORD, dll.
-   ```
-3. Jalankan Docker Compose dari root project:
-   ```bash
-   cd ../infra
-   docker-compose -f docker-compose.prod.yml up -d --build
-   ```
-4. Jalankan Migrasi di dalam container:
-   ```bash
-   docker exec -it mhas_app php artisan migrate --seed
-   ```
+### 2. Copy ke Directory Produksi (via sudo)
+
+```bash
+ssh ubuntu@43.156.132.218
+sudo rsync -a \
+  --exclude='.env' \
+  --exclude='storage/' \
+  --exclude='vendor/' \
+  --exclude='node_modules/' \
+  --exclude='.git/' \
+  --exclude='bootstrap/cache/' \
+  /home/ubuntu/dashboard-mh/ /var/www/dashboard-mh/
+```
+
+### 3. Jalankan Migrasi & Cache
+
+```bash
+cd /var/www/dashboard-mh
+sudo -u www-data php artisan migrate --force
+sudo -u www-data php artisan config:cache
+sudo -u www-data php artisan route:cache
+sudo -u www-data php artisan view:cache
+```
+
+### 4. (Jika ada perubahan dependency)
+
+```bash
+cd /var/www/dashboard-mh
+sudo composer install --no-dev --optimize-autoloader
+sudo npm install && sudo npm run build
+sudo chown -R www-data:www-data storage bootstrap/cache
+```
 
 ---
 
-## 3. Konfigurasi Domain (Opsional)
-- Arahkan domain utama (misal: `assaodah.com`) ke Vercel.
-- Arahkan subdomain (misal: `api.assaodah.com`) ke IP VPS Bapak.
-- Gunakan Certbot di VPS jika ingin memasang SSL manual, atau biarkan Cloudflare menangani SSL-nya.
+## Catatan Penting
+
+- **Database**: PostgreSQL menggunakan peer authentication (unix socket). Semua perintah `artisan` harus dijalankan sebagai user `www-data`: `sudo -u www-data php artisan ...`
+- **File `.env`**: Tidak pernah di-sync. Konfigurasi produksi dikelola langsung di VPS.
+- **Storage**: Folder `storage/` tidak di-deploy ulang untuk menjaga data upload yang ada.

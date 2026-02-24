@@ -116,7 +116,16 @@ class PpdbController extends Controller
                 $count = PpdbRegistration::where('academic_year_id', $validated['academic_year_id'])->count() + 1;
                 $validated['registration_number'] = 'PPDB-' . date('Y') . '-' . str_pad($count, 3, '0', STR_PAD_LEFT);
                 $validated['registration_source'] = 'offline';
-                PpdbRegistration::create($validated);
+                $ppdb = PpdbRegistration::create($validated);
+                
+                // Buat record administrasi otomatis di awal
+                RegistrationPayment::create([
+                    'academic_year_id' => $ppdb->academic_year_id,
+                    'registrationable_type' => PpdbRegistration::class,
+                    'registrationable_id' => $ppdb->id,
+                    'entity_id' => 1, // Default, akan diupdate oleh trait/user scope
+                    'unit_id' => 1,
+                ]);
             });
 
             return redirect()->route('ppdb.index')->with('success', 'Pendaftar PPDB berhasil ditambahkan.');

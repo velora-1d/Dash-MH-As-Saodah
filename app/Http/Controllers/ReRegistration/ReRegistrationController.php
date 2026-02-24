@@ -69,11 +69,21 @@ class ReRegistrationController extends Controller
                         ->exists();
 
                     if (!$exists) {
-                        ReRegistration::create([
+                        $reReg = ReRegistration::create([
                             'academic_year_id' => $yearId,
                             'student_id' => $student->id,
                             'status' => 'pending',
                         ]);
+                        
+                        // Buat record administrasi otomatis di awal
+                        \App\Models\RegistrationPayment::create([
+                            'academic_year_id' => $yearId,
+                            'registrationable_type' => ReRegistration::class,
+                            'registrationable_id' => $reReg->id,
+                            'entity_id' => $student->entity_id,
+                            'unit_id' => $student->unit_id,
+                        ]);
+
                         $created++;
                     }
                 }

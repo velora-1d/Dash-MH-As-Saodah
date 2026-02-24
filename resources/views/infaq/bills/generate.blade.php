@@ -49,13 +49,24 @@
                         @error('academic_year_id')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label for="month" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Bulan Tagihan <span style="color: #e11d48;">*</span></label>
-                        <select id="month" name="month" required style="width: 100%; box-sizing: border-box;">
-                            @foreach([1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April', 5=>'Mei', 6=>'Juni', 7=>'Juli', 8=>'Agustus', 9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember'] as $key => $name)
-                                <option value="{{ $key }}" {{ date('n') == $key ? 'selected' : '' }}>{{ $name }}</option>
+                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Bulan Tagihan <span style="color: #e11d48;">*</span></label>
+                        <!-- Shortcut Buttons -->
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                            <button type="button" onclick="selectMonths([7,8,9,10,11,12])" style="padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; cursor: pointer;">Semester 1 (Jul–Des)</button>
+                            <button type="button" onclick="selectMonths([1,2,3,4,5,6])" style="padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; cursor: pointer;">Semester 2 (Jan–Jun)</button>
+                            <button type="button" onclick="selectMonths([1,2,3,4,5,6,7,8,9,10,11,12])" style="padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #059669; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.5rem; cursor: pointer;">Semua (12 Bulan)</button>
+                            <button type="button" onclick="selectMonths([])" style="padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #64748b; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; cursor: pointer;">Reset</button>
+                        </div>
+                        <!-- Grid Checkboxes -->
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+                            @foreach([7=>'Juli', 8=>'Agustus', 9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember', 1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April', 5=>'Mei', 6=>'Juni'] as $key => $name)
+                            <label style="display: flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; cursor: pointer; font-size: 0.75rem; font-weight: 500; color: #374151; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#c7d2fe'" onmouseout="this.style.borderColor='#e2e8f0'">
+                                <input type="checkbox" name="months[]" value="{{ $key }}" class="month-checkbox" style="accent-color: #6366f1;">
+                                {{ $name }}
+                            </label>
                             @endforeach
-                        </select>
-                        @error('month')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                        </div>
+                        @error('months')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                 </div>
                 <div style="padding: 1.25rem 2rem; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; background: #fafbfc;">
@@ -70,12 +81,24 @@
     </div>
 
     <script>
+        function selectMonths(monthList) {
+            document.querySelectorAll('.month-checkbox').forEach(cb => {
+                cb.checked = monthList.includes(parseInt(cb.value));
+            });
+        }
+
+        const monthNames = {1:'Januari',2:'Februari',3:'Maret',4:'April',5:'Mei',6:'Juni',7:'Juli',8:'Agustus',9:'September',10:'Oktober',11:'November',12:'Desember'};
+
         document.getElementById('btn-generate').addEventListener('click', function() {
-            const bulan = document.getElementById('month');
-            const namaBulan = bulan.options[bulan.selectedIndex].text;
+            const checked = Array.from(document.querySelectorAll('.month-checkbox:checked'));
+            if (checked.length === 0) {
+                Swal.fire('Peringatan', 'Pilih minimal satu bulan tagihan.', 'warning');
+                return;
+            }
+            const bulanNames = checked.map(cb => monthNames[parseInt(cb.value)]).join(', ');
             Swal.fire({
                 title: 'Generate Tagihan?',
-                html: '<p style="font-size:0.875rem;color:#475569;">Tagihan SPP/Infaq bulan <strong>' + namaBulan + '</strong> akan dibuat untuk seluruh siswa aktif.</p>',
+                html: '<p style="font-size:0.875rem;color:#475569;">Tagihan SPP/Infaq untuk bulan <strong>' + bulanNames + '</strong> akan dibuat untuk seluruh siswa aktif.</p>',
                 icon: 'question', showCancelButton: true, confirmButtonColor: '#4f46e5', cancelButtonColor: '#64748b',
                 confirmButtonText: 'Ya, Generate!', cancelButtonText: 'Batal', reverseButtons: true, focusCancel: true,
             }).then((r) => { if (r.isConfirmed) document.getElementById('form-generate').submit(); });

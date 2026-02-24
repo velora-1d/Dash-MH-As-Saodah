@@ -68,6 +68,7 @@
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Asal Sekolah</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Sumber</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Status</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Administrasi</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Aksi</th>
                         </tr>
                     </thead>
@@ -105,13 +106,31 @@
                                 @endif
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
+                                @if($reg->registrationPayment)
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                                    @php $rp = $reg->registrationPayment; @endphp
+                                    <button class="admin-btn {{ $rp->is_fee_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_fee_paid" title="Biaya Masuk">💰</button>
+                                    <button class="admin-btn {{ $rp->is_books_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_paid" title="Buku — Bayar">📚</button>
+                                    <button class="admin-btn {{ $rp->is_books_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_received" title="Buku — Diambil">📖</button>
+                                    <button class="admin-btn {{ $rp->is_uniform_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_paid" title="Seragam — Bayar">👕</button>
+                                    <button class="admin-btn {{ $rp->is_uniform_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_received" title="Seragam — Diambil">🎽</button>
+                                </div>
+                                @else
+                                <span style="color: #cbd5e1; font-size: 0.6875rem;">—</span>
+                                @endif
+                            </td>
+                            <td style="padding: 1rem 1.5rem; text-align: center;">
                                 <div style="display: flex; align-items: center; justify-content: center; gap: 0.375rem;">
                                     <a href="{{ route('ppdb.show', $reg) }}" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Detail</a>
+                                    
                                     @if($reg->status === 'pending')
                                     <form action="{{ route('ppdb.approve', $reg) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <button type="submit" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #059669; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Terima</button>
                                     </form>
+                                    @endif
+
+                                    @if($reg->status === 'pending' || $reg->status === 'diterima')
                                     <form action="{{ route('ppdb.reject', $reg) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <button type="submit" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Tolak</button>
@@ -122,7 +141,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" style="padding: 3rem 2rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-style: italic;">Belum ada pendaftar PPDB untuk tahun ajaran ini.</td>
+                            <td colspan="9" style="padding: 3rem 2rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-style: italic;">Belum ada pendaftar PPDB untuk tahun ajaran ini.</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -137,4 +156,44 @@
             @endif
         </div>
     </div>
+
+    <style>
+        .admin-btn {
+            cursor: pointer; border: none; background: none; font-size: 1.125rem;
+            transition: all 0.15s ease; opacity: 0.35; padding: 0.125rem;
+        }
+        .admin-btn:hover { transform: scale(1.2); }
+        .admin-btn.admin-active { opacity: 1; }
+    </style>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.admin-btn');
+            if (!btn) return;
+
+            const paymentId = btn.dataset.id;
+            const field = btn.dataset.field;
+
+            fetch('/quick-payment/' + paymentId + '/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ field: field })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    btn.classList.toggle('admin-active', data.value);
+                    btn.style.transform = 'scale(1.3)';
+                    setTimeout(() => btn.style.transform = '', 200);
+                }
+            })
+            .catch(() => {
+                Swal.fire('Error', 'Gagal menyimpan perubahan.', 'error');
+            });
+        });
+    </script>
 </x-app-layout>

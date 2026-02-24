@@ -1,0 +1,12 @@
+.env
+.env.backup
+.git
+vendor
+node_modules
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+.phpunit.result.cache
+bootstrap/cache/config.php
+bootstrap/cache/routes*.php

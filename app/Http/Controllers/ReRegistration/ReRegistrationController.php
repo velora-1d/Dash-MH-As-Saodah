@@ -25,7 +25,7 @@ class ReRegistrationController extends Controller
             $activeYear = AcademicYear::where('is_active', true)->first();
         }
 
-        $query = ReRegistration::with('student.classroom', 'academicYear', 'confirmedByUser');
+        $query = ReRegistration::with('student.classroom', 'academicYear', 'confirmedByUser', 'registrationPayment');
 
         if ($activeYear) {
             $query->where('academic_year_id', $activeYear->id);
@@ -95,6 +95,20 @@ class ReRegistrationController extends Controller
                 'confirmed_by' => Auth::id(),
                 'confirmed_at' => now(),
             ]);
+
+            // Buat/pastikan record pelacakan administrasi daftar ulang
+            $reRegistration->registrationPayment()->firstOrCreate(
+                [
+                    'registrationable_type' => ReRegistration::class,
+                    'registrationable_id' => $reRegistration->id,
+                ],
+                [
+                    'academic_year_id' => $reRegistration->academic_year_id,
+                    'entity_id' => $reRegistration->entity_id,
+                    'unit_id' => $reRegistration->unit_id,
+                ]
+            );
+
             return redirect()->back()->with('success', 'Daftar ulang siswa "' . $reRegistration->student->name . '" dikonfirmasi.');
         } catch (\Exception $e) {
             Log::error('Gagal konfirmasi daftar ulang: ' . $e->getMessage());

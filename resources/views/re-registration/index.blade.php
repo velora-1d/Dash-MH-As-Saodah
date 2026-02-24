@@ -79,6 +79,7 @@
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">L/P</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Sumber</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Status</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Administrasi</th>
                             <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Aksi</th>
                         </tr>
                     </thead>
@@ -114,6 +115,20 @@
                                 @endif
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
+                                @if($reg->registrationPayment)
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                                    @php $rp = $reg->registrationPayment; @endphp
+                                    <button class="admin-btn {{ $rp->is_fee_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_fee_paid" title="Biaya Daftar Ulang">💰</button>
+                                    <button class="admin-btn {{ $rp->is_books_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_paid" title="Buku — Bayar">📚</button>
+                                    <button class="admin-btn {{ $rp->is_books_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_received" title="Buku — Diambil">📖</button>
+                                    <button class="admin-btn {{ $rp->is_uniform_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_paid" title="Seragam — Bayar">👕</button>
+                                    <button class="admin-btn {{ $rp->is_uniform_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_received" title="Seragam — Diambil">🎽</button>
+                                </div>
+                                @else
+                                <span style="color: #cbd5e1; font-size: 0.6875rem;">—</span>
+                                @endif
+                            </td>
+                            <td style="padding: 1rem 1.5rem; text-align: center;">
                                 @if($reg->status === 'pending')
                                 <div style="display: flex; align-items: center; justify-content: center; gap: 0.375rem;">
                                     <form action="{{ route('re-registration.confirm', $reg) }}" method="POST" style="display: inline;">
@@ -132,7 +147,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" style="padding: 3rem 2rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-style: italic;">
+                            <td colspan="8" style="padding: 3rem 2rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-style: italic;">
                                 @if($activeYear)
                                     Belum ada data daftar ulang. Klik "Generate Batch" untuk membuat data.
                                 @else
@@ -153,4 +168,44 @@
             @endif
         </div>
     </div>
+
+    <style>
+        .admin-btn {
+            cursor: pointer; border: none; background: none; font-size: 1.125rem;
+            transition: all 0.15s ease; opacity: 0.35; padding: 0.125rem;
+        }
+        .admin-btn:hover { transform: scale(1.2); }
+        .admin-btn.admin-active { opacity: 1; }
+    </style>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.admin-btn');
+            if (!btn) return;
+
+            const paymentId = btn.dataset.id;
+            const field = btn.dataset.field;
+
+            fetch('/quick-payment/' + paymentId + '/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ field: field })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    btn.classList.toggle('admin-active', data.value);
+                    btn.style.transform = 'scale(1.3)';
+                    setTimeout(() => btn.style.transform = '', 200);
+                }
+            })
+            .catch(() => {
+                Swal.fire('Error', 'Gagal menyimpan perubahan.', 'error');
+            });
+        });
+    </script>
 </x-app-layout>

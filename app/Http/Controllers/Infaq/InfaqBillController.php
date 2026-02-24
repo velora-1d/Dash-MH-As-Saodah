@@ -68,17 +68,18 @@ class InfaqBillController extends Controller
     }
 
     /**
-     * Store newly generated bills in storage.
+     * Store newly generated bills in storage (multi-month batch support).
      */
     public function storeGenerate(Request $request)
     {
         $request->validate([
             'academic_year_id' => 'required|exists:academic_years,id',
-            'month' => 'required|integer|min:1|max:12',
+            'months' => 'required|array|min:1',
+            'months.*' => 'integer|min:1|max:12',
         ]);
 
         $academicYearId = $request->academic_year_id;
-        $month = $request->month;
+        $months = $request->months;
 
         // Get all active students with their associated classroom
         $students = Student::with('classroom')->where('status', 'aktif')->get();
@@ -93,54 +94,59 @@ class InfaqBillController extends Controller
         DB::beginTransaction();
 
         try {
-            foreach ($students as $student) {
-                // Check if bill already exists for this student, month, and academic year
-                $exists = SppBill::where('student_id', $student->id)
-                    ->where('academic_year_id', $academicYearId)
-                    ->where('month', $month)
-                    ->exists();
+            foreach ($months as $month) {
+                $month = (int) $month;
 
-                if ($exists) {
-                    $billsSkipped++;
-                    continue;
-                }
+                foreach ($students as $student) {
+                    // Check if bill already exists for this student, month, and academic year
+                    $exists = SppBill::where('student_id', $student->id)
+                        ->where('academic_year_id', $academicYearId)
+                        ->where('month', $month)
+                        ->exists();
 
-                $nominal = 0;
-                $status = 'belum_lunas';
+                    if ($exists) {
+                        $billsSkipped++;
+                        continue;
+                    }
 
-                // Determine nominal based on infaq_status
-                if ($student->infaq_status === 'gratis') {
                     $nominal = 0;
-                    $status = 'lunas'; // If gratis, consider it fully paid
-                } elseif ($student->infaq_status === 'subsidi') {
-                    $nominal = $student->infaq_nominal ?? 0;
-                    if ($nominal <= 0) {
+                    $status = 'belum_lunas';
+
+                    // Determine nominal based on infaq_status
+                    if ($student->infaq_status === 'gratis') {
+                        $nominal = 0;
                         $status = 'lunas';
+                    } elseif ($student->infaq_status === 'subsidi') {
+                        $nominal = $student->infaq_nominal ?? 0;
+                        if ($nominal <= 0) {
+                            $status = 'lunas';
+                        }
+                    } else {
+                        $nominal = $student->classroom ? ($student->classroom->infaq_nominal ?? 0) : 0;
+                        if ($nominal <= 0) {
+                            $status = 'lunas';
+                        }
                     }
-                } else { // 'bayar' (default or explicit)
-                    $nominal = $student->classroom ? ($student->classroom->infaq_nominal ?? 0) : 0;
-                    if ($nominal <= 0) {
-                        $status = 'lunas'; // If classroom has 0 fee, it's considered paid
-                    }
+
+                    SppBill::create([
+                        'student_id' => $student->id,
+                        'academic_year_id' => $academicYearId,
+                        'month' => $month,
+                        'nominal' => $nominal,
+                        'status' => $status,
+                    ]);
+
+                    $billsCreated++;
                 }
-
-                SppBill::create([
-                    'student_id' => $student->id,
-                    'academic_year_id' => $academicYearId,
-                    'month' => $month,
-                    'nominal' => $nominal,
-                    'status' => $status,
-                ]);
-
-                $billsCreated++;
             }
 
             DB::commit();
 
+            $monthCount = count($months);
             if ($billsCreated > 0) {
-                return redirect()->route('infaq.bills.index')->with('success', "Berhasil men-generate {$billsCreated} tagihan Infaq/SPP per bulan " . $this->getMonthName($month) . ".");
+                return redirect()->route('infaq.bills.index')->with('success', "Berhasil men-generate {$billsCreated} tagihan Infaq/SPP untuk {$monthCount} bulan.");
             } else {
-                return redirect()->route('infaq.bills.index')->with('info', "Semua siswa aktif sudah memiliki tagihan Infaq/SPP untuk bulan " . $this->getMonthName($month) . ". ({$billsSkipped} tagihan dilewati)");
+                return redirect()->route('infaq.bills.index')->with('info', "Semua siswa aktif sudah memiliki tagihan untuk bulan yang dipilih. ({$billsSkipped} tagihan dilewati)");
             }
 
         } catch (\Exception $e) {

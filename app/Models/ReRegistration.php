@@ -38,4 +38,9 @@ class ReRegistration extends Model
     {
         return $this->belongsTo(User::class, 'confirmed_by');
     }
+
+    public function registrationPayment()
+    {
+        return $this->morphOne(RegistrationPayment::class, 'registrationable');
+    }
 }

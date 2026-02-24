@@ -88,4 +88,9 @@ class PpdbRegistration extends Model
     {
         return $this->belongsTo(User::class, 'reviewed_by');
     }
+
+    public function registrationPayment()
+    {
+        return $this->morphOne(RegistrationPayment::class, 'registrationable');
+    }
 }

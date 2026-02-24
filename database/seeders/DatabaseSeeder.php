@@ -54,15 +54,20 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($users as $userData) {
-            $user = \App\Models\User::create($userData);
+            $user = \App\Models\User::firstOrCreate(
+                ['email' => $userData['email']],
+                $userData
+            );
             
-            // Assign scope ke MI
-            \App\Models\UserScope::create([
-                'user_id' => $user->id,
-                'entity_id' => $entityMi->id,
-                'unit_id' => $unitMi->id,
-                'role' => $user->role,
-            ]);
+            // Assign scope ke MI jika belum ada
+            \App\Models\UserScope::firstOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'entity_id' => $entityMi->id,
+                    'unit_id' => $unitMi->id,
+                ],
+                ['role' => $user->role]
+            );
         }
 
         // 3. Jalankan Demo Data (Kelas & Siswa)
@@ -71,19 +76,31 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 4. Default Kas
-        DB::table('cash_accounts')->insert([
-            ['name' => 'BSI Sekolah', 'balance' => 0, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Kas Tunai / Brankas', 'balance' => 0, 'created_at' => now(), 'updated_at' => now()]
-        ]);
+        $cashAccounts = [
+            ['name' => 'BSI Sekolah', 'balance' => 0],
+            ['name' => 'Kas Tunai / Brankas', 'balance' => 0]
+        ];
+        foreach ($cashAccounts as $account) {
+            DB::table('cash_accounts')->updateOrInsert(
+                ['name' => $account['name']],
+                array_merge($account, ['updated_at' => now(), 'created_at' => now()])
+            );
+        }
 
         // 5. Default Kategori Transaksi
-        DB::table('transaction_categories')->insert([
-            ['name' => 'Pencairan BOS', 'type' => 'in', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Donasi / Bantuan', 'type' => 'in', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Pembayaran SPP/Infaq', 'type' => 'in', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Pengeluaran Listrik & WiFi', 'type' => 'out', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Honorarium Guru', 'type' => 'out', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Pengeluaran ATK', 'type' => 'out', 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        $categories = [
+            ['name' => 'Pencairan BOS', 'type' => 'in'],
+            ['name' => 'Donasi / Bantuan', 'type' => 'in'],
+            ['name' => 'Pembayaran SPP/Infaq', 'type' => 'in'],
+            ['name' => 'Pengeluaran Listrik & WiFi', 'type' => 'out'],
+            ['name' => 'Honorarium Guru', 'type' => 'out'],
+            ['name' => 'Pengeluaran ATK', 'type' => 'out'],
+        ];
+        foreach ($categories as $cat) {
+            DB::table('transaction_categories')->updateOrInsert(
+                ['name' => $cat['name'], 'type' => $cat['type']],
+                array_merge($cat, ['updated_at' => now(), 'created_at' => now()])
+            );
+        }
     }
 }

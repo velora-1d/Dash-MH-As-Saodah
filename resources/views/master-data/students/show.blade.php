@@ -256,6 +256,87 @@
                     </div>
                 </div>
 
+                <!-- F. Kartu Infaq/SPP -->
+                @if($paymentCard)
+                <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
+                    <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%;"></div>
+                            <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">F. Kartu Infaq/SPP</h4>
+                        </div>
+                        <form method="GET" action="{{ route('students.show', $student) }}" style="margin: 0;">
+                            <select name="academic_year_id" onchange="this.form.submit()" style="padding: 0.375rem 0.75rem; font-size: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; color: #475569; cursor: pointer;">
+                                @foreach($academicYears as $yr)
+                                <option value="{{ $yr->id }}" {{ ($activeYear && $activeYear->id == $yr->id) ? 'selected' : '' }}>{{ $yr->name }}</option>
+                                @endforeach
+                            </select>
+                        </form>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <!-- Grid 12 Bulan (4 kolom x 3 baris) -->
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+                            @foreach($paymentCard['months'] as $m)
+                            @php
+                                $statusClass = match($m['status']) {
+                                    'lunas' => 'spp-lunas',
+                                    'belum_lunas' => 'spp-belum',
+                                    'void' => 'spp-void',
+                                    default => 'spp-null',
+                                };
+                                $icon = match($m['status']) {
+                                    'lunas' => '✓',
+                                    'belum_lunas' => '✕',
+                                    'void' => '—',
+                                    default => '·',
+                                };
+                            @endphp
+                            <div class="spp-card {{ $statusClass }}"
+                                 @if($m['status'] === 'belum_lunas' && $m['bill_id'])
+                                 data-href="{{ route('infaq.payments.create', $m['bill_id']) }}"
+                                 title="Klik untuk bayar"
+                                 @endif
+                            >
+                                <p class="spp-card-month">{{ $m['name'] }}</p>
+                                <p class="spp-card-icon">{{ $icon }}</p>
+                                @if($m['nominal'] > 0)
+                                <p class="spp-card-nominal">Rp {{ number_format($m['nominal'], 0, ',', '.') }}</p>
+                                @endif
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Legenda -->
+                        <div style="display: flex; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap;">
+                            <span style="font-size: 0.625rem; color: #047857;">✓ Lunas</span>
+                            <span style="font-size: 0.625rem; color: #be123c;">✕ Belum</span>
+                            <span style="font-size: 0.625rem; color: #cbd5e1;">· Belum Generate</span>
+                        </div>
+
+                        <!-- Ringkasan -->
+                        <div style="margin-top: 1rem; padding: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1px solid #a7f3d0; border-radius: 0.75rem;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div>
+                                    <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; margin: 0;">Total Kewajiban</p>
+                                    <p style="font-size: 0.8125rem; font-weight: 700; color: #1e293b; margin: 0.125rem 0 0;">Rp {{ number_format($paymentCard['summary']['total_kewajiban'], 0, ',', '.') }}</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; margin: 0;">Terbayar</p>
+                                    <p style="font-size: 0.8125rem; font-weight: 700; color: #10b981; margin: 0.125rem 0 0;">Rp {{ number_format($paymentCard['summary']['total_terbayar'], 0, ',', '.') }}</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; margin: 0;">Tunggakan</p>
+                                    <p style="font-size: 0.8125rem; font-weight: 700; color: #be123c; margin: 0.125rem 0 0;">Rp {{ number_format($paymentCard['summary']['total_tunggakan'], 0, ',', '.') }}</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; margin: 0;">Bulan Bolong</p>
+                                    <p class="spp-summary-value {{ $paymentCard['summary']['bulan_bolong'] > 0 ? 'spp-warning' : 'spp-success' }}">{{ $paymentCard['summary']['bulan_bolong'] }} bulan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
                 <!-- Timestamp -->
                 <div style="padding: 1rem; border-radius: 0.75rem; border: 1px dashed #cbd5e1; background: rgba(248, 250, 252, 0.5); text-align: center;">
                     <p style="font-size: 0.6875rem; color: #64748b; margin: 0;">Mulai Masuk: <strong>{{ $student->entry_date ? \Carbon\Carbon::parse($student->entry_date)->format('d F Y') : '-' }}</strong></p>
@@ -265,4 +346,30 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .spp-card {
+            padding: 0.625rem 0.5rem; border-radius: 0.625rem;
+            text-align: center; transition: all 0.15s ease;
+        }
+        .spp-card[data-href] { cursor: pointer; }
+        .spp-card[data-href]:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .spp-lunas { background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; }
+        .spp-belum { background: #fef2f2; border: 1px solid #fecaca; color: #be123c; }
+        .spp-void { background: #f8fafc; border: 1px solid #e2e8f0; color: #94a3b8; }
+        .spp-null { background: #f8fafc; border: 1px solid #e2e8f0; color: #cbd5e1; }
+        .spp-card-month { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; margin: 0; }
+        .spp-card-icon { font-size: 1rem; font-weight: 800; margin: 0.125rem 0 0; }
+        .spp-card-nominal { font-size: 0.5625rem; margin: 0.125rem 0 0; }
+        .spp-summary-value { font-size: 0.8125rem; font-weight: 700; margin: 0.125rem 0 0; }
+        .spp-warning { color: #f59e0b; }
+        .spp-success { color: #10b981; }
+    </style>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            const card = e.target.closest('.spp-card[data-href]');
+            if (card) window.location = card.dataset.href;
+        });
+    </script>
 </x-app-layout>

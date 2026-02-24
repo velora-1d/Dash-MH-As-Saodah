@@ -230,18 +230,28 @@
                     @endif
                 </div>
 
-                @if($ppdb->status === 'pending')
                 <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    @if($ppdb->status === 'pending')
                     <form action="{{ route('ppdb.approve', $ppdb) }}" method="POST">
                         @csrf
                         <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">✓ Terima Pendaftar</button>
                     </form>
+                    @endif
+
+                    @if($ppdb->status === 'pending' || $ppdb->status === 'diterima')
                     <form action="{{ route('ppdb.reject', $ppdb) }}" method="POST">
                         @csrf
                         <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #e11d48; background: #fff; border: 1.5px solid #fecdd3; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">✗ Tolak Pendaftar</button>
                     </form>
+                    @endif
+
+                    @if($ppdb->status !== 'pending')
+                    <form action="{{ route('ppdb.reset', $ppdb) }}" method="POST">
+                        @csrf
+                        <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #64748b; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">↺ Reset ke Antrean</button>
+                    </form>
+                    @endif
                 </div>
-                @endif
 
                 @if($ppdb->status === 'diterima')
                 <form action="{{ route('ppdb.convert', $ppdb) }}" method="POST">

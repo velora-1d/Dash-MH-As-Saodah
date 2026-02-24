@@ -11,17 +11,22 @@ class SuperAdminSeeder extends Seeder
     public function run(): void
     {
         // 1. Buat Akun Super Admin
-        $ownerId = DB::table('users')->insertGetId([
-            'name' => 'Super Admin As-Saodah',
-            'email' => 'superadmin@assaodah.com',
-            'username' => 'superadmin',
-            'password' => Hash::make('rahasia123'), // Default Password
-            'role' => 'superadmin',
-            'phone' => '081234567890',
-            'status' => 'active',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $owner = DB::table('users')->where('email', 'superadmin@assaodah.com')->first();
+        if (!$owner) {
+            $ownerId = DB::table('users')->insertGetId([
+                'name' => 'Super Admin As-Saodah',
+                'email' => 'superadmin@assaodah.com',
+                'username' => 'superadmin',
+                'password' => Hash::make('rahasia123'), // Default Password
+                'role' => 'superadmin',
+                'phone' => '081234567890',
+                'status' => 'active',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        } else {
+            $ownerId = $owner->id;
+        }
 
         // 2. Buat Entity (Sekolah)
         $sekolahEntityId = DB::table('entities')->where('name', 'MI As-Saodah')->value('id');

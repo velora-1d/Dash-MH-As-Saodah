@@ -45,10 +45,12 @@ class DemoDataSeeder extends Seeder
 
         $classrooms = [];
         foreach ($kelasData as $kd) {
-            $classrooms[$kd['level']] = Classroom::create(array_merge($kd, [
-                'unit_id' => $unit->id,
-                'academic_year_id' => $ay->id,
-            ]));
+            $classrooms[$kd['level']] = Classroom::updateOrCreate(
+                ['unit_id' => $unit->id, 'name' => $kd['name']],
+                array_merge($kd, [
+                    'academic_year_id' => $ay->id,
+                ])
+            );
         }
 
         // Buat Siswa (1 per kelas = 6 siswa)
@@ -65,57 +67,62 @@ class DemoDataSeeder extends Seeder
             $level = $sd['level'];
             unset($sd['level']);
             
-            Student::create(array_merge($sd, [
-                'entity_id' => $entity->id,
-                'unit_id' => $unit->id,
-                'classroom_id' => $classrooms[$level]->id,
-                'status' => 'aktif',
-                'nik' => '320100' . str_pad(rand(1000, 9999), 10, '0', STR_PAD_LEFT),
-                'no_kk' => '320100' . str_pad(rand(1000, 9999), 10, '0', STR_PAD_LEFT),
-                'address' => 'Kp. Contoh RT 001/001, Desa Contoh, Kab. Contoh',
-                // Dapodik Data Dummy
-                'birth_place' => 'Bogor',
-                'birth_date' => \Carbon\Carbon::now()->subYears(7)->subDays(rand(1, 365))->format('Y-m-d'),
-                'family_status' => 'Anak Kandung',
-                'sibling_count' => rand(0, 3),
-                'child_position' => rand(1, 3),
-                'religion' => 'Islam',
-                'village' => 'Desa Contoh',
-                'district' => 'Kec. Contoh',
-                'residence_type' => 'Orang tua',
-                'transportation' => 'Jalan kaki',
-                'student_phone' => '0812' . rand(10000000, 99999999),
-                'height' => rand(110, 140),
-                'weight' => rand(20, 40),
-                'distance_to_school' => rand(1, 5) . ' km',
-                'travel_time' => rand(5, 30),
-                'father_birth_place' => 'Bogor',
-                'father_birth_date' => '1980-01-01',
-                'father_nik' => '320100' . str_pad(rand(1000, 9999), 10, '0', STR_PAD_LEFT),
-                'father_education' => 'SMA/Sederajat',
-                'father_occupation' => 'Wirausaha',
-                'mother_birth_place' => 'Bogor',
-                'mother_birth_date' => '1982-05-10',
-                'mother_nik' => '320100' . str_pad(rand(1000, 9999), 10, '0', STR_PAD_LEFT),
-                'mother_education' => 'SMA/Sederajat',
-                'mother_occupation' => 'Mengurus Rumah Tangga',
-                'parent_income' => 'Rp 2.000.000 - Rp 4.999.999',
-            ]));
+            Student::updateOrCreate(
+                ['nisn' => $sd['nisn']],
+                array_merge($sd, [
+                    'entity_id' => $entity->id,
+                    'unit_id' => $unit->id,
+                    'classroom_id' => $classrooms[$level]->id,
+                    'status' => 'aktif',
+                    'nik' => $sd['nik'] ?? '320100' . str_pad(rand(1000, 9999), 10, '0', STR_PAD_LEFT),
+                    'no_kk' => $sd['no_kk'] ?? '320100' . str_pad(rand(1000, 9999), 10, '0', STR_PAD_LEFT),
+                    'address' => 'Kp. Contoh RT 001/001, Desa Contoh, Kab. Contoh',
+                    // Dapodik Data Dummy
+                    'birth_place' => 'Bogor',
+                    'birth_date' => \Carbon\Carbon::now()->subYears(7)->subDays(rand(1, 365))->format('Y-m-d'),
+                    'family_status' => 'Anak Kandung',
+                    'sibling_count' => rand(0, 3),
+                    'child_position' => rand(1, 3),
+                    'religion' => 'Islam',
+                    'village' => 'Desa Contoh',
+                    'district' => 'Kec. Contoh',
+                    'residence_type' => 'Orang tua',
+                    'transportation' => 'Jalan kaki',
+                    'student_phone' => '0812' . rand(10000000, 99999999),
+                    'height' => rand(110, 140),
+                    'weight' => rand(20, 40),
+                    'distance_to_school' => rand(1, 5) . ' km',
+                    'travel_time' => rand(5, 30),
+                    'father_birth_place' => 'Bogor',
+                    'father_birth_date' => '1980-01-01',
+                    'father_nik' => '320100' . str_pad(rand(1000, 9999), 10, '0', STR_PAD_LEFT),
+                    'father_education' => 'SMA/Sederajat',
+                    'father_occupation' => 'Wirausaha',
+                    'mother_birth_place' => 'Bogor',
+                    'mother_birth_date' => '1982-05-10',
+                    'mother_nik' => '320100' . str_pad(rand(1000, 9999), 10, '0', STR_PAD_LEFT),
+                    'mother_education' => 'SMA/Sederajat',
+                    'mother_occupation' => 'Mengurus Rumah Tangga',
+                    'parent_income' => 'Rp 2.000.000 - Rp 4.999.999',
+                ])
+            );
         }
 
-        // Buat Dummy PPDB
-        \App\Models\PpdbRegistration::factory()->count(5)->create([
-            'academic_year_id' => $ay->id,
-            'unit_id' => $unit->id,
-            'registration_source' => 'online', // Default dari web
-        ]);
-        
-        // Buat Tambahan Dummy PPDB Manual
-        \App\Models\PpdbRegistration::factory()->count(3)->create([
-            'academic_year_id' => $ay->id,
-            'unit_id' => $unit->id,
-            'registration_source' => 'offline',
-            'status' => 'diterima',
-        ]);
+        // Buat Dummy PPDB jika belum ada banyak data (misal < 8)
+        if (\App\Models\PpdbRegistration::where('unit_id', $unit->id)->count() < 8) {
+            \App\Models\PpdbRegistration::factory()->count(5)->create([
+                'academic_year_id' => $ay->id,
+                'unit_id' => $unit->id,
+                'registration_source' => 'online', // Default dari web
+            ]);
+            
+            // Buat Tambahan Dummy PPDB Manual
+            \App\Models\PpdbRegistration::factory()->count(3)->create([
+                'academic_year_id' => $ay->id,
+                'unit_id' => $unit->id,
+                'registration_source' => 'offline',
+                'status' => 'diterima',
+            ]);
+        }
     }
 }

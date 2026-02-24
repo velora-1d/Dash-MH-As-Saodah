@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PpdbRegistration;
 use App\Models\AcademicYear;
 use App\Models\Student;
+use App\Models\RegistrationPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\PpdbExport;
@@ -26,7 +27,7 @@ class PpdbController extends Controller
             $activeYear = AcademicYear::where('is_active', true)->first();
         }
 
-        $query = PpdbRegistration::with('academicYear', 'reviewer')
+        $query = PpdbRegistration::with('academicYear', 'reviewer', 'registrationPayment')
             ->orderByDesc('registered_at');
 
         if ($activeYear) {
@@ -161,6 +162,21 @@ class PpdbController extends Controller
         }
     }
 
+    public function reset(PpdbRegistration $ppdb)
+    {
+        try {
+            $ppdb->update([
+                'status' => 'pending',
+                'reviewed_by' => null,
+                'reviewed_at' => null,
+            ]);
+            return redirect()->back()->with('success', 'Status pendaftar "' . $ppdb->student_name . '" berhasil dikembalikan ke Antrean (Pending).');
+        } catch (\Exception $e) {
+            Log::error('Gagal reset status PPDB: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal mereset status.');
+        }
+    }
+
     public function convertToStudent(PpdbRegistration $ppdb)
     {
         if ($ppdb->status !== 'diterima') {
@@ -169,7 +185,7 @@ class PpdbController extends Controller
 
         try {
             DB::transaction(function () use ($ppdb) {
-                Student::create([
+                $student = Student::create([
                     'name' => $ppdb->student_name,
                     'gender' => $ppdb->gender,
                     'birth_date' => $ppdb->birth_date,
@@ -219,6 +235,18 @@ class PpdbController extends Controller
                     'guardian_phone' => $ppdb->guardian_phone,
                     'attachments' => $ppdb->attachments,
                 ]);
+
+                // Buat record pelacakan administrasi pendaftaran
+                RegistrationPayment::create([
+                    'academic_year_id' => $ppdb->academic_year_id,
+                    'registrationable_type' => PpdbRegistration::class,
+                    'registrationable_id' => $ppdb->id,
+                    'entity_id' => $student->entity_id,
+                    'unit_id' => $student->unit_id,
+                ]);
+
+                // Update status PPDB menjadi converted
+                $ppdb->update(['status' => 'converted']);
             });
 
             return redirect()->route('ppdb.index')->with('success', 'Pendaftar "' . $ppdb->student_name . '" berhasil dikonversi menjadi siswa aktif.');

@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::middleware('role:kepsek,admin')->group(function () {
             Route::post('/{ppdb}/approve', [\App\Http\Controllers\Ppdb\PpdbController::class, 'approve'])->name('approve');
             Route::post('/{ppdb}/reject', [\App\Http\Controllers\Ppdb\PpdbController::class, 'reject'])->name('reject');
+            Route::post('/{ppdb}/reset', [\App\Http\Controllers\Ppdb\PpdbController::class, 'reset'])->name('reset');
             Route::post('/{ppdb}/convert', [\App\Http\Controllers\Ppdb\PpdbController::class, 'convertToStudent'])->name('convert');
         });
     });
@@ -79,6 +80,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('infaq/payments/{bill}/create', [\App\Http\Controllers\Infaq\InfaqPaymentController::class, 'create'])->name('infaq.payments.create');
         Route::post('infaq/payments/{bill}', [\App\Http\Controllers\Infaq\InfaqPaymentController::class, 'store'])->name('infaq.payments.store');
         Route::get('infaq/bills/export', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'export'])->name('infaq.bills.export');
+
+        // Quick Payment Toggle (AJAX) untuk administrasi pendaftaran
+        Route::post('quick-payment/{registrationPayment}/toggle', [\App\Http\Controllers\QuickPaymentController::class, 'toggle'])->name('quick-payment.toggle');
 
         // Tabungan Siswa
         Route::get('tabungan', [\App\Http\Controllers\Tabungan\TabunganController::class, 'index'])->name('tabungan.index');

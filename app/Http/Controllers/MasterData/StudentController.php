@@ -106,9 +106,38 @@ class StudentController extends Controller
         return redirect()->route('students.index')->with('success', 'Data Master Siswa berhasil ditambahkan.');
     }
 
-    public function show(Student $student)
+    public function show(Request $request, Student $student)
     {
-        return view('master-data.students.show', compact('student'));
+        $sppService = new \App\Services\SppService();
+
+        // Ambil tahun ajaran
+        $academicYears = \App\Models\AcademicYear::orderByDesc('is_active')->orderByDesc('name')->get();
+        $activeYear = $request->filled('academic_year_id')
+            ? \App\Models\AcademicYear::find($request->academic_year_id)
+            : \App\Models\AcademicYear::where('is_active', true)->first();
+
+        // Data Kartu Pembayaran Infaq/SPP
+        $paymentCard = null;
+        if ($activeYear) {
+            $paymentCard = $sppService->getStudentPaymentCard($student, $activeYear);
+        }
+
+        // Data Administrasi Pendaftaran (dari RegistrationPayment via PPDB/Daftar Ulang)
+        $registrationPayments = \App\Models\RegistrationPayment::where(function ($q) use ($student) {
+            // Cari via PpdbRegistration (jika siswa berasal dari PPDB)
+            $q->where(function ($sub) use ($student) {
+                $sub->where('registrationable_type', \App\Models\PpdbRegistration::class);
+            });
+            // Atau via ReRegistration
+            $q->orWhere(function ($sub) use ($student) {
+                $sub->where('registrationable_type', \App\Models\ReRegistration::class)
+                    ->whereIn('registrationable_id', \App\Models\ReRegistration::where('student_id', $student->id)->pluck('id'));
+            });
+        })->with('academicYear')->get();
+
+        return view('master-data.students.show', compact(
+            'student', 'academicYears', 'activeYear', 'paymentCard', 'registrationPayments'
+        ));
     }
 
     public function edit(Student $student)

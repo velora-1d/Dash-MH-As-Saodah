@@ -68,4 +68,93 @@ class SppService
             ->with('academicYear')
             ->get();
     }
+
+    /**
+     * Bangun data "Kartu Pembayaran" 12 bulan untuk siswa tertentu.
+     *
+     * @return array{months: array, summary: array}
+     */
+    public function getStudentPaymentCard(Student $student, AcademicYear $academicYear): array
+    {
+        // Query semua tagihan siswa di tahun ajaran ini, eager load payments
+        $bills = SppBill::where('student_id', $student->id)
+            ->where('academic_year_id', $academicYear->id)
+            ->with('payments')
+            ->get()
+            ->keyBy('month');
+
+        // Urutan bulan tahun ajaran: Juli(7) - Juni(6)
+        $monthOrder = [7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6];
+        $monthNames = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+        ];
+
+        $months = [];
+        $totalKewajiban = 0;
+        $totalTerbayar = 0;
+        $totalTunggakan = 0;
+        $bulanBolong = 0;
+
+        foreach ($monthOrder as $m) {
+            $bill = $bills->get($m);
+
+            if ($bill) {
+                $paid = $bill->payments->sum('amount');
+                $months[] = [
+                    'month' => $m,
+                    'name' => $monthNames[$m],
+                    'bill_id' => $bill->id,
+                    'nominal' => $bill->nominal,
+                    'total_paid' => $paid,
+                    'remaining' => max(0, $bill->nominal - $paid),
+                    'status' => $bill->status,
+                ];
+
+                if ($bill->status !== 'void') {
+                    $totalKewajiban += $bill->nominal;
+                    $totalTerbayar += $paid;
+                    if ($bill->status === 'belum_lunas') {
+                        $totalTunggakan += max(0, $bill->nominal - $paid);
+                    }
+                }
+            } else {
+                $months[] = [
+                    'month' => $m,
+                    'name' => $monthNames[$m],
+                    'bill_id' => null,
+                    'nominal' => 0,
+                    'total_paid' => 0,
+                    'remaining' => 0,
+                    'status' => null,
+                ];
+                $bulanBolong++;
+            }
+        }
+
+        return [
+            'months' => $months,
+            'summary' => [
+                'total_kewajiban' => $totalKewajiban,
+                'total_terbayar' => $totalTerbayar,
+                'total_tunggakan' => $totalTunggakan,
+                'bulan_bolong' => $bulanBolong,
+            ],
+        ];
+    }
+
+    /**
+     * Generate tagihan untuk beberapa bulan sekaligus (batch).
+     *
+     * @return int total tagihan yang berhasil dibuat
+     */
+    public function generateBulkMonthlyBills(AcademicYear $academicYear, array $months, int $year): int
+    {
+        $total = 0;
+        foreach ($months as $month) {
+            $total += $this->generateMonthlyBills($academicYear, (int) $month, $year);
+        }
+        return $total;
+    }
 }

@@ -105,15 +105,30 @@
                                     <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #be123c; background: #ffe4e6; border-radius: 999px;">✗ Ditolak</span>
                                 @endif
                             </td>
-                            <td style="padding: 1rem 1.5rem; text-align: center;">
+                            <td style="padding: 1rem 1.5rem; text-align: left; vertical-align: top;">
                                 @if($reg->registrationPayment)
-                                <div style="display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                                <div style="display: flex; flex-direction: column; gap: 0.375rem; min-width: 140px;">
                                     @php $rp = $reg->registrationPayment; @endphp
-                                    <button class="admin-btn {{ $rp->is_fee_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_fee_paid" title="Biaya Masuk"><svg style="width:1.125rem;height:1.125rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
-                                    <button class="admin-btn {{ $rp->is_books_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_paid" title="Buku — Bayar"><svg style="width:1.125rem;height:1.125rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></button>
-                                    <button class="admin-btn {{ $rp->is_books_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_received" title="Buku — Diambil"><svg style="width:1.125rem;height:1.125rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
-                                    <button class="admin-btn {{ $rp->is_uniform_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_paid" title="Seragam — Bayar"><svg style="width:1.125rem;height:1.125rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></button>
-                                    <button class="admin-btn {{ $rp->is_uniform_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_received" title="Seragam — Diambil"><svg style="width:1.125rem;height:1.125rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></button>
+                                    <button class="admin-badge {{ $rp->is_fee_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_fee_paid">
+                                        <span>Biaya Masuk</span>
+                                        <span class="indicator">{!! $rp->is_fee_paid ? '&#10003;' : '&#8722;' !!}</span>
+                                    </button>
+                                    <div style="display: flex; gap: 0.25rem;">
+                                        <button class="admin-badge {{ $rp->is_books_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_paid" title="Bayar Lunas" style="flex:1;">
+                                            <span>Buku (Rp)</span><span class="indicator">{!! $rp->is_books_paid ? '&#10003;' : '&#8722;' !!}</span>
+                                        </button>
+                                        <button class="admin-badge {{ $rp->is_books_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_received" title="Sudah Diambil" style="flex:1;">
+                                            <span>Ambil</span><span class="indicator">{!! $rp->is_books_received ? '&#10003;' : '&#8722;' !!}</span>
+                                        </button>
+                                    </div>
+                                    <div style="display: flex; gap: 0.25rem;">
+                                        <button class="admin-badge {{ $rp->is_uniform_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_paid" title="Bayar Lunas" style="flex:1;">
+                                            <span>Baju (Rp)</span><span class="indicator">{!! $rp->is_uniform_paid ? '&#10003;' : '&#8722;' !!}</span>
+                                        </button>
+                                        <button class="admin-badge {{ $rp->is_uniform_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_received" title="Sudah Diambil" style="flex:1;">
+                                            <span>Ambil</span><span class="indicator">{!! $rp->is_uniform_received ? '&#10003;' : '&#8722;' !!}</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 @else
                                 <span style="color: #cbd5e1; font-size: 0.6875rem;">—</span>
@@ -158,17 +173,23 @@
     </div>
 
     <style>
-        .admin-btn {
-            cursor: pointer; border: none; background: none; font-size: 1.125rem;
-            transition: all 0.15s ease; opacity: 0.35; padding: 0.125rem;
+        .admin-badge {
+            cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.65rem; font-weight: 600;
+            padding: 0.375rem 0.5rem; border-radius: 0.375rem; border: 1px solid #e2e8f0;
+            background: #f8fafc; color: #64748b; transition: all 0.15s ease;
+            display: inline-flex; align-items: center; justify-content: space-between; width: 100%;
         }
-        .admin-btn:hover { transform: scale(1.2); }
-        .admin-btn.admin-active { opacity: 1; }
+        .admin-badge:hover { background: #f1f5f9; border-color: #cbd5e1; color: #475569; }
+        .admin-badge.admin-active { 
+            background: #ecfdf5; border-color: #a7f3d0; color: #059669; 
+        }
+        .admin-badge.admin-active:hover { background: #d1fae5; border-color: #6ee7b7; color: #047857; }
+        .indicator { font-weight: 800; }
     </style>
 
     <script>
         document.addEventListener('click', function(e) {
-            const btn = e.target.closest('.admin-btn');
+            const btn = e.target.closest('.admin-badge');
             if (!btn) return;
 
             const paymentId = btn.dataset.id;
@@ -187,8 +208,12 @@
             .then(data => {
                 if (data.success) {
                     btn.classList.toggle('admin-active', data.value);
-                    btn.style.transform = 'scale(1.3)';
-                    setTimeout(() => btn.style.transform = '', 200);
+                    const indicator = btn.querySelector('.indicator');
+                    if (indicator) {
+                        indicator.innerHTML = data.value ? '&#10003;' : '&#8722;';
+                    }
+                    btn.style.transform = 'scale(1.02)';
+                    setTimeout(() => btn.style.transform = '', 150);
                 }
             })
             .catch(() => {

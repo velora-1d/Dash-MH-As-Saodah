@@ -116,6 +116,7 @@
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.375rem;">
+                                        <a href="{{ route('students.show', $student->id) }}" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #0284c7; background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">👁 Detail</a>
                                         <a href="{{ route('students.edit', $student->id) }}" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Edit</a>
                                         <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin hapus data siswa ini? Semua data terkait akan ikut terhapus.');">
                                             @csrf @method('DELETE')

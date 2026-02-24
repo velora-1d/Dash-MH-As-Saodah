@@ -81,6 +81,12 @@ class InfaqBillController extends Controller
         $academicYearId = $request->academic_year_id;
         $months = $request->months;
 
+        // Fetch academic year to calculate correct calendar year per month
+        $academicYear = \App\Models\AcademicYear::findOrFail($academicYearId);
+        // Parse start year from academic year name (e.g. "2025/2026 Ganjil" → 2025)
+        preg_match('/(\d{4})/', $academicYear->name, $matches);
+        $startYear = isset($matches[1]) ? (int) $matches[1] : (int) date('Y');
+
         // Get all active students with their associated classroom
         $students = Student::with('classroom')->where('status', 'aktif')->get();
 
@@ -96,6 +102,8 @@ class InfaqBillController extends Controller
         try {
             foreach ($months as $month) {
                 $month = (int) $month;
+                // Jul-Dec = startYear, Jan-Jun = startYear + 1
+                $billYear = ($month >= 7) ? $startYear : $startYear + 1;
 
                 foreach ($students as $student) {
                     // Check if bill already exists for this student, month, and academic year
@@ -132,6 +140,7 @@ class InfaqBillController extends Controller
                         'student_id' => $student->id,
                         'academic_year_id' => $academicYearId,
                         'month' => $month,
+                        'year' => $billYear,
                         'nominal' => $nominal,
                         'status' => $status,
                     ]);

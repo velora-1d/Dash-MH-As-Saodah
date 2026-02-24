@@ -51,6 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{reRegistration}/not-registered', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'markNotRegistered'])->name('not-registered');
     });
 
+    // Quick Payment Toggle (PPDB & Daftar Ulang — tracking biaya, buku, seragam)
+    Route::post('/quick-payment/{registrationPayment}/toggle', [\App\Http\Controllers\QuickPaymentController::class, 'toggle'])->name('quick-payment.toggle');
+
     // =============================================
     // MASTER DATA (Kepsek, Admin, Operator)
     // =============================================

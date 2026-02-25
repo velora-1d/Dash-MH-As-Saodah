@@ -212,36 +212,60 @@
         <!-- Tab 3: Zona Bahaya (Super Admin Only) -->
         @if(Auth::user()->role === 'superadmin')
         <section id="tab-danger" style="display: none;">
-            <div style="background: #fff; border-radius: 1rem; border: 1px solid #fee2e2; overflow: hidden;">
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #fee2e2; background: #fffaf0; display: flex; align-items: center; gap: 0.5rem;">
-                    <svg style="width: 1.25rem; height: 1.25rem; color: #ef4444;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 15c-.77 1.333.192 3 1.732 3z" /></svg>
-                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #b91c1c; margin: 0;">Danger Zone: Wipe System</h4>
+            <div style="background: #18181b; border-radius: 1rem; border: 2px solid #ef4444; overflow: hidden; box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);">
+                <div style="padding: 1.5rem; border-bottom: 1px solid #3f3f46; background: linear-gradient(135deg, #450a0a, #7f1d1d); display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="padding: 0.5rem; background: rgba(239,68,68,0.2); border-radius: 0.5rem; border: 1px solid rgba(239,68,68,0.4);">
+                        <svg style="width: 1.5rem; height: 1.5rem; color: #fca5a5;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 15c-.77 1.333.192 3 1.732 3z" /></svg>
+                    </div>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: #fecaca; margin: 0; text-transform: uppercase; letter-spacing: 0.05em;">Zona Berbahaya: Pemusnahan Data</h4>
                 </div>
 
-                <div style="padding: 2rem;">
-                    <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 0.75rem; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start;">
-                        <div style="width: 40px; height: 40px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg style="width: 20px; height: 20px; color: #ef4444;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                <div style="padding: 2.5rem; background: #27272a;">
+                    <div style="background: #450a0a; border: 1px dashed #ef4444; border-radius: 1rem; padding: 2rem; display: flex; gap: 1.5rem; align-items: flex-start; box-shadow: inset 0 0 15px rgba(0,0,0,0.5);">
+                        <div style="width: 50px; height: 50px; background: #7f1d1d; border: 2px solid #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 0 15px rgba(239,68,68,0.5);">
+                            <svg style="width: 24px; height: 24px; color: #fecaca;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                         </div>
                         <div>
-                            <h5 style="font-size: 0.9375rem; font-weight: 700; color: #991b1b; margin: 0;">Hapus Seluruh Data Operasional</h5>
-                            <p style="font-size: 0.8125rem; color: #b91c1c; margin-top: 0.5rem; line-height: 1.5;">
-                                Tindakan ini akan menghapus **SELURUH DATA** (Siswa, Kelas, Transaksi, Infaq, Gaji, Inventaris, dan Konten Website).
-                                Pengguna sistem (User Accounts) tidak akan dihapus agar Anda tetap bisa login.
+                            <h5 style="font-size: 1.125rem; font-weight: 800; color: #fca5a5; margin: 0; text-transform: uppercase;">WIPE SYSTEM (Hapus Total Data Operasional)</h5>
+                            <p style="font-size: 0.9375rem; color: #f8bdc0; margin-top: 0.75rem; line-height: 1.6;">
+                                Peringatan! Mengeklik tombol ini akan menghapus <span style="font-weight: 800; color: #ef4444;">SELURUH DATA</span> operasional institusi (Siswa, Kelas, Transaksi Infaq/Spp, Gaji Pegawai, Inventaris, dan Konten Website).
+                                Pengguna sistem (User Administrator) tetap dipertahankan.
                             </p>
-                            <p style="font-size: 0.75rem; color: #ef4444; margin-top: 0.75rem; font-weight: 600; font-style: italic;">
-                                * Perhatian: Tindakan ini bersifat PERMANEN dan tidak dapat dibatalkan.
-                            </p>
+                            <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(0,0,0,0.3); border-left: 4px solid #ef4444; border-radius: 0 0.5rem 0.5rem 0;">
+                                <p style="font-size: 0.8125rem; color: #fecaca; font-weight: 600; margin: 0;">
+                                    <span style="color: #ef4444; font-weight: 800;">PERHATIAN MUTLAK:</span> Tindakan ini bersifat PERMANEN, TIDAK BISA DIKEMBALIKAN, dan akan mengosongkan SELURUH DATABASE transaksi Anda!
+                                </p>
+                            </div>
                         </div>
                     </div>
 
-                    <div style="margin-top: 2rem; text-align: center;">
-                        <button type="button" onclick="confirmWipeData()" 
-                                style="display: inline-flex; align-items: center; padding: 0.75rem 2rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: #ef4444; border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);"
-                                onmouseover="this.style.background='#dc2626'; this.style.transform='translateY(-1px)'" 
-                                onmouseout="this.style.background='#ef4444'; this.style.transform=''">
-                            <svg style="width: 1.125rem; height: 1.125rem; margin-right: 0.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                            YA, HAPUS SEMUA DATA SEKARANG
+                    <div style="margin-top: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+                        
+                        <!-- Tombol Backup Pre-Wipe -->
+                        <div style="width: 100%; max-width: 600px; padding: 1.25rem; background: #fffbeb; border: 1px dashed #f59e0b; border-radius: 0.75rem; text-align: center;">
+                            <p style="font-size: 0.8125rem; color: #b45309; margin-bottom: 1rem; font-weight: 600;">Sangat disarankan untuk mendownload cadangan data sebelum melanjutkan penghapusan.</p>
+                            <a href="{{ route('settings.backup.download') }}" target="_blank" 
+                               style="display: inline-flex; align-items: center; padding: 0.75rem 1.5rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: #ea580c; border-radius: 0.5rem; text-decoration: none; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(234, 88, 12, 0.2);"
+                               onmouseover="this.style.background='#c2410c'; this.style.transform='translateY(-1px)'" 
+                               onmouseout="this.style.background='#ea580c'; this.style.transform=''">
+                                <svg style="width: 1.125rem; height: 1.125rem; margin-right: 0.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                Download Backup Database (.sql)
+                            </a>
+                        </div>
+
+                        <!-- Checkbox Verifikasi Manual -->
+                        <div style="display: flex; align-items: center; gap: 0.75rem; user-select: none;">
+                            <input type="checkbox" id="backup-confirm-checkbox" onclick="toggleWipeButton()" style="width: 1.25rem; height: 1.25rem; border-radius: 0.25rem; border: 2px solid #ef4444; cursor: pointer;">
+                            <label for="backup-confirm-checkbox" style="font-size: 0.875rem; color: #fca5a5; cursor: pointer;">Saya menyatakan telah menyimpan Backup Database sebelum melanjutkan.</label>
+                        </div>
+
+                        <!-- Tombol Eksekusi -->
+                        <button type="button" id="btn-wipe-data" onclick="confirmWipeData()" disabled
+                                style="display: inline-flex; align-items: center; justify-content: center; padding: 1rem 3rem; font-size: 1rem; font-weight: 800; color: #fff; background: #3f3f46; border: 2px solid #52525b; border-radius: 0.75rem; cursor: not-allowed; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.1em; outline: none; opacity: 0.5;">
+                            <span style="display: flex; align-items: center; justify-content: center;">
+                                <svg style="width: 1.25rem; height: 1.25rem; margin-right: 0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                YA, HANGUSKAN SEMUA DATA SEKARANG!
+                            </span>
                         </button>
                     </div>
 
@@ -295,7 +319,44 @@
             }
         }
 
+        function toggleWipeButton() {
+            var checkbox = document.getElementById('backup-confirm-checkbox');
+            var btn = document.getElementById('btn-wipe-data');
+            
+            if (checkbox.checked) {
+                btn.disabled = false;
+                btn.style.cursor = 'pointer';
+                btn.style.opacity = '1';
+                btn.style.background = 'linear-gradient(135deg, #b91c1c, #7f1d1d)';
+                btn.style.borderColor = '#ef4444';
+                btn.style.boxShadow = '0 0 20px rgba(220, 38, 38, 0.4)';
+                
+                // Add hover events dynamically
+                btn.onmouseover = function() {
+                    this.style.background = 'linear-gradient(135deg, #dc2626, #b91c1c)';
+                    this.style.transform = 'scale(1.02)';
+                    this.style.boxShadow = '0 0 30px rgba(239, 68, 68, 0.6)';
+                };
+                btn.onmouseout = function() {
+                    this.style.background = 'linear-gradient(135deg, #b91c1c, #7f1d1d)';
+                    this.style.transform = 'scale(1)';
+                    this.style.boxShadow = '0 0 20px rgba(220, 38, 38, 0.4)';
+                };
+            } else {
+                btn.disabled = true;
+                btn.style.cursor = 'not-allowed';
+                btn.style.opacity = '0.5';
+                btn.style.background = '#3f3f46';
+                btn.style.borderColor = '#52525b';
+                btn.style.boxShadow = 'none';
+                btn.onmouseover = null;
+                btn.onmouseout = null;
+                btn.style.transform = 'scale(1)';
+            }
+        }
+
         async function confirmWipeData() {
+            if (!document.getElementById('backup-confirm-checkbox').checked) return;
             const { value: text } = await Swal.fire({
                 title: 'TINDAKAN SANGAT BERBAHAYA!!',
                 text: 'Apakah Anda benar-benar ingin menghapus SELURUH data sistem? Ketik "KONFIRMASI HAPUS SEMUA DATA" di bawah untuk melanjutkan.',

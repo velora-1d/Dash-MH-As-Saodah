@@ -38,6 +38,11 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        <!-- Backup Database (Akses Global Role) -->
+                        <x-dropdown-link :href="route('settings.backup.download')" target="_blank">
+                            {{ __('Unduh Backup Database (.sql)') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -82,6 +87,10 @@
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('settings.backup.download')" target="_blank">
+                    {{ __('Unduh Backup (.sql)') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

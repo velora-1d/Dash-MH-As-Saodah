@@ -176,6 +176,37 @@ class SettingController extends Controller
             return back()->with('error', 'Konfirmasi teks tidak sesuai. Data gagal dihapus.');
         }
 
+        // --- SISTEM AUTO-BACKUP SEBELUM PENGHAPUSAN ---
+        try {
+            $filename = 'AUTO_WIPE_BACKUP_' . date('Y_m_d_His') . '.sql';
+            $backupPath = storage_path('app/backups');
+            if (!file_exists($backupPath)) {
+                mkdir($backupPath, 0755, true);
+            }
+            $filePath = $backupPath . '/' . $filename;
+
+            $dbHost     = env('DB_HOST', '127.0.0.1');
+            $dbPort     = env('DB_PORT', '5432');
+            $dbDatabase = env('DB_DATABASE');
+            $dbUsername = env('DB_USERNAME');
+            $dbPassword = env('DB_PASSWORD');
+
+            $command = "PGPASSWORD=\"{$dbPassword}\" pg_dump -h {$dbHost} -p {$dbPort} -U {$dbUsername} -d {$dbDatabase} --no-owner > \"{$filePath}\"";
+            
+            $output = null;
+            $resultCode = null;
+            exec($command, $output, $resultCode);
+
+            if ($resultCode !== 0 || !file_exists($filePath) || filesize($filePath) === 0) {
+                 \Illuminate\Support\Facades\Log::error("Auto Backup Pre-Wipe Failed. Error Code: " . $resultCode); // Silently log, do not block wipe.
+            } else {
+                 \Illuminate\Support\Facades\Log::info("Auto Backup Pre-Wipe Success: " . $filePath);
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Auto Backup Pre-Wipe Exception: ' . $e->getMessage());
+        }
+        // --- END SISTEM AUTO-BACKUP ---
+
         try {
             \Illuminate\Support\Facades\DB::transaction(function () {
                 // Nonaktifkan foreign key checks untuk memudahkan truncate

@@ -202,6 +202,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/profile', 'updateProfile')->name('profile.update');
 
+        // Download Backup Database (Untuk semua akun yang bisa login)
+        Route::get('/backup/download', [\App\Http\Controllers\BackupController::class, 'download'])->name('backup.download');
+
         // Manajemen User (Kepsek, Admin, Superadmin & Operator)
         Route::middleware('role:kepsek,admin,superadmin,operator')->group(function () {
             Route::get('/users/create', 'createUser')->name('users.create');

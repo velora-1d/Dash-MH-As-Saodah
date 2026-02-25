@@ -25,6 +25,19 @@ class WebContentController extends Controller
             return $group->pluck('value', 'key');
         });
 
+        // Tambahkan data dari SchoolSettings (seperti nama, logo, dsb) ke dalam kumpulan setting
+        $schoolSettings = \App\Models\SchoolSetting::first();
+        if ($schoolSettings) {
+            // Buat pseudo-group 'school'
+            $settings['school'] = collect([
+                'name' => $schoolSettings->name,
+                'email' => $schoolSettings->email,
+                'phone' => $schoolSettings->phone,
+                'address' => $schoolSettings->address,
+                'logo_url' => $schoolSettings->logo_path ? asset('storage/' . $schoolSettings->logo_path) : null,
+            ]);
+        }
+
         return response()->json([
             'status' => 'success',
             'data' => $settings,

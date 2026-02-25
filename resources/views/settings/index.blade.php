@@ -33,6 +33,13 @@
                             Menu Layout
                         </a>
                         @endif
+
+                        @if(Auth::user()->role === 'superadmin')
+                        <button onclick="switchTab('danger')" id="tab-btn-danger" style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); color: #fca5a5; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(239,68,68,0.3); cursor: pointer; transition: all 0.2s ease;">
+                            <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 15c-.77 1.333.192 3 1.732 3z" /></svg>
+                            Zona Bahaya
+                        </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -201,6 +208,51 @@
             </div>
         </section>
         @endif
+
+        <!-- Tab 3: Zona Bahaya (Super Admin Only) -->
+        @if(Auth::user()->role === 'superadmin')
+        <section id="tab-danger" style="display: none;">
+            <div style="background: #fff; border-radius: 1rem; border: 1px solid #fee2e2; overflow: hidden;">
+                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #fee2e2; background: #fffaf0; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg style="width: 1.25rem; height: 1.25rem; color: #ef4444;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 15c-.77 1.333.192 3 1.732 3z" /></svg>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #b91c1c; margin: 0;">Danger Zone: Wipe System</h4>
+                </div>
+
+                <div style="padding: 2rem;">
+                    <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 0.75rem; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start;">
+                        <div style="width: 40px; height: 40px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg style="width: 20px; height: 20px; color: #ef4444;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </div>
+                        <div>
+                            <h5 style="font-size: 0.9375rem; font-weight: 700; color: #991b1b; margin: 0;">Hapus Seluruh Data Operasional</h5>
+                            <p style="font-size: 0.8125rem; color: #b91c1c; margin-top: 0.5rem; line-height: 1.5;">
+                                Tindakan ini akan menghapus **SELURUH DATA** (Siswa, Kelas, Transaksi, Infaq, Gaji, Inventaris, dan Konten Website).
+                                Pengguna sistem (User Accounts) tidak akan dihapus agar Anda tetap bisa login.
+                            </p>
+                            <p style="font-size: 0.75rem; color: #ef4444; margin-top: 0.75rem; font-weight: 600; font-style: italic;">
+                                * Perhatian: Tindakan ini bersifat PERMANEN dan tidak dapat dibatalkan.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <button type="button" onclick="confirmWipeData()" 
+                                style="display: inline-flex; align-items: center; padding: 0.75rem 2rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: #ef4444; border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);"
+                                onmouseover="this.style.background='#dc2626'; this.style.transform='translateY(-1px)'" 
+                                onmouseout="this.style.background='#ef4444'; this.style.transform=''">
+                            <svg style="width: 1.125rem; height: 1.125rem; margin-right: 0.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                            YA, HAPUS SEMUA DATA SEKARANG
+                        </button>
+                    </div>
+
+                    <form id="wipe-data-form" action="{{ route('settings.wipe-data') }}" method="POST" style="display: none;">
+                        @csrf
+                        <input type="hidden" name="confirmation" id="wipe-confirmation-input">
+                    </form>
+                </div>
+            </div>
+        </section>
+        @endif
     </div>
 
     <style>
@@ -211,22 +263,69 @@
         function switchTab(tab) {
             var profil = document.getElementById('tab-profil');
             var users = document.getElementById('tab-users');
+            var danger = document.getElementById('tab-danger');
+            
             var btnProfil = document.getElementById('tab-btn-profil');
             var btnUsers = document.getElementById('tab-btn-users');
-
+            var btnDanger = document.getElementById('tab-btn-danger');
+ 
             var activeStyle = 'display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.35); color: #fff; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; border: 1.5px solid rgba(255,255,255,0.5); cursor: pointer; transition: all 0.2s ease;';
             var inactiveStyle = 'display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.15); color: #fff; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.25); cursor: pointer; transition: all 0.2s ease;';
+            var dangerActiveStyle = 'display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: #ef4444; color: #fff; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; border: 1.5px solid #dc2626; cursor: pointer; transition: all 0.2s ease;';
+            var dangerInactiveStyle = 'display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); color: #fca5a5; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(239,68,68,0.3); cursor: pointer; transition: all 0.2s ease;';
+
+            // Reset semua
+            profil.style.display = 'none';
+            if (users) users.style.display = 'none';
+            if (danger) danger.style.display = 'none';
+            
+            btnProfil.style.cssText = inactiveStyle;
+            if (btnUsers) btnUsers.style.cssText = inactiveStyle;
+            if (btnDanger) btnDanger.style.cssText = dangerInactiveStyle;
 
             if (tab === 'profil') {
                 profil.style.display = 'block';
-                if (users) users.style.display = 'none';
                 btnProfil.style.cssText = activeStyle;
-                if (btnUsers) btnUsers.style.cssText = inactiveStyle;
-            } else {
-                profil.style.display = 'none';
+            } else if (tab === 'users') {
                 if (users) users.style.display = 'block';
-                if (btnProfil) btnProfil.style.cssText = inactiveStyle;
                 if (btnUsers) btnUsers.style.cssText = activeStyle;
+            } else if (tab === 'danger') {
+                if (danger) danger.style.display = 'block';
+                if (btnDanger) btnDanger.style.cssText = dangerActiveStyle;
+            }
+        }
+
+        async function confirmWipeData() {
+            const { value: text } = await Swal.fire({
+                title: 'TINDAKAN SANGAT BERBAHAYA!!',
+                text: 'Apakah Anda benar-benar ingin menghapus SELURUH data sistem? Ketik "KONFIRMASI HAPUS SEMUA DATA" di bawah untuk melanjutkan.',
+                input: 'text',
+                inputPlaceholder: 'Ketik kalimat konfirmasi...',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'YA, HAPUS PERMANEN!',
+                cancelButtonText: 'Batal',
+                inputValidator: (value) => {
+                    if (!value || value !== 'KONFIRMASI HAPUS SEMUA DATA') {
+                        return 'Teks konfirmasi salah!';
+                    }
+                }
+            });
+
+            if (text === 'KONFIRMASI HAPUS SEMUA DATA') {
+                document.getElementById('wipe-confirmation-input').value = text;
+                document.getElementById('wipe-data-form').submit();
+                
+                Swal.fire({
+                    title: 'Memproses...',
+                    text: 'Sedang membersihkan database, mohon tunggu.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
             }
         }
     </script>

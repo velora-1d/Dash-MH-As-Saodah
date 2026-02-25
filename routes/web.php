@@ -213,6 +213,9 @@ Route::middleware('auth')->group(function () {
 
             // Manajemen Menu
             Route::resource('menus', \App\Http\Controllers\Setting\MenuController::class)->except(['show']);
+
+            // Wipe Data (Khusus Super Admin)
+            Route::post('/wipe-data', 'wipeAllData')->name('wipe-data');
         });
     });
 });

@@ -154,4 +154,77 @@ class SettingController extends Controller
 
         return back()->with('success', 'Password user berhasil di-reset.');
     }
+
+    /**
+     * Hapus semua data operasional sistem (Wipe Data).
+     * Khusus untuk role Super Admin.
+     */
+    public function wipeAllData(Request $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if ($user->role !== 'superadmin') {
+            abort(403, 'Akses ditolak. Hanya Super Admin yang dapat melakukan tindakan ini.');
+        }
+
+        $request->validate([
+            'confirmation' => 'required|string',
+        ]);
+
+        if ($request->confirmation !== 'KONFIRMASI HAPUS SEMUA DATA') {
+            return back()->with('error', 'Konfirmasi teks tidak sesuai. Data gagal dihapus.');
+        }
+
+        try {
+            \Illuminate\Support\Facades\DB::transaction(function () {
+                // Nonaktifkan foreign key checks untuk memudahkan truncate
+                \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+                $tables = [
+                    'academic_years',
+                    'classrooms',
+                    'students',
+                    'infaq_bills',
+                    'infaq_payments',
+                    'general_transactions',
+                    'student_savings_mutations',
+                    'ppdb_registrations',
+                    're_registrations',
+                    'employees',
+                    'salary_components',
+                    'employee_salaries',
+                    'payrolls',
+                    'payroll_details',
+                    'inventories',
+                    'inventory_logs',
+                    'audit_logs',
+                    'wakaf_donors',
+                    'wakaf_purposes',
+                    'registration_payments',
+                    'web_heroes',
+                    'web_facilities',
+                    'web_achievements',
+                    'web_posts',
+                    'web_teachers'
+                ];
+
+                foreach ($tables as $table) {
+                    if (\Illuminate\Support\Facades\Schema::hasTable($table)) {
+                        \Illuminate\Support\Facades\DB::table($table)->truncate();
+                    }
+                }
+
+                \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            });
+
+            // Bersihkan Cache setelah data di-wipe
+            \Illuminate\Support\Facades\Cache::flush();
+            \Illuminate\Support\Facades\Artisan::call('cache:clear');
+
+            return redirect()->route('settings.index')->with('success', 'SELURUH DATA OPERASIONAL BERHASIL DIHAPUS. Sistem sekarang bersih kembali.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
+        }
+    }
 }

@@ -63,7 +63,8 @@
                                         'kecamatan' => 'color: #d97706; background: #fffbeb; border: 1px solid #fde68a;',
                                     ];
                                 @endphp
-                                <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; {{ $colors[$a->level] ?? 'color: #64748b; background: #f1f5f9; border: 1px solid #e2e8f0;' }}">{{ ucfirst($a->level) }}</span>
+                                @php $levelStyle = 'font-size:0.6875rem;font-weight:600;padding:0.25rem 0.625rem;border-radius:999px;' . ($colors[$a->level] ?? 'color:#64748b;background:#f1f5f9;border:1px solid #e2e8f0;'); @endphp
+                                <span {!! 'style="' . $levelStyle . '"' !!}>{{ ucfirst($a->level) }}</span>
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center; font-family: 'Outfit', sans-serif; font-size: 0.8125rem; font-weight: 700; color: #1e293b;">{{ $a->year }}</td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">

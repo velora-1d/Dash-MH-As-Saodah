@@ -45,9 +45,18 @@
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                     <!-- Status PPDB -->
-                    <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.6875rem; font-weight: 700; {{ $ppdbSettings['ppdb_is_open'] === '1' ? 'background: #d1fae5; color: #047857;' : 'background: #fee2e2; color: #991b1b;' }}">
-                        <span style="width: 6px; height: 6px; border-radius: 50%; {{ $ppdbSettings['ppdb_is_open'] === '1' ? 'background: #10b981;' : 'background: #ef4444;' }}"></span>
-                        {{ $ppdbSettings['ppdb_is_open'] === '1' ? 'PPDB DIBUKA' : 'PPDB DITUTUP' }}
+                    @php
+                        $isOpen = $ppdbSettings['ppdb_is_open'] === '1';
+                        $badgeStyle = 'display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.75rem;border-radius:999px;font-size:0.6875rem;font-weight:700;' . ($isOpen ? 'background:#d1fae5;color:#047857;' : 'background:#fee2e2;color:#991b1b;');
+                        $dotStyle = 'width:6px;height:6px;border-radius:50%;' . ($isOpen ? 'background:#10b981;' : 'background:#ef4444;');
+                        $toggleAreaStyle = 'background:' . ($isOpen ? '#f0fdf4' : '#fef2f2') . ';border:1.5px solid ' . ($isOpen ? '#bbf7d0' : '#fecaca') . ';border-radius:0.75rem;padding:1rem;text-align:center;';
+                        $sliderBg = 'position:absolute;top:0;left:0;right:0;bottom:0;background:' . ($isOpen ? '#10b981' : '#cbd5e1') . ';border-radius:999px;transition:all 0.3s ease;';
+                        $knobStyle = 'position:absolute;top:2px;left:' . ($isOpen ? '26px' : '2px') . ';width:20px;height:20px;background:#fff;border-radius:50%;transition:all 0.3s ease;box-shadow:0 1px 3px rgba(0,0,0,0.2);';
+                        $statusTextStyle = 'font-size:0.6875rem;font-weight:700;margin:0.375rem 0 0;' . ($isOpen ? 'color:#047857;' : 'color:#991b1b;');
+                    @endphp
+                    <span {!! 'style="' . $badgeStyle . '"' !!}>
+                        <span {!! 'style="' . $dotStyle . '"' !!}></span>
+                        {{ $isOpen ? 'PPDB DIBUKA' : 'PPDB DITUTUP' }}
                     </span>
                     <svg class="chevron" style="width: 16px; height: 16px; color: #94a3b8; transition: transform 0.2s ease;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </div>
@@ -56,15 +65,15 @@
                 <!-- Baris 1: Toggle + Nominal -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
                     <!-- Toggle Buka/Tutup PPDB -->
-                    <div style="background: {{ $ppdbSettings['ppdb_is_open'] === '1' ? '#f0fdf4' : '#fef2f2' }}; border: 1.5px solid {{ $ppdbSettings['ppdb_is_open'] === '1' ? '#bbf7d0' : '#fecaca' }}; border-radius: 0.75rem; padding: 1rem; text-align: center;">
+                    <div {!! 'style="' . $toggleAreaStyle . '"' !!}>
                         <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.5rem;">Status PPDB</p>
                         <label style="position: relative; display: inline-block; width: 48px; height: 24px; cursor: pointer;">
-                            <input type="checkbox" id="ppdb-toggle" {{ $ppdbSettings['ppdb_is_open'] === '1' ? 'checked' : '' }} style="display: none;" onchange="togglePpdb(this.checked)">
-                            <span style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: {{ $ppdbSettings['ppdb_is_open'] === '1' ? '#10b981' : '#cbd5e1' }}; border-radius: 999px; transition: all 0.3s ease;">
-                                <span style="position: absolute; top: 2px; left: {{ $ppdbSettings['ppdb_is_open'] === '1' ? '26px' : '2px' }}; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: all 0.3s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></span>
+                            <input type="checkbox" id="ppdb-toggle" {{ $isOpen ? 'checked' : '' }} style="display: none;" onchange="togglePpdb(this.checked)">
+                            <span {!! 'style="' . $sliderBg . '"' !!}>
+                                <span {!! 'style="' . $knobStyle . '"' !!}></span>
                             </span>
                         </label>
-                        <p style="font-size: 0.6875rem; font-weight: 700; margin: 0.375rem 0 0; {{ $ppdbSettings['ppdb_is_open'] === '1' ? 'color: #047857;' : 'color: #991b1b;' }}">{{ $ppdbSettings['ppdb_is_open'] === '1' ? 'Dibuka' : 'Ditutup' }}</p>
+                        <p {!! 'style="' . $statusTextStyle . '"' !!}>{{ $isOpen ? 'Dibuka' : 'Ditutup' }}</p>
                     </div>
                     <!-- Biaya Pendaftaran -->
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem;">

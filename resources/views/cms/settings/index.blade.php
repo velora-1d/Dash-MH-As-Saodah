@@ -80,11 +80,16 @@
                     'icon' => '<svg style="width:16px;height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>',
                 ];
             @endphp
+            @php
+                $iconBg = 'width:32px;height:32px;background:' . $meta['color'] . '15;border-radius:0.5rem;display:flex;align-items:center;justify-content:center;color:' . $meta['color'] . ';';
+                $badgeStyle = 'font-size:0.6875rem;font-weight:600;padding:0.125rem 0.5rem;border-radius:999px;color:' . $meta['color'] . ';background:' . $meta['color'] . '10;';
+                $focusColor = $meta['color'];
+            @endphp
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 1.5rem;">
                 <!-- Header Group -->
                 <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
                     <div style="display: flex; align-items: center; gap: 0.625rem;">
-                        <div style="width: 32px; height: 32px; background: {{ $meta['color'] }}15; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: {{ $meta['color'] }};">
+                        <div {!! 'style="' . $iconBg . '"' !!}>
                             {!! $meta['icon'] !!}
                         </div>
                         <div>
@@ -94,18 +99,22 @@
                             @endif
                         </div>
                     </div>
-                    <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.125rem 0.5rem; border-radius: 999px; color: {{ $meta['color'] }}; background: {{ $meta['color'] }}10;">{{ $items->count() }} pengaturan</span>
+                    <span {!! 'style="' . $badgeStyle . '"' !!}>{{ $items->count() }} pengaturan</span>
                 </div>
                 <!-- Isi Setting -->
                 <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
                     @foreach($items as $setting)
-                    <div style="{{ in_array($setting->type, ['textarea']) ? 'grid-column: span 2;' : '' }}">
+                    <div {!! in_array($setting->type, ['textarea']) ? 'style="grid-column: span 2;"' : '' !!}>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">
                             {{ $setting->label ?? ucfirst(str_replace('_', ' ', $setting->key)) }}
                         </label>
 
                         @if($setting->type === 'textarea')
-                            <textarea name="{{ $setting->key }}" rows="3" style="width: 100%; padding: 0.625rem 0.875rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.8125rem; color: #1e293b; background: #f8fafc; transition: all 0.2s ease; resize: vertical; font-family: inherit;" onfocus="this.style.borderColor='{{ $meta['color'] }}'; this.style.background='#fff'; this.style.boxShadow='0 0 0 3px {{ $meta['color'] }}18'" onblur="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc'; this.style.boxShadow='none'">{{ old($setting->key, $setting->value) }}</textarea>
+                            @php
+                                $focusTa = 'this.style.borderColor=\'' . $focusColor . '\';this.style.background=\'#fff\';this.style.boxShadow=\'0 0 0 3px ' . $focusColor . '18\'';
+                                $blurTa = 'this.style.borderColor=\'#e2e8f0\';this.style.background=\'#f8fafc\';this.style.boxShadow=\'none\'';
+                            @endphp
+                            <textarea name="{{ $setting->key }}" rows="3" style="width: 100%; padding: 0.625rem 0.875rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.8125rem; color: #1e293b; background: #f8fafc; transition: all 0.2s ease; resize: vertical; font-family: inherit;" {!! 'onfocus="' . $focusTa . '" onblur="' . $blurTa . '"' !!}>{{ old($setting->key, $setting->value) }}</textarea>
                         @elseif($setting->type === 'image')
                             @if($setting->value)
                                 <div style="margin-bottom: 0.5rem; display: inline-block; position: relative;">
@@ -117,7 +126,11 @@
                                 <p style="font-size: 0.625rem; color: #94a3b8; margin: 0.25rem 0 0;">Format: JPG, PNG, atau PDF. Maks 2MB.</p>
                             </div>
                         @else
-                            <input type="text" name="{{ $setting->key }}" value="{{ old($setting->key, $setting->value) }}" placeholder="Belum diisi" style="width: 100%; padding: 0.625rem 0.875rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.8125rem; color: #1e293b; background: #f8fafc; transition: all 0.2s ease; font-family: inherit;" onfocus="this.style.borderColor='{{ $meta['color'] }}'; this.style.background='#fff'; this.style.boxShadow='0 0 0 3px {{ $meta['color'] }}18'" onblur="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc'; this.style.boxShadow='none'">
+                            @php
+                                $focusIn = 'this.style.borderColor=\'' . $focusColor . '\';this.style.background=\'#fff\';this.style.boxShadow=\'0 0 0 3px ' . $focusColor . '18\'';
+                                $blurIn = 'this.style.borderColor=\'#e2e8f0\';this.style.background=\'#f8fafc\';this.style.boxShadow=\'none\'';
+                            @endphp
+                            <input type="text" name="{{ $setting->key }}" value="{{ old($setting->key, $setting->value) }}" placeholder="Belum diisi" style="width: 100%; padding: 0.625rem 0.875rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.8125rem; color: #1e293b; background: #f8fafc; transition: all 0.2s ease; font-family: inherit;" {!! 'onfocus="' . $focusIn . '" onblur="' . $blurIn . '"' !!}>
                         @endif
                     </div>
                     @endforeach

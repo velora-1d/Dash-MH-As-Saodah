@@ -40,5 +40,22 @@ Route::middleware(['auth:sanctum', 'entity.context'])->name('api.')->group(funct
     });
 });
 
-// Route Pendaftaran PPDB Online (Public)
+// =============================================
+// ROUTE PUBLIK (Tanpa Auth) — Untuk Website Next.js
+// =============================================
+
+// Pendaftaran PPDB Online
 Route::post('ppdb/register', [\App\Http\Controllers\Api\PpdbRegistrationController::class, 'register'])->name('api.ppdb.register');
+Route::post('web/ppdb/upload-attachment', [\App\Http\Controllers\Api\PpdbRegistrationController::class, 'uploadAttachment'])->name('api.ppdb.upload-attachment');
+
+// CMS Website Content (GET endpoints)
+Route::prefix('web')->name('api.web.')->group(function () {
+    Route::get('settings', [\App\Http\Controllers\Api\WebContentController::class, 'settings'])->name('settings');
+    Route::get('heroes', [\App\Http\Controllers\Api\WebContentController::class, 'heroes'])->name('heroes');
+    Route::get('facilities', [\App\Http\Controllers\Api\WebContentController::class, 'facilities'])->name('facilities');
+    Route::get('achievements', [\App\Http\Controllers\Api\WebContentController::class, 'achievements'])->name('achievements');
+    Route::get('posts', [\App\Http\Controllers\Api\WebContentController::class, 'posts'])->name('posts');
+    Route::get('posts/{slug}', [\App\Http\Controllers\Api\WebContentController::class, 'postDetail'])->name('posts.detail');
+    Route::get('teachers', [\App\Http\Controllers\Api\WebContentController::class, 'teachers'])->name('teachers');
+    Route::get('ppdb/info', [\App\Http\Controllers\Api\WebContentController::class, 'ppdbInfo'])->name('ppdb.info');
+});

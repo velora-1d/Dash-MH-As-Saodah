@@ -166,6 +166,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // INVENTARIS (Kepsek, Admin, Operator)
     // =============================================
     Route::resource('inventory', \App\Http\Controllers\InventoryController::class)->except(['show']);
+
+    // =============================================
+    // CMS WEBSITE (Kepsek, Admin)
+    // =============================================
+    Route::middleware('role:superadmin,kepsek,admin')->prefix('cms')->name('cms.')->group(function () {
+        // Pengaturan Website
+        Route::get('settings', [\App\Http\Controllers\Cms\WebSettingController::class, 'index'])->name('settings.index');
+        Route::put('settings', [\App\Http\Controllers\Cms\WebSettingController::class, 'update'])->name('settings.update');
+
+        // Hero / Slider
+        Route::resource('heroes', \App\Http\Controllers\Cms\WebHeroController::class)->except(['show']);
+
+        // Fasilitas
+        Route::resource('facilities', \App\Http\Controllers\Cms\WebFacilityController::class)->except(['show']);
+
+        // Prestasi
+        Route::resource('achievements', \App\Http\Controllers\Cms\WebAchievementController::class)->except(['show']);
+
+        // Berita & Artikel
+        Route::resource('posts', \App\Http\Controllers\Cms\WebPostController::class)->except(['show']);
+
+        // Profil Guru
+        Route::resource('teachers', \App\Http\Controllers\Cms\WebTeacherController::class)->except(['show']);
+    });
 });
 
 Route::middleware('auth')->group(function () {

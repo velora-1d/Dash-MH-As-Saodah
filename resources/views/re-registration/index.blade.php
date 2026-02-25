@@ -69,6 +69,13 @@
                 <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%;"></div>
                 <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Daftar Siswa</h4>
             </div>
+
+            @php
+                $feeDaftarUlang = (int) \App\Models\WebSetting::getValue('re_registration_fee', 0);
+                $feeBuku = (int) \App\Models\WebSetting::getValue('books_fee', 0);
+                $feeSeragam = (int) \App\Models\WebSetting::getValue('uniform_fee', 0);
+            @endphp
+            
             <div style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
@@ -118,21 +125,21 @@
                                 @if($reg->registrationPayment)
                                 <div style="display: flex; flex-direction: column; gap: 0.375rem; min-width: 140px;">
                                     @php $rp = $reg->registrationPayment; @endphp
-                                    <button class="admin-badge {{ $rp->is_fee_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_fee_paid">
-                                        <span>Daftar Ulang</span>
+                                    <button class="admin-badge {{ $rp->is_fee_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_fee_paid" data-amount="{{ $rp->is_fee_paid ? (int)$rp->fee_amount : $feeDaftarUlang }}" title="{{ $rp->is_fee_paid ? 'Lunas: Rp ' . number_format($rp->fee_amount, 0, ',', '.') : 'Harga Rekomendasi: Rp ' . number_format($feeDaftarUlang, 0, ',', '.') }}">
+                                        <span>Herreg {!! $feeDaftarUlang > 0 ? "<span style='opacity:0.6'>(" . ($feeDaftarUlang/1000) . "k)</span>" : "" !!}</span>
                                         <span class="indicator">{!! $rp->is_fee_paid ? '&#10003;' : '&#8722;' !!}</span>
                                     </button>
                                     <div style="display: flex; gap: 0.25rem;">
-                                        <button class="admin-badge {{ $rp->is_books_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_paid" title="Bayar Lunas" style="flex:1;">
-                                            <span>Buku (Rp)</span><span class="indicator">{!! $rp->is_books_paid ? '&#10003;' : '&#8722;' !!}</span>
+                                        <button class="admin-badge {{ $rp->is_books_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_paid" data-amount="{{ $rp->is_books_paid ? (int)$rp->books_amount : $feeBuku }}" title="{{ $rp->is_books_paid ? 'Lunas: Rp ' . number_format($rp->books_amount, 0, ',', '.') : 'Harga Rekomendasi: Rp ' . number_format($feeBuku, 0, ',', '.') }}" style="flex:1;">
+                                            <span>Buku {!! $feeBuku > 0 ? "<span style='opacity:0.6'>(" . ($feeBuku/1000) . "k)</span>" : "" !!}</span><span class="indicator">{!! $rp->is_books_paid ? '&#10003;' : '&#8722;' !!}</span>
                                         </button>
                                         <button class="admin-badge {{ $rp->is_books_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_books_received" title="Sudah Diambil" style="flex:1;">
                                             <span>Ambil</span><span class="indicator">{!! $rp->is_books_received ? '&#10003;' : '&#8722;' !!}</span>
                                         </button>
                                     </div>
                                     <div style="display: flex; gap: 0.25rem;">
-                                        <button class="admin-badge {{ $rp->is_uniform_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_paid" title="Bayar Lunas" style="flex:1;">
-                                            <span>Baju (Rp)</span><span class="indicator">{!! $rp->is_uniform_paid ? '&#10003;' : '&#8722;' !!}</span>
+                                        <button class="admin-badge {{ $rp->is_uniform_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_paid" data-amount="{{ $rp->is_uniform_paid ? (int)$rp->uniform_amount : $feeSeragam }}" title="{{ $rp->is_uniform_paid ? 'Lunas: Rp ' . number_format($rp->uniform_amount, 0, ',', '.') : 'Harga Rekomendasi: Rp ' . number_format($feeSeragam, 0, ',', '.') }}" style="flex:1;">
+                                            <span>Baju {!! $feeSeragam > 0 ? "<span style='opacity:0.6'>(" . ($feeSeragam/1000) . "k)</span>" : "" !!}</span><span class="indicator">{!! $rp->is_uniform_paid ? '&#10003;' : '&#8722;' !!}</span>
                                         </button>
                                         <button class="admin-badge {{ $rp->is_uniform_received ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_uniform_received" title="Sudah Diambil" style="flex:1;">
                                             <span>Ambil</span><span class="indicator">{!! $rp->is_uniform_received ? '&#10003;' : '&#8722;' !!}</span>
@@ -206,31 +213,74 @@
 
             const paymentId = btn.dataset.id;
             const field = btn.dataset.field;
+            let currentAmountStr = btn.dataset.amount || 0;
 
-            fetch('/quick-payment/' + paymentId + '/toggle', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({ field: field })
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.success) {
-                    btn.classList.toggle('admin-active', data.value);
-                    const indicator = btn.querySelector('.indicator');
-                    if (indicator) {
-                        indicator.innerHTML = data.value ? '&#10003;' : '&#8722;';
+            const isTurningOn = !btn.classList.contains('admin-active');
+            const isPaymentField = field.includes('_paid');
+
+            if (isTurningOn && isPaymentField) {
+                Swal.fire({
+                    title: 'Berapa Nominal yang Dibayar?',
+                    text: 'Sesuaikan nominal apabila murid ini mendapatkan harga berbeda.',
+                    input: 'number',
+                    inputValue: currentAmountStr,
+                    showCancelButton: true,
+                    confirmButtonText: 'Terima Kas',
+                    cancelButtonText: 'Batal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        doToggle(paymentId, field, result.value);
                     }
-                    btn.style.transform = 'scale(1.02)';
-                    setTimeout(() => btn.style.transform = '', 150);
-                }
-            })
-            .catch(() => {
-                Swal.fire('Error', 'Gagal menyimpan perubahan.', 'error');
-            });
+                });
+            } else if (!isTurningOn && isPaymentField) {
+                 Swal.fire({
+                    title: 'Batalkan Pembayaran?',
+                    text: 'Pemasukan di Keuangan Umum juga akan otomatis dibatalkan.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Batalkan',
+                    cancelButtonText: 'Tutup',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        doToggle(paymentId, field, null);
+                    }
+                });
+            } else {
+                doToggle(paymentId, field, null);
+            }
+
+            function doToggle(id, fieldName, amountValue) {
+                fetch('/quick-payment/' + id + '/toggle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ field: fieldName, amount: amountValue })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        if (isPaymentField) {
+                            Swal.fire('Berhasil', 'Status pembayaran diperbarui.', 'success').then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            btn.classList.toggle('admin-active', data.value);
+                            const indicator = btn.querySelector('.indicator');
+                            if (indicator) {
+                                indicator.innerHTML = data.value ? '&#10003;' : '&#8722;';
+                            }
+                            btn.style.transform = 'scale(1.02)';
+                            setTimeout(() => btn.style.transform = '', 150);
+                        }
+                    }
+                })
+                .catch(() => {
+                    Swal.fire('Error', 'Gagal menyimpan perubahan.', 'error');
+                });
+            }
         });
     </script>
 </x-app-layout>

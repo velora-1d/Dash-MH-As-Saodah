@@ -62,7 +62,16 @@
                                 <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $hero->subtitle ?? '-' }}</p>
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
-                                <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; {{ $hero->media_type === 'video' ? 'color: #7c3aed; background: #f5f3ff; border: 1px solid #ddd6fe;' : 'color: #0ea5e9; background: #f0f9ff; border: 1px solid #bae6fd;' }}">{{ ucfirst($hero->media_type) }}</span>
+                                <span @style([
+                                    'font-size: 0.6875rem',
+                                    'font-weight: 600',
+                                    'padding: 0.25rem 0.625rem',
+                                    'border-radius: 999px',
+                                    'color: #7c3aed; background: #f5f3ff; border: 1px solid #ddd6fe;' => $hero->media_type === 'video',
+                                    'color: #0ea5e9; background: #f0f9ff; border: 1px solid #bae6fd;' => $hero->media_type !== 'video'
+                                ])>
+                                    {{ ucfirst($hero->media_type) }}
+                                </span>
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
                                 @if($hero->is_active)

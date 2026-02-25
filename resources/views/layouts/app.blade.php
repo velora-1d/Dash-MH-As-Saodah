@@ -462,6 +462,43 @@
                     }
                 });
             });
+
+            // Global File Upload Size Validator (Max 2MB)
+            document.addEventListener('DOMContentLoaded', function() {
+                const forms = document.querySelectorAll('form[enctype="multipart/form-data"]');
+                forms.forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        const fileInputs = form.querySelectorAll('input[type="file"]');
+                        let hasLargeFile = false;
+                        
+                        fileInputs.forEach(input => {
+                            if (input.files.length > 0) {
+                                for (let i = 0; i < input.files.length; i++) {
+                                    if (input.files[i].size > 2 * 1024 * 1024) { // 2MB
+                                        hasLargeFile = true;
+                                        input.style.borderColor = '#e11d48';
+                                        input.style.backgroundColor = '#fff1f2';
+                                        window.scrollTo({ top: input.offsetTop - 100, behavior: 'smooth' });
+                                    } else {
+                                        input.style.borderColor = '#cbd5e1';
+                                        input.style.backgroundColor = '#f8fafc';
+                                    }
+                                }
+                            }
+                        });
+
+                        if (hasLargeFile) {
+                            e.preventDefault(); // Block submission unconditionally
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Upload Gagal',
+                                text: 'TIDAK BISA DISIMPAN: Ukuran gambar/foto melebihi maksimal 2MB! Silakan kompres gambar Anda terlebih dahulu.',
+                                confirmButtonColor: '#4f46e5'
+                            });
+                        }
+                    });
+                });
+            });
         </script>
 
         {{-- Scripts Stack --}}

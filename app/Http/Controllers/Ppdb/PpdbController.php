@@ -49,7 +49,58 @@ class PpdbController extends Controller
 
         $registrations = $query->paginate(15)->withQueryString();
 
-        return view('ppdb.index', compact('registrations', 'academicYears', 'activeYear', 'stats'));
+        // Konfigurasi PPDB dari WebSetting
+        $ppdbSettings = [
+            'ppdb_is_open' => \App\Models\WebSetting::getValue('ppdb_is_open', '0'),
+            'ppdb_year' => \App\Models\WebSetting::getValue('ppdb_year', ''),
+            'ppdb_quota' => \App\Models\WebSetting::getValue('ppdb_quota', '0'),
+            'ppdb_start_date' => \App\Models\WebSetting::getValue('ppdb_start_date', ''),
+            'ppdb_end_date' => \App\Models\WebSetting::getValue('ppdb_end_date', ''),
+            'ppdb_registration_fee' => \App\Models\WebSetting::getValue('ppdb_registration_fee', '0'),
+            'books_fee' => \App\Models\WebSetting::getValue('books_fee', '0'),
+            'uniform_fee' => \App\Models\WebSetting::getValue('uniform_fee', '0'),
+        ];
+
+        // Rekap keuangan dari registration_payments tipe PPDB
+        $paymentStatsQuery = RegistrationPayment::where('registrationable_type', PpdbRegistration::class);
+        if ($activeYear) {
+            $paymentStatsQuery->where('academic_year_id', $activeYear->id);
+        }
+        $paymentStats = [
+            'total_fee' => (clone $paymentStatsQuery)->where('is_fee_paid', true)->sum('fee_amount'),
+            'total_books' => (clone $paymentStatsQuery)->where('is_books_paid', true)->sum('books_amount'),
+            'total_uniform' => (clone $paymentStatsQuery)->where('is_uniform_paid', true)->sum('uniform_amount'),
+            'count_fee' => (clone $paymentStatsQuery)->where('is_fee_paid', true)->count(),
+            'count_books' => (clone $paymentStatsQuery)->where('is_books_paid', true)->count(),
+            'count_uniform' => (clone $paymentStatsQuery)->where('is_uniform_paid', true)->count(),
+        ];
+        $paymentStats['grand_total'] = $paymentStats['total_fee'] + $paymentStats['total_books'] + $paymentStats['total_uniform'];
+
+        return view('ppdb.index', compact('registrations', 'academicYears', 'activeYear', 'stats', 'ppdbSettings', 'paymentStats'));
+    }
+
+    /**
+     * Update setting PPDB via AJAX (nominal, buka/tutup).
+     */
+    public function updateSettings(Request $request)
+    {
+        if (!in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin'])) {
+            return response()->json(['success' => false, 'message' => 'Akses ditolak'], 403);
+        }
+
+        $allowedKeys = [
+            'ppdb_is_open', 'ppdb_year', 'ppdb_quota',
+            'ppdb_start_date', 'ppdb_end_date',
+            'ppdb_registration_fee', 'books_fee', 'uniform_fee',
+        ];
+
+        $updated = [];
+        foreach ($request->only($allowedKeys) as $key => $value) {
+            \App\Models\WebSetting::setValue($key, $value);
+            $updated[$key] = $value;
+        }
+
+        return response()->json(['success' => true, 'updated' => $updated]);
     }
 
     public function create()

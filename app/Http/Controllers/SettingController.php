@@ -13,15 +13,13 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $setting = SchoolSetting::first();
+        $setting = SchoolSetting::first() ?? new SchoolSetting();
         $users = User::latest()->paginate(10);
         return view('settings.index', compact('setting', 'users'));
     }
 
     public function updateProfile(Request $request)
     {
-        $setting = SchoolSetting::first();
-        
         $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'nullable|string',
@@ -29,15 +27,21 @@ class SettingController extends Controller
             'email' => 'nullable|email|max:255',
             'headmaster_name' => 'nullable|string|max:255',
             'headmaster_nip' => 'nullable|string|max:50',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = $request->except('logo');
+        // Ambil record pertama, atau buat baru jika belum ada
+        $setting = SchoolSetting::first();
+        if (!$setting) {
+            $setting = SchoolSetting::create($request->only(['name', 'address', 'phone', 'email', 'headmaster_name', 'headmaster_nip']));
+        }
+
+        $data = $request->only(['name', 'address', 'phone', 'email', 'headmaster_name', 'headmaster_nip']);
 
         if ($request->hasFile('logo')) {
             // Hapus logo lama jika ada
             if ($setting->logo_path) {
-                Storage::delete('public/' . $setting->logo_path);
+                Storage::disk('public')->delete($setting->logo_path);
             }
             $data['logo_path'] = $request->file('logo')->store('school', 'public');
         }

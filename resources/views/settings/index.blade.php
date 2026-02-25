@@ -289,7 +289,7 @@
                                 <br><span style="color: #ef4444; font-weight: 800;">PERINGATAN:</span> Tindakan ini akan menghapus dan menimpa transaksi saat ini dengan isi dari file backup. Pastikan file valid!
                             </p>
                             
-                            <form id="restore-data-form" class="ignore-size-validation" action="{{ route('backup.restore') }}" method="POST" enctype="multipart/form-data" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                            <form id="restore-data-form" class="ignore-size-validation" action="{{ route('settings.backup.restore') }}" method="POST" enctype="multipart/form-data" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
                                 @csrf
                                 <input type="hidden" name="confirmation" id="restore-confirmation-input">
                                 

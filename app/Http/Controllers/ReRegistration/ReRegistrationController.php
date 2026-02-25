@@ -47,7 +47,49 @@ class ReRegistrationController extends Controller
         $registrations = $query->paginate(15)->withQueryString();
         $classrooms = Classroom::orderBy('name')->get();
 
-        return view('re-registration.index', compact('registrations', 'academicYears', 'activeYear', 'stats', 'classrooms'));
+        // Setting nominal daftar ulang dari WebSetting
+        $reRegSettings = [
+            're_registration_fee' => \App\Models\WebSetting::getValue('re_registration_fee', '0'),
+            'books_fee' => \App\Models\WebSetting::getValue('books_fee', '0'),
+            'uniform_fee' => \App\Models\WebSetting::getValue('uniform_fee', '0'),
+        ];
+
+        // Rekap keuangan dari registration_payments tipe ReRegistration
+        $paymentStatsQuery = \App\Models\RegistrationPayment::where('registrationable_type', ReRegistration::class);
+        if ($activeYear) {
+            $paymentStatsQuery->where('academic_year_id', $activeYear->id);
+        }
+        $paymentStats = [
+            'total_fee' => (clone $paymentStatsQuery)->where('is_fee_paid', true)->sum('fee_amount'),
+            'total_books' => (clone $paymentStatsQuery)->where('is_books_paid', true)->sum('books_amount'),
+            'total_uniform' => (clone $paymentStatsQuery)->where('is_uniform_paid', true)->sum('uniform_amount'),
+            'count_fee' => (clone $paymentStatsQuery)->where('is_fee_paid', true)->count(),
+            'count_books' => (clone $paymentStatsQuery)->where('is_books_paid', true)->count(),
+            'count_uniform' => (clone $paymentStatsQuery)->where('is_uniform_paid', true)->count(),
+        ];
+        $paymentStats['grand_total'] = $paymentStats['total_fee'] + $paymentStats['total_books'] + $paymentStats['total_uniform'];
+
+        return view('re-registration.index', compact('registrations', 'academicYears', 'activeYear', 'stats', 'classrooms', 'reRegSettings', 'paymentStats'));
+    }
+
+    /**
+     * Update setting nominal daftar ulang via AJAX.
+     */
+    public function updateSettings(Request $request)
+    {
+        if (!in_array(\Illuminate\Support\Facades\Auth::user()->role, ['kepsek', 'admin', 'superadmin'])) {
+            return response()->json(['success' => false, 'message' => 'Akses ditolak'], 403);
+        }
+
+        $allowedKeys = ['re_registration_fee', 'books_fee', 'uniform_fee'];
+
+        $updated = [];
+        foreach ($request->only($allowedKeys) as $key => $value) {
+            \App\Models\WebSetting::setValue($key, $value);
+            $updated[$key] = $value;
+        }
+
+        return response()->json(['success' => true, 'updated' => $updated]);
     }
 
     public function generate(Request $request)

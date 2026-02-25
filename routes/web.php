@@ -40,6 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/{ppdb}/reject', [\App\Http\Controllers\Ppdb\PpdbController::class, 'reject'])->name('reject');
             Route::post('/{ppdb}/reset', [\App\Http\Controllers\Ppdb\PpdbController::class, 'reset'])->name('reset');
             Route::post('/{ppdb}/convert', [\App\Http\Controllers\Ppdb\PpdbController::class, 'convertToStudent'])->name('convert');
+            Route::post('/update-settings', [\App\Http\Controllers\Ppdb\PpdbController::class, 'updateSettings'])->name('update-settings');
         });
     });
 
@@ -47,6 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 're-registration', 'as' => 're-registration.'], function () {
         Route::get('/', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'index'])->name('index');
         Route::post('/generate', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'generate'])->name('generate');
+        Route::post('/update-settings', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'updateSettings'])->name('update-settings');
         Route::post('/{reRegistration}/confirm', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'confirm'])->name('confirm');
         Route::post('/{reRegistration}/not-registered', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'markNotRegistered'])->name('not-registered');
     });

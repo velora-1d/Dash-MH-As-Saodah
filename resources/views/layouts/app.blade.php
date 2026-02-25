@@ -465,7 +465,8 @@
 
             // Global File Upload Size Validator (Max 2MB)
             document.addEventListener('DOMContentLoaded', function() {
-                const forms = document.querySelectorAll('form[enctype="multipart/form-data"]');
+                // Mengecualikan form yang memiliki class .ignore-size-validation (seperti Restore .sql)
+                const forms = document.querySelectorAll('form[enctype="multipart/form-data"]:not(.ignore-size-validation)');
                 forms.forEach(form => {
                     form.addEventListener('submit', function(e) {
                         const fileInputs = form.querySelectorAll('input[type="file"]');

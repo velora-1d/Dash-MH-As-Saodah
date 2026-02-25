@@ -191,7 +191,7 @@ class SettingController extends Controller
             $dbUsername = env('DB_USERNAME');
             $dbPassword = env('DB_PASSWORD');
 
-            $command = "PGPASSWORD=\"{$dbPassword}\" pg_dump -h {$dbHost} -p {$dbPort} -U {$dbUsername} -d {$dbDatabase} --no-owner > \"{$filePath}\"";
+            $command = "PGPASSWORD=\"{$dbPassword}\" pg_dump -h {$dbHost} -p {$dbPort} -U {$dbUsername} -d {$dbDatabase} --clean --if-exists --no-owner > \"{$filePath}\"";
             
             $output = null;
             $resultCode = null;
@@ -209,9 +209,6 @@ class SettingController extends Controller
 
         try {
             \Illuminate\Support\Facades\DB::transaction(function () {
-                // Nonaktifkan foreign key checks untuk memudahkan truncate
-                \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
                 $tables = [
                     'academic_years',
                     'classrooms',
@@ -240,13 +237,18 @@ class SettingController extends Controller
                     'web_teachers'
                 ];
 
+                $existingTables = [];
                 foreach ($tables as $table) {
                     if (\Illuminate\Support\Facades\Schema::hasTable($table)) {
-                        \Illuminate\Support\Facades\DB::table($table)->truncate();
+                        $existingTables[] = $table;
                     }
                 }
 
-                \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+                if (!empty($existingTables)) {
+                    $tableList = implode(', ', $existingTables);
+                    // Gunakan TRUNCATE CASCADE karena PostgreSQL tidak memakai konsep SET FOREIGN_KEY_CHECKS=0 dari MySQL.
+                    \Illuminate\Support\Facades\DB::statement("TRUNCATE TABLE {$tableList} CASCADE;");
+                }
             });
 
             // Bersihkan Cache setelah data di-wipe

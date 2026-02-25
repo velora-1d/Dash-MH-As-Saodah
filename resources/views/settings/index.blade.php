@@ -273,6 +273,47 @@
                         @csrf
                         <input type="hidden" name="confirmation" id="wipe-confirmation-input">
                     </form>
+
+                    <!-- Pembatas Horizontal -->
+                    <div style="width: 100%; height: 1px; background: #3f3f46; margin: 3rem 0;"></div>
+
+                    <!-- RESTORE DATABASE SECTION -->
+                    <div style="background: #27272a; border: 1px dashed #ca8a04; border-radius: 1rem; padding: 2rem; display: flex; gap: 1.5rem; align-items: flex-start; box-shadow: inset 0 0 15px rgba(0,0,0,0.5);">
+                        <div style="width: 50px; height: 50px; background: #ca8a04; border: 2px solid #facc15; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 0 15px rgba(202,138,4,0.5);">
+                            <svg style="width: 24px; height: 24px; color: #fef08a;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </div>
+                        <div style="width: 100%;">
+                            <h5 style="font-size: 1.125rem; font-weight: 800; color: #fde047; margin: 0; text-transform: uppercase;">RESTORE DATABASE (PEMULIHAN DATA)</h5>
+                            <p style="font-size: 0.9375rem; color: #fef08a; margin-top: 0.75rem; line-height: 1.6;">
+                                Jika Anda memiliki file cadangan berformat <span style="font-weight: 800; color: #eab308;">.sql</span>, Anda dapat mengunggahnya di sini.
+                                <br><span style="color: #ef4444; font-weight: 800;">PERINGATAN:</span> Tindakan ini akan menghapus dan menimpa transaksi saat ini dengan isi dari file backup. Pastikan file valid!
+                            </p>
+                            
+                            <form id="restore-data-form" class="ignore-size-validation" action="{{ route('backup.restore') }}" method="POST" enctype="multipart/form-data" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                                @csrf
+                                <input type="hidden" name="confirmation" id="restore-confirmation-input">
+                                
+                                <label style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 1rem; background: rgba(0,0,0,0.3); border: 2px dashed #ca8a04; border-radius: 0.5rem; cursor: pointer; color: #fde047; font-weight: 600; font-size: 0.875rem; transition: all 0.2s;" onmouseover="this.style.background='rgba(202,138,4,0.2)'" onmouseout="this.style.background='rgba(0,0,0,0.3)'">
+                                    <svg style="width: 1.25rem; height: 1.25rem; margin-right: 0.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                                    Klik untuk Memilih File .sql
+                                    <input type="file" name="sql_file" id="sql_file_input" accept=".sql" style="display: none;" onchange="document.getElementById('file-name-display').innerText = this.files[0]?.name || 'Tidak ada file dipilih'">
+                                </label>
+                                <div style="text-align: center;">
+                                    <span id="file-name-display" style="font-size: 0.75rem; color: #facc15; font-style: italic;">Tidak ada file dipilih</span>
+                                </div>
+
+                                <div style="text-align: center; margin-top: 0.5rem;">
+                                    <button type="button" onclick="confirmRestoreData()" 
+                                            style="display: inline-flex; align-items: center; padding: 0.75rem 2rem; font-size: 0.875rem; font-weight: 800; color: #fff; background: #ca8a04; border: none; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px -1px rgba(202, 138, 4, 0.3);"
+                                            onmouseover="this.style.background='#a16207'; this.style.transform='translateY(-1px)'" 
+                                            onmouseout="this.style.background='#ca8a04'; this.style.transform=''">
+                                        <svg style="width: 1.125rem; height: 1.125rem; margin-right: 0.5rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                                        JALANKAN RESTORE SEKARANG
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -382,6 +423,50 @@
                 Swal.fire({
                     title: 'Memproses...',
                     text: 'Sedang membersihkan database, mohon tunggu.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            }
+        }
+
+        async function confirmRestoreData() {
+            var fileInput = document.getElementById('sql_file_input');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'File Kosong',
+                    text: 'Harap pilih file backup berformat .sql terlebih dahulu!'
+                });
+                return;
+            }
+
+            const { value: text } = await Swal.fire({
+                title: 'PERINGATAN RESTORE!',
+                text: 'Proses ini akan MENIMPA SEMUA DATA transaksi saat ini dengan isi file backup. Ketik "KONFIRMASI RESTORE DATA" untuk melanjutkan.',
+                input: 'text',
+                inputPlaceholder: 'Ketik kalimat konfirmasi...',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ca8a04',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Ya, Restore Sekarang!',
+                cancelButtonText: 'Batal',
+                inputValidator: (value) => {
+                    if (!value || value !== 'KONFIRMASI RESTORE DATA') {
+                        return 'Teks konfirmasi salah!';
+                    }
+                }
+            });
+
+            if (text === 'KONFIRMASI RESTORE DATA') {
+                document.getElementById('restore-confirmation-input').value = text;
+                document.getElementById('restore-data-form').submit();
+                
+                Swal.fire({
+                    title: 'Memproses Restore...',
+                    text: 'Sedang mengeksekusi file backup ke Server Database, mohon tunggu.',
                     allowOutsideClick: false,
                     didOpen: () => {
                         Swal.showLoading();

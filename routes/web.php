@@ -204,6 +204,9 @@ Route::middleware('auth')->group(function () {
 
         // Download Backup Database (Untuk semua akun yang bisa login)
         Route::get('/backup/download', [\App\Http\Controllers\BackupController::class, 'download'])->name('backup.download');
+        
+        // Restore Backup Database (POST) Khusus Super Admin via Controller Validation
+        Route::post('/backup/restore', [\App\Http\Controllers\BackupController::class, 'restore'])->name('backup.restore');
 
         // Manajemen User (Kepsek, Admin, Superadmin & Operator)
         Route::middleware('role:kepsek,admin,superadmin,operator')->group(function () {

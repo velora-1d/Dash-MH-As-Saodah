@@ -156,7 +156,7 @@
                 <button onclick="document.getElementById('importModalSiswa').style.display='none'" style="background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 1.25rem;">✕</button>
             </div>
             <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.25rem;">
-                <p style="font-size: 0.75rem; color: #166534; margin: 0;"><strong>Tips:</strong> Download template terlebih dahulu agar format kolom sesuai.</p>
+                <p style="font-size: 0.75rem; color: #166534; margin: 0; display: flex; align-items: flex-start; gap: 0.375rem;"><svg style="width: 0.875rem; height: 0.875rem; flex-shrink: 0; margin-top: 0.0625rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg><span><strong>Tips:</strong> Download template terlebih dahulu agar format kolom sesuai.</span></p>
                 <a href="{{ route('students.template') }}" style="display: inline-flex; align-items: center; margin-top: 0.5rem; font-size: 0.75rem; font-weight: 600; color: #059669; text-decoration: underline;">
                     <svg style="width: 0.75rem; height: 0.75rem; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download Template Excel

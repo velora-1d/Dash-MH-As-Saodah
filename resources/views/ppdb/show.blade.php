@@ -213,13 +213,13 @@
                 <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; padding: 1.5rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                     <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.75rem;">Status Pendaftaran</p>
                     @if ($ppdb->status === 'pending')
-                        <span style="display: inline-flex; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #d97706; background: #fef3c7; border-radius: 999px;">⏳ Menunggu Verifikasi</span>
+                        <span style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #d97706; background: #fef3c7; border-radius: 999px;"><svg style="width: 1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Menunggu Verifikasi</span>
                     @elseif ($ppdb->status === 'diterima')
-                        <span style="display: inline-flex; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #047857; background: #d1fae5; border-radius: 999px;">✓ Diterima</span>
+                        <span style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #047857; background: #d1fae5; border-radius: 999px;"><svg style="width: 1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Diterima</span>
                     @elseif ($ppdb->status === 'dicabut')
                         <span style="display: inline-flex; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #475569; background: #e2e8f0; border-radius: 999px;">Dicabut/Batal</span>
                     @else
-                        <span style="display: inline-flex; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #be123c; background: #ffe4e6; border-radius: 999px;">✗ Ditolak</span>
+                        <span style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #be123c; background: #ffe4e6; border-radius: 999px;"><svg style="width: 1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Ditolak</span>
                     @endif
 
                     @if ($ppdb->reviewer)
@@ -234,21 +234,21 @@
                     @if ($ppdb->status === 'pending')
                     <form action="{{ route('ppdb.approve', $ppdb) }}" method="POST">
                         @csrf
-                        <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">✓ Terima Pendaftar</button>
+                        <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''"><svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Terima Pendaftar</button>
                     </form>
                     @endif
 
                     @if ($ppdb->status === 'pending' || $ppdb->status === 'diterima')
                     <form action="{{ route('ppdb.reject', $ppdb) }}" method="POST">
                         @csrf
-                        <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #e11d48; background: #fff; border: 1.5px solid #fecdd3; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">✗ Tolak Pendaftar</button>
+                        <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #e11d48; background: #fff; border: 1.5px solid #fecdd3; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''"><svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>Tolak Pendaftar</button>
                     </form>
                     @endif
 
                     @if ($ppdb->status !== 'pending')
                     <form action="{{ route('ppdb.reset', $ppdb) }}" method="POST">
                         @csrf
-                        <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #64748b; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">↺ Reset ke Antrean</button>
+                        <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #64748b; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''"><svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>Reset ke Antrean</button>
                     </form>
                     @endif
                 </div>
@@ -256,7 +256,7 @@
                 @if ($ppdb->status === 'diterima')
                 <form action="{{ route('ppdb.convert', $ppdb) }}" method="POST">
                     @csrf
-                    <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(99,102,241,0.3);" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Konversi ke Siswa Aktif</button>
+                    <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(99,102,241,0.3);" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''"><svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" /></svg>Konversi ke Siswa Aktif</button>
                 </form>
                 @endif
 
@@ -269,7 +269,7 @@
                 
                 @if ($ppdb->status === 'diterima')
                 <div style="margin-top: 1rem; padding: 1rem; border-radius: 1rem; background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.5); font-size: 0.75rem; color: #64748b; line-height: 1.4; text-align: center;">
-                    ℹ️ Konversi akan memindahkan seluruh riwayat pendaftar ini ke data internal Siswa. Pastikan kelas telah disesuaikan nantinya jika sudah berstatus Aktif.
+                    <svg style="width: 0.875rem; height: 0.875rem; display: inline; vertical-align: middle; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Konversi akan memindahkan seluruh riwayat pendaftar ini ke data internal Siswa. Pastikan kelas telah disesuaikan nantinya jika sudah berstatus Aktif.
                 </div>
                 @endif
             </div>

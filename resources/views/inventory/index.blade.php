@@ -90,7 +90,7 @@
                                 <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $item->item_code }}</p>
                                 @endif
                                 @if ($item->location)
-                                <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $item->location }}</p>
+                                <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem; display: inline-flex; align-items: center; gap: 0.125rem;"><svg style="width: 0.6875rem; height: 0.6875rem; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>{{ $item->location }}</p>
                                 @endif
                             </td>
                             <td style="padding: 1.25rem 1.5rem;">

@@ -425,7 +425,7 @@
 
         {{-- Global SweetAlert2 Interceptor --}}
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('turbo:load', function() {
                 // Intercept ALL forms with onsubmit="return confirm(...)"
                 document.querySelectorAll('form[onsubmit]').forEach(function(form) {
                     const onsubmit = form.getAttribute('onsubmit');
@@ -464,7 +464,7 @@
             });
 
             // Global File Upload Size Validator (Max 2MB)
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('turbo:load', function() {
                 // Mengecualikan form yang memiliki class .ignore-size-validation (seperti Restore .sql)
                 const forms = document.querySelectorAll('form[enctype="multipart/form-data"]:not(.ignore-size-validation)');
                 forms.forEach(form => {

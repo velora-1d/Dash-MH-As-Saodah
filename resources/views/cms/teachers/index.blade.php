@@ -25,17 +25,17 @@
 
         <!-- Grid Profil Guru -->
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem;">
-            @forelse($teachers as $teacher)
+            @forelse ($teachers as $teacher)
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; transition: all 0.2s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,0.08)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow=''; this.style.transform=''">
                 <div style="position: relative; text-align: center; padding: 1.5rem 1.25rem 0;">
-                    @if($teacher->photo_url)
+                    @if ($teacher->photo_url)
                         <img src="{{ asset('storage/' . $teacher->photo_url) }}" alt="{{ $teacher->name }}" style="width: 96px; height: 96px; object-fit: cover; border-radius: 50%; border: 3px solid #e2e8f0; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
                     @else
                         <div style="width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #99f6e4, #5eead4); margin: 0 auto; display: flex; align-items: center; justify-content: center; border: 3px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
                             <span style="font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 800; color: #0f766e;">{{ strtoupper(substr($teacher->name, 0, 1)) }}</span>
                         </div>
                     @endif
-                    @if($teacher->is_active)
+                    @if ($teacher->is_active)
                         <span style="position: absolute; top: 1rem; right: 1rem; font-size: 0.6rem; font-weight: 600; padding: 0.125rem 0.375rem; border-radius: 999px; color: #047857; background: #d1fae5;">Aktif</span>
                     @else
                         <span style="position: absolute; top: 1rem; right: 1rem; font-size: 0.6rem; font-weight: 600; padding: 0.125rem 0.375rem; border-radius: 999px; color: #64748b; background: #f1f5f9;">Nonaktif</span>
@@ -44,7 +44,7 @@
                 <div style="padding: 1rem 1.25rem 0; text-align: center;">
                     <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">{{ $teacher->name }}</h4>
                     <p style="font-size: 0.75rem; font-weight: 600; color: #0d9488; margin-top: 0.25rem;">{{ $teacher->position ?? 'Guru' }}</p>
-                    @if($teacher->bio)
+                    @if ($teacher->bio)
                         <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.5rem; line-height: 1.5;">{{ Str::limit($teacher->bio, 70) }}</p>
                     @endif
                 </div>

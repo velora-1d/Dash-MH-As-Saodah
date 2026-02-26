@@ -62,7 +62,7 @@
                 <label style="font-size: 0.8125rem; font-weight: 600; color: #374151; white-space: nowrap;">Filter Tujuan:</label>
                 <select name="purpose_id" onchange="this.form.submit()" style="flex: 1; max-width: 300px; box-sizing: border-box;">
                     <option value="">Semua Tujuan</option>
-                    @foreach($purposes as $p)<option value="{{ $p->id }}" {{ request('purpose_id') == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>@endforeach
+                    @foreach ($purposes as $p)<option value="{{ $p->id }}" {{ request('purpose_id') == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>@endforeach
                 </select>
             </form>
         </div>
@@ -85,7 +85,7 @@
                         <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Aksi</th>
                     </tr></thead>
                     <tbody>
-                        @forelse($transactions as $index => $trx)
+                        @forelse ($transactions as $index => $trx)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $transactions->firstItem() + $index }}</td>
                                 <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #1e293b; font-weight: 500; vertical-align: middle;">{{ $trx->date?->format('d M Y') ?? '-' }}</td>
@@ -101,14 +101,14 @@
                                 <td style="padding: 0.875rem 1.5rem;"><span style="font-size: 0.75rem; font-weight: 600; color: #0f766e; background: #ccfbf1; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $trx->wakafPurpose->name ?? '-' }}</span></td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: right; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #059669;">Rp {{ number_format($trx->amount, 0, ',', '.') }}</td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: center;">
-                                    @if($trx->status === 'valid')
+                                    @if ($trx->status === 'valid')
                                         <span style="font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; padding: 0.25rem 0.5rem; border-radius: 999px;">Valid</span>
                                     @else
                                         <span style="font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #ffe4e6; padding: 0.25rem 0.5rem; border-radius: 999px;">Void</span>
                                     @endif
                                 </td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: center;">
-                                    @if($trx->status === 'valid')
+                                    @if ($trx->status === 'valid')
                                         <form action="{{ route('wakaf.void', $trx->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin void transaksi ini?');">
                                             @csrf
                                             <button type="submit" style="font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; padding: 0.375rem 0.75rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Void</button>
@@ -133,7 +133,7 @@
                     </tbody>
                 </table>
             </div>
-            @if($transactions->hasPages())
+            @if ($transactions->hasPages())
                 <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">{{ $transactions->withQueryString()->links() }}</div>
             @endif
         </div>

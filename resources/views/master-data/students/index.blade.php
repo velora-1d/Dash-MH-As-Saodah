@@ -20,7 +20,7 @@
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama/NISN..." style="padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 0.625rem; font-size: 0.8125rem; width: 180px; outline: none;" class="placeholder-white/60">
                             <select name="classroom_id" onchange="this.form.submit()" style="padding: 0.5rem 2rem 0.5rem 0.75rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 0.625rem; font-size: 0.8125rem; cursor: pointer; outline: none;">
                                 <option value="" style="color: #1e293b;">Semua Kelas</option>
-                                @foreach($classrooms as $cls)<option value="{{ $cls->id }}" {{ request('classroom_id') == $cls->id ? 'selected' : '' }} style="color: #1e293b;">{{ $cls->name }}</option>@endforeach
+                                @foreach ($classrooms as $cls)<option value="{{ $cls->id }}" {{ request('classroom_id') == $cls->id ? 'selected' : '' }} style="color: #1e293b;">{{ $cls->name }}</option>@endforeach
                             </select>
                         </form>
                         <a href="{{ route('students.export') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1rem; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); color: #fff; border-radius: 0.625rem; font-weight: 600; font-size: 0.6875rem; border: 1.5px solid rgba(255,255,255,0.25); text-decoration: none; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'" title="Export Data Siswa ke Excel">
@@ -67,7 +67,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($students as $index => $student)
+                        @forelse ($students as $index => $student)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $students->firstItem() + $index }}</td>
                                 <td style="padding: 1rem 1.5rem; vertical-align: middle;">
@@ -91,11 +91,11 @@
                                         "color: {$cc[1]}"
                                     ])>{{ ucfirst(str_replace('_', ' ', $student->category)) }}</span>
                                     <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.375rem;">
-                                        SPP: @if($student->infaq_status == 'gratis')<span style="color: #d97706; font-weight: 600;">Gratis</span>@elseif($student->infaq_status == 'subsidi')<span style="color: #059669; font-weight: 600;">Subsidi (Rp {{ number_format($student->infaq_nominal, 0, ',', '.') }})</span>@else<span style="color: #64748b;">Bayar Penuh</span>@endif
+                                        SPP: @if ($student->infaq_status == 'gratis')<span style="color: #d97706; font-weight: 600;">Gratis</span>@elseif ($student->infaq_status == 'subsidi')<span style="color: #059669; font-weight: 600;">Subsidi (Rp {{ number_format($student->infaq_nominal, 0, ',', '.') }})</span>@else<span style="color: #64748b;">Bayar Penuh</span>@endif
                                     </p>
                                 </td>
                                 <td style="padding: 1rem 1.5rem;">
-                                    @if($student->classroom)
+                                    @if ($student->classroom)
                                         <span style="font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $student->classroom->name }}</span>
                                     @else
                                         <span style="font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; padding: 0.25rem 0.625rem; border-radius: 999px;">Tanpa Kelas</span>
@@ -141,7 +141,7 @@
                     </tbody>
                 </table>
             </div>
-            @if($students->hasPages())
+            @if ($students->hasPages())
                 <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">{{ $students->links() }}</div>
             @endif
         </div>

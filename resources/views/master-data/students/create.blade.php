@@ -298,7 +298,7 @@
                         <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Kelas (Bisa diaturoleh TU nanti)</label>
                         <select id="classroom_id" name="classroom_id" style="width: 100%; box-sizing: border-box;">
                             <option value="">-- Belum Set --</option>
-                            @foreach($classrooms as $cls)<option value="{{ $cls->id }}" {{ old('classroom_id') == $cls->id ? 'selected' : '' }}>Tingkat {{ $cls->level }} : {{ $cls->name }}</option>@endforeach
+                            @foreach ($classrooms as $cls)<option value="{{ $cls->id }}" {{ old('classroom_id') == $cls->id ? 'selected' : '' }}>Tingkat {{ $cls->level }} : {{ $cls->name }}</option>@endforeach
                         </select>
                     </div>
                     <div>

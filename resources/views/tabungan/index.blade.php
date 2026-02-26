@@ -21,7 +21,7 @@
                     <form action="{{ route('tabungan.index') }}" method="GET" style="display: flex; align-items: center; gap: 0.5rem;">
                         <select name="classroom_id" onchange="this.form.submit()" style="padding: 0.5rem 2rem 0.5rem 0.75rem; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 0.625rem; font-size: 0.8125rem; font-weight: 500; cursor: pointer; outline: none;">
                             <option value="" style="color: #1e293b;">Semua Kelas</option>
-                            @foreach($classrooms as $room)
+                            @foreach ($classrooms as $room)
                                 <option value="{{ $room->id }}" {{ $classroomId == $room->id ? 'selected' : '' }} style="color: #1e293b;">{{ $room->name }}</option>
                             @endforeach
                         </select>
@@ -71,7 +71,7 @@
                                     <span style="font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $student->classroom ? $student->classroom->name : '-' }}</span>
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: right;">
-                                    @if($student->balance > 0)
+                                    @if ($student->balance > 0)
                                         <span style="font-weight: 700; font-size: 0.875rem; color: #059669;">Rp {{ number_format($student->balance, 0, ',', '.') }}</span>
                                     @else
                                         <span style="font-weight: 700; font-size: 0.875rem; color: #94a3b8;">Rp {{ number_format($student->balance, 0, ',', '.') }}</span>

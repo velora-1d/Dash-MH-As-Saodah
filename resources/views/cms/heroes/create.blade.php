@@ -24,7 +24,7 @@
             </div>
             <form action="{{ isset($hero) ? route('cms.heroes.update', $hero) : route('cms.heroes.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @if(isset($hero)) @method('PUT') @endif
+                @if (isset($hero)) @method('PUT') @endif
                 <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
                     <div>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Judul Slider <span style="color: #e11d48;">*</span></label>
@@ -36,9 +36,9 @@
                     </div>
                     <div style="grid-column: span 2;">
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Media (Gambar/Video) {{ isset($hero) ? '' : '*' }}</label>
-                        @if(isset($hero) && $hero->media_url)
+                        @if (isset($hero) && $hero->media_url)
                             <div style="margin-bottom: 0.75rem; padding: 0.75rem; background: #f8fafc; border-radius: 0.625rem; border: 1.5px solid #e2e8f0; display: inline-flex; align-items: center; gap: 0.75rem;">
-                                @if($hero->media_type === 'image')
+                                @if ($hero->media_type === 'image')
                                     <img src="{{ asset('storage/' . $hero->media_url) }}" style="max-height: 60px; border-radius: 0.5rem;">
                                 @else
                                     <span style="font-size: 0.75rem; color: #7c3aed; font-weight: 600;">🎬 {{ basename($hero->media_url) }}</span>

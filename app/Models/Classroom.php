@@ -31,4 +31,9 @@ class Classroom extends Model
     {
         return $this->hasMany(StudentEnrollment::class);
     }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
 }

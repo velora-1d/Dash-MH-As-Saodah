@@ -56,7 +56,7 @@
                     <label style="display: block; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.375rem;">Bulan</label>
                     <select name="month" style="width: 100%; box-sizing: border-box;">
                         <option value="">Laporan Tahunan</option>
-                        @foreach([1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April', 5=>'Mei', 6=>'Juni', 7=>'Juli', 8=>'Agustus', 9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember'] as $key => $name)<option value="{{ $key }}" {{ request('month') == $key ? 'selected' : '' }}>{{ $name }}</option>@endforeach
+                        @foreach ([1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April', 5=>'Mei', 6=>'Juni', 7=>'Juli', 8=>'Agustus', 9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember'] as $key => $name)<option value="{{ $key }}" {{ request('month') == $key ? 'selected' : '' }}>{{ $name }}</option>@endforeach
                     </select>
                 </div>
                 <div>

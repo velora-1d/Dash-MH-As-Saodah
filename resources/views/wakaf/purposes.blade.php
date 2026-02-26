@@ -43,7 +43,7 @@
 
         <!-- Daftar Tujuan -->
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem;">
-            @forelse($purposes as $purpose)
+            @forelse ($purposes as $purpose)
                 @php
                     $collected = $purpose->collected ?? 0;
                     $target = $purpose->target_amount;
@@ -55,14 +55,14 @@
                             <h5 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.9375rem; color: #1e293b; margin: 0;">{{ $purpose->name }}</h5>
                             <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.25rem;">{{ $purpose->transactions_count ?? 0 }} transaksi</p>
                         </div>
-                        @if(($purpose->transactions_count ?? 0) === 0)
+                        @if (($purpose->transactions_count ?? 0) === 0)
                             <form action="{{ route('wakaf.purposes.destroy', $purpose->id) }}" method="POST" onsubmit="return confirm('Hapus tujuan ini?');">@csrf @method('DELETE')
                                 <button type="submit" style="font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.375rem; padding: 0.25rem 0.5rem; cursor: pointer;">Hapus</button>
                             </form>
                         @endif
                     </div>
                     <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: #059669; margin: 0;">Rp {{ number_format($collected, 0, ',', '.') }}</p>
-                    @if($target)
+                    @if ($target)
                         <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.25rem;">Target: Rp {{ number_format($target, 0, ',', '.') }}</p>
                         <div style="margin-top: 0.75rem; height: 6px; background: #e2e8f0; border-radius: 999px; overflow: hidden;">
                             <div @style([

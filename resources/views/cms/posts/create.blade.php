@@ -18,7 +18,7 @@
         <!-- Form 2 Kolom: Konten + Meta -->
         <form action="{{ isset($post) ? route('cms.posts.update', $post) : route('cms.posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @if(isset($post)) @method('PUT') @endif
+            @if (isset($post)) @method('PUT') @endif
 
             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem; align-items: start;">
                 <!-- Kolom Kiri: Konten -->
@@ -73,7 +73,7 @@
                             <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">Thumbnail</h4>
                         </div>
                         <div style="padding: 1.25rem;">
-                            @if(isset($post) && $post->thumbnail)
+                            @if (isset($post) && $post->thumbnail)
                                 <div style="margin-bottom: 0.75rem;">
                                     <img src="{{ asset('storage/' . $post->thumbnail) }}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 0.625rem; border: 1.5px solid #e2e8f0;">
                                 </div>

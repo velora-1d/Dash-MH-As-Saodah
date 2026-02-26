@@ -75,7 +75,7 @@
                                     <span style="font-size: 0.6875rem; font-weight: 600; color: #0284c7; background: #f0f9ff; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $staff->position }}</span>
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
-                                    @if($staff->status === 'aktif')
+                                    @if ($staff->status === 'aktif')
                                         <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">
                                             <div style="width: 6px; height: 6px; border-radius: 50%; background: #059669;"></div>
                                             Aktif
@@ -122,7 +122,7 @@
                 </table>
             </div>
             
-            @if(method_exists($staffs, 'hasPages') && $staffs->hasPages())
+            @if (method_exists($staffs, 'hasPages') && $staffs->hasPages())
                 <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">
                     {{ $staffs->links() }}
                 </div>

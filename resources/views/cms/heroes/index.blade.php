@@ -45,11 +45,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($heroes as $i => $hero)
+                        @forelse ($heroes as $i => $hero)
                         <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600;">{{ $i + 1 }}</td>
                             <td style="padding: 1rem 1.5rem;">
-                                @if($hero->media_type === 'image')
+                                @if ($hero->media_type === 'image')
                                     <img src="{{ asset('storage/' . $hero->media_url) }}" alt="{{ $hero->title }}" style="height: 48px; width: 86px; object-fit: cover; border-radius: 0.5rem; border: 1.5px solid #e2e8f0; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                                 @else
                                     <div style="height: 48px; width: 86px; background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid #e2e8f0;">
@@ -74,7 +74,7 @@
                                 </span>
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
-                                @if($hero->is_active)
+                                @if ($hero->is_active)
                                     <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #047857; background: #d1fae5;">✓ Aktif</span>
                                 @else
                                     <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #64748b; background: #f1f5f9;">— Nonaktif</span>

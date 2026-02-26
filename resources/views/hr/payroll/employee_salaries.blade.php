@@ -46,7 +46,7 @@
 
             <div style="padding: 1.5rem;">
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    @forelse($employees as $employee)
+                    @forelse ($employees as $employee)
                     <div style="border: 1px solid #e2e8f0; border-radius: 0.75rem; overflow: hidden;">
                         <div style="padding: 1rem 1.25rem; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
                             <div>
@@ -58,7 +58,7 @@
                         <form action="{{ route('hr.payroll.employee_salaries.update', $employee->id) }}" method="POST" style="padding: 1.25rem;">
                             @csrf
                             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.25rem;">
-                                @foreach($components as $comp)
+                                @foreach ($components as $comp)
                                     @php
                                         // Cari nilai tersimpan untuk komponen ini pada pegawai ini
                                         $empSalNominal = $employee->salaryComponents->where('salary_component_id', $comp->id)->first()->nominal ?? 0;
@@ -66,7 +66,7 @@
                                     <div style="display: flex; flex-direction: column; gap: 0.375rem;">
                                         <label style="font-size: 0.75rem; font-weight: 600; color: #475569; display: flex; justify-content: space-between;">
                                             {{ $comp->name }}
-                                            @if($comp->type === 'earning')
+                                            @if ($comp->type === 'earning')
                                             <span style="font-size: 0.65rem; padding: 0.125rem 0.375rem; border-radius: 0.25rem; background: #ecfdf5; color: #10b981;">
                                                 +
                                             </span>
@@ -103,7 +103,7 @@
             </div>
 
             <!-- Pagination -->
-            @if($employees->hasPages())
+            @if ($employees->hasPages())
             <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">
                 {{ $employees->links() }}
             </div>

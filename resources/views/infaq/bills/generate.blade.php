@@ -42,7 +42,7 @@
                     <div>
                         <label for="academic_year_id" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tahun Ajaran <span style="color: #e11d48;">*</span></label>
                         <select id="academic_year_id" name="academic_year_id" required style="width: 100%; box-sizing: border-box;">
-                            @foreach($academicYears as $year)
+                            @foreach ($academicYears as $year)
                                 <option value="{{ $year->id }}" {{ $year->is_active ? 'selected' : '' }}>{{ $year->name }}</option>
                             @endforeach
                         </select>
@@ -59,7 +59,7 @@
                         </div>
                         <!-- Grid Checkboxes -->
                         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
-                            @foreach([7=>'Juli', 8=>'Agustus', 9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember', 1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April', 5=>'Mei', 6=>'Juni'] as $key => $name)
+                            @foreach ([7=>'Juli', 8=>'Agustus', 9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember', 1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April', 5=>'Mei', 6=>'Juni'] as $key => $name)
                             <label style="display: flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; cursor: pointer; font-size: 0.75rem; font-weight: 500; color: #374151; transition: all 0.15s ease;" onmouseover="this.style.borderColor='#c7d2fe'" onmouseout="this.style.borderColor='#e2e8f0'">
                                 <input type="checkbox" name="months[]" value="{{ $key }}" class="month-checkbox" style="accent-color: #6366f1;">
                                 {{ $name }}

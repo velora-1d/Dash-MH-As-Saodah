@@ -46,7 +46,7 @@
                             'No. HP Siswa' => $ppdb->student_phone ?? '-',
                         ];
                         @endphp
-                        @foreach($identitasSiswa as $label => $value)
+                        @foreach ($identitasSiswa as $label => $value)
                         <div>
                             <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">{{ $label }}</p>
                             <p style="font-size: 0.8125rem; font-weight: 600; color: #1e293b; margin: 0.25rem 0 0;">{{ $value }}</p>
@@ -64,8 +64,8 @@
                                 'Transportasi' => $ppdb->transportation ?? '-',
                             ];
                             @endphp
-                            @foreach($domisili as $label => $value)
-                            @if($label == 'Alamat Domisili')
+                            @foreach ($domisili as $label => $value)
+                            @if ($label == 'Alamat Domisili')
                             <div class="col-span-2" style="grid-column: span 2;">
                             @else
                             <div>
@@ -93,7 +93,7 @@
                             'Waktu Tempuh' => $ppdb->travel_time ? $ppdb->travel_time . ' mnt' : '-',
                         ];
                         @endphp
-                        @foreach($periodik as $label => $value)
+                        @foreach ($periodik as $label => $value)
                         <div>
                             <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">{{ $label }}</p>
                             <p style="font-size: 0.8125rem; font-weight: 600; color: #1e293b; margin: 0.25rem 0 0;">{{ $value }}</p>
@@ -123,7 +123,7 @@
                                     'Pekerjaan' => $ppdb->father_occupation ?? '-',
                                 ];
                                 @endphp
-                                @foreach($ayah as $k => $v)
+                                @foreach ($ayah as $k => $v)
                                 <div style="display: flex; justify-content: space-between;">
                                     <span style="font-size: 0.75rem; color: #64748b;">{{ $k }}</span>
                                     <span style="font-size: 0.75rem; font-weight: 600; color: #1e293b; text-align: right;">{{ $v }}</span>
@@ -146,7 +146,7 @@
                                     'Pekerjaan' => $ppdb->mother_occupation ?? '-',
                                 ];
                                 @endphp
-                                @foreach($ibu as $k => $v)
+                                @foreach ($ibu as $k => $v)
                                 <div style="display: flex; justify-content: space-between;">
                                     <span style="font-size: 0.75rem; color: #64748b;">{{ $k }}</span>
                                     <span style="font-size: 0.75rem; font-weight: 600; color: #1e293b; text-align: right;">{{ $v }}</span>
@@ -174,7 +174,7 @@
                         <div style="width: 8px; height: 8px; background: #ec4899; border-radius: 50%;"></div>
                         <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">D. Data Wali (Jika Ada)</h4>
                     </div>
-                    @if($ppdb->guardian_name)
+                    @if ($ppdb->guardian_name)
                     <div style="padding: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
                         @php
                         $wali = [
@@ -188,8 +188,8 @@
                             'Alamat' => $ppdb->guardian_address ?? '-',
                         ];
                         @endphp
-                        @foreach($wali as $label => $value)
-                        @if($label == 'Alamat')
+                        @foreach ($wali as $label => $value)
+                        @if ($label == 'Alamat')
                         <div class="col-span-2" style="grid-column: span 2;">
                         @else
                         <div>
@@ -212,17 +212,17 @@
             <div style="display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 1.5rem;">
                 <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; padding: 1.5rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                     <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.75rem;">Status Pendaftaran</p>
-                    @if($ppdb->status === 'pending')
+                    @if ($ppdb->status === 'pending')
                         <span style="display: inline-flex; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #d97706; background: #fef3c7; border-radius: 999px;">⏳ Menunggu Verifikasi</span>
-                    @elseif($ppdb->status === 'diterima')
+                    @elseif ($ppdb->status === 'diterima')
                         <span style="display: inline-flex; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #047857; background: #d1fae5; border-radius: 999px;">✓ Diterima</span>
-                    @elseif($ppdb->status === 'dicabut')
+                    @elseif ($ppdb->status === 'dicabut')
                         <span style="display: inline-flex; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #475569; background: #e2e8f0; border-radius: 999px;">Dicabut/Batal</span>
                     @else
                         <span style="display: inline-flex; padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 700; color: #be123c; background: #ffe4e6; border-radius: 999px;">✗ Ditolak</span>
                     @endif
 
-                    @if($ppdb->reviewer)
+                    @if ($ppdb->reviewer)
                     <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #e2e8f0;">
                         <p style="font-size: 0.6875rem; color: #94a3b8; margin: 0;">Ditinjau oleh: <strong>{{ $ppdb->reviewer->name }}</strong></p>
                         <p style="font-size: 0.6875rem; color: #94a3b8; margin: 0.125rem 0 0;">{{ $ppdb->reviewed_at ? $ppdb->reviewed_at->format('d M Y H:i') : '' }}</p>
@@ -231,21 +231,21 @@
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                    @if($ppdb->status === 'pending')
+                    @if ($ppdb->status === 'pending')
                     <form action="{{ route('ppdb.approve', $ppdb) }}" method="POST">
                         @csrf
                         <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">✓ Terima Pendaftar</button>
                     </form>
                     @endif
 
-                    @if($ppdb->status === 'pending' || $ppdb->status === 'diterima')
+                    @if ($ppdb->status === 'pending' || $ppdb->status === 'diterima')
                     <form action="{{ route('ppdb.reject', $ppdb) }}" method="POST">
                         @csrf
                         <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #e11d48; background: #fff; border: 1.5px solid #fecdd3; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">✗ Tolak Pendaftar</button>
                     </form>
                     @endif
 
-                    @if($ppdb->status !== 'pending')
+                    @if ($ppdb->status !== 'pending')
                     <form action="{{ route('ppdb.reset', $ppdb) }}" method="POST">
                         @csrf
                         <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #64748b; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">↺ Reset ke Antrean</button>
@@ -253,21 +253,21 @@
                     @endif
                 </div>
 
-                @if($ppdb->status === 'diterima')
+                @if ($ppdb->status === 'diterima')
                 <form action="{{ route('ppdb.convert', $ppdb) }}" method="POST">
                     @csrf
                     <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(99,102,241,0.3);" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">🎓 Konversi ke Siswa Aktif</button>
                 </form>
                 @endif
 
-                @if($ppdb->notes)
+                @if ($ppdb->notes)
                 <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; padding: 1.25rem;">
                     <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; margin: 0 0 0.5rem;">Catatan Khusus</p>
                     <p style="font-size: 0.8125rem; color: #475569; margin: 0; line-height: 1.5;">{{ $ppdb->notes }}</p>
                 </div>
                 @endif
                 
-                @if($ppdb->status === 'diterima')
+                @if ($ppdb->status === 'diterima')
                 <div style="margin-top: 1rem; padding: 1rem; border-radius: 1rem; background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.5); font-size: 0.75rem; color: #64748b; line-height: 1.4; text-align: center;">
                     ℹ️ Konversi akan memindahkan seluruh riwayat pendaftar ini ke data internal Siswa. Pastikan kelas telah disesuaikan nantinya jika sudah berstatus Aktif.
                 </div>

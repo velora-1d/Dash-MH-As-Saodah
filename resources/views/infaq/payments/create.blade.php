@@ -40,7 +40,7 @@
                 </div>
                 <div>
                     <p style="font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em;">Sisa Tagihan</p>
-                    @if($remaining > 0)
+                    @if ($remaining > 0)
                         <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: #e11d48; margin-top: 0.25rem;">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
                     @else
                         <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: #059669; margin-top: 0.25rem;">Rp {{ number_format($remaining, 0, ',', '.') }}</p>
@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        @if($remaining <= 0)
+        @if ($remaining <= 0)
             <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 1rem; padding: 3rem; text-align: center;">
                 <svg style="width: 48px; height: 48px; margin: 0 auto 1rem; color: #059669;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 <p style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.125rem; color: #065f46; margin: 0;">Tagihan Sudah LUNAS</p>

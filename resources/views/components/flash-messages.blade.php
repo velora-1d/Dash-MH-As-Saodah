@@ -1,8 +1,8 @@
-@if(session('success') || session('error') || session('warning') || session('info') || $errors->any())
+@if (session('success') || session('error') || session('warning') || session('info') || $errors->any())
 <div id="flash-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none" style="max-width: 400px; width: calc(100vw - 40px);">
     
     {{-- Success Message --}}
-    @if(session('success'))
+    @if (session('success'))
     <div class="flash-item bg-white/80 backdrop-blur-md border border-emerald-100 rounded-2xl shadow-xl shadow-emerald-500/10 p-4 pointer-events-auto flex items-start gap-3 animate-slide-in" role="alert">
         <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -22,7 +22,7 @@
     @endif
 
     {{-- Error Messages (Validation or Session) --}}
-    @if(session('error') || $errors->any())
+    @if (session('error') || $errors->any())
     <div class="flash-item bg-white/80 backdrop-blur-md border border-rose-100 rounded-2xl shadow-xl shadow-rose-500/10 p-4 pointer-events-auto flex items-start gap-3 animate-slide-in" role="alert">
         <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -32,9 +32,9 @@
         <div class="flex-1 overflow-hidden">
             <h4 class="text-sm font-bold text-slate-900 leading-tight">Opps, Ada Kendala!</h4>
             <div class="text-xs text-slate-600 mt-0.5">
-                @if(session('error'))
+                @if (session('error'))
                     {{ session('error') }}
-                @elseif($errors->any())
+                @elseif ($errors->any())
                     <ul class="list-disc list-inside space-y-0.5">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -52,7 +52,7 @@
     @endif
 
     {{-- Warning Message --}}
-    @if(session('warning'))
+    @if (session('warning'))
     <div class="flash-item bg-white/80 backdrop-blur-md border border-amber-100 rounded-2xl shadow-xl shadow-amber-500/10 p-4 pointer-events-auto flex items-start gap-3 animate-slide-in" role="alert">
         <div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -72,7 +72,7 @@
     @endif
 
     {{-- Info Message --}}
-    @if(session('info'))
+    @if (session('info'))
     <div class="flash-item bg-white/80 backdrop-blur-md border border-indigo-100 rounded-2xl shadow-xl shadow-indigo-500/10 p-4 pointer-events-auto flex items-start gap-3 animate-slide-in" role="alert">
         <div class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

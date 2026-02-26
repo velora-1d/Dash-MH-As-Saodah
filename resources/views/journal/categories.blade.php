@@ -34,7 +34,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($categories as $idx => $cat)
+                        @forelse ($categories as $idx => $cat)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 1rem 1.5rem; font-size: 0.875rem; color: #64748b; font-weight: 500;">{{ $idx + 1 }}</td>
                                 <td style="padding: 1rem 1.5rem;">
@@ -44,7 +44,7 @@
                                     </div>
                                 </td>
                                 <td style="padding: 1rem 1.5rem;">
-                                    @if($cat->type === 'in')
+                                    @if ($cat->type === 'in')
                                         <span style="display: inline-flex; align-items: center; padding: 0.25rem 0.75rem; background: #ecfdf5; color: #059669; font-size: 0.6875rem; font-weight: 700; border-radius: 9999px; border: 1px solid #a7f3d0;">
                                             Pemasukan (In)
                                         </span>
@@ -61,7 +61,7 @@
                                     <form action="{{ route('journal.categories.destroy', $cat->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
-                                        @if($cat->transactions_count > 0)
+                                        @if ($cat->transactions_count > 0)
                                             <button type="button" onclick="alert('Tidak dapat menghapus! Kategori ini sedang digunakan di tabel transaksi jurnal.')" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #f1f5f9; color: #94a3b8; border: 1px solid #e2e8f0; border-radius: 0.375rem; cursor: not-allowed;" title="Terpakai">
                                                 <svg style="width: 1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                             </button>

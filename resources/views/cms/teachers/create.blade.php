@@ -22,7 +22,7 @@
             </div>
             <form action="{{ isset($teacher) ? route('cms.teachers.update', $teacher) : route('cms.teachers.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @if(isset($teacher)) @method('PUT') @endif
+                @if (isset($teacher)) @method('PUT') @endif
                 <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
                     <div>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Nama Lengkap <span style="color: #e11d48;">*</span></label>
@@ -34,7 +34,7 @@
                     </div>
                     <div>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Foto Profil</label>
-                        @if(isset($teacher) && $teacher->photo_url)
+                        @if (isset($teacher) && $teacher->photo_url)
                             <div style="margin-bottom: 0.5rem; display: inline-block;">
                                 <img src="{{ asset('storage/' . $teacher->photo_url) }}" style="width: 64px; height: 64px; object-fit: cover; border-radius: 50%; border: 2px solid #e2e8f0;">
                             </div>

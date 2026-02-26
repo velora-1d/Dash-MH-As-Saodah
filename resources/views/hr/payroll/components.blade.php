@@ -72,13 +72,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($components as $item)
+                            @forelse ($components as $item)
                             <tr style="transition: background-color 0.15s ease;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
                                 <td style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9;">
                                     <div style="font-weight: 600; color: #334155; font-size: 0.875rem;">{{ $item->name }}</div>
                                 </td>
                                 <td style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9;">
-                                    @if($item->type === 'earning')
+                                    @if ($item->type === 'earning')
                                         <span style="display: inline-flex; align-items: center; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; background: #ecfdf5; color: #10b981;">Pendapatan / Plus</span>
                                     @else
                                         <span style="display: inline-flex; align-items: center; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; background: #fef2f2; color: #ef4444;">Potongan / Minus</span>

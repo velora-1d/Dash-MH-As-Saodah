@@ -51,7 +51,7 @@
                             'No. HP Siswa' => $student->student_phone ?? '-',
                         ];
                         @endphp
-                        @foreach($identitasSiswa as $label => $value)
+                        @foreach ($identitasSiswa as $label => $value)
                         <div>
                             <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">{{ $label }}</p>
                             <p style="font-size: 0.8125rem; font-weight: 600; color: #1e293b; margin: 0.25rem 0 0;">{{ $value }}</p>
@@ -69,8 +69,8 @@
                                 'Transportasi' => $student->transportation ?? '-',
                             ];
                             @endphp
-                            @foreach($domisili as $label => $value)
-                            @if($label == 'Alamat Domisili')
+                            @foreach ($domisili as $label => $value)
+                            @if ($label == 'Alamat Domisili')
                             <div class="col-span-2" style="grid-column: span 2;">
                             @else
                             <div>
@@ -98,7 +98,7 @@
                             'Waktu Tempuh' => $student->travel_time ? $student->travel_time . ' mnt' : '-',
                         ];
                         @endphp
-                        @foreach($periodik as $label => $value)
+                        @foreach ($periodik as $label => $value)
                         <div>
                             <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">{{ $label }}</p>
                             <p style="font-size: 0.8125rem; font-weight: 600; color: #1e293b; margin: 0.25rem 0 0;">{{ $value }}</p>
@@ -128,7 +128,7 @@
                                     'Pekerjaan' => $student->father_occupation ?? '-',
                                 ];
                                 @endphp
-                                @foreach($ayah as $k => $v)
+                                @foreach ($ayah as $k => $v)
                                 <div style="display: flex; justify-content: space-between;">
                                     <span style="font-size: 0.75rem; color: #64748b;">{{ $k }}</span>
                                     <span style="font-size: 0.75rem; font-weight: 600; color: #1e293b; text-align: right;">{{ $v }}</span>
@@ -151,7 +151,7 @@
                                     'Pekerjaan' => $student->mother_occupation ?? '-',
                                 ];
                                 @endphp
-                                @foreach($ibu as $k => $v)
+                                @foreach ($ibu as $k => $v)
                                 <div style="display: flex; justify-content: space-between;">
                                     <span style="font-size: 0.75rem; color: #64748b;">{{ $k }}</span>
                                     <span style="font-size: 0.75rem; font-weight: 600; color: #1e293b; text-align: right;">{{ $v }}</span>
@@ -179,7 +179,7 @@
                         <div style="width: 8px; height: 8px; background: #ec4899; border-radius: 50%;"></div>
                         <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">D. Data Wali (Jika Ada)</h4>
                     </div>
-                    @if($student->guardian_name)
+                    @if ($student->guardian_name)
                     <div style="padding: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
                         @php
                         $wali = [
@@ -193,8 +193,8 @@
                             'Alamat' => $student->guardian_address ?? '-',
                         ];
                         @endphp
-                        @foreach($wali as $label => $value)
-                        @if($label == 'Alamat')
+                        @foreach ($wali as $label => $value)
+                        @if ($label == 'Alamat')
                         <div class="col-span-2" style="grid-column: span 2;">
                         @else
                         <div>
@@ -225,11 +225,11 @@
                         <div style="margin-bottom: 1.25rem;">
                             <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase;">Status Siswa</p>
                             <div style="margin-top: 0.5rem;">
-                                @if($student->status === 'aktif')
+                                @if ($student->status === 'aktif')
                                     <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">Aktif</span>
-                                @elseif($student->status === 'lulus')
+                                @elseif ($student->status === 'lulus')
                                     <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; color: #1d4ed8; background: #dbeafe; border-radius: 999px;">Lulus</span>
-                                @elseif($student->status === 'pindah')
+                                @elseif ($student->status === 'pindah')
                                     <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; color: #b45309; background: #fef3c7; border-radius: 999px;">Pindah</span>
                                 @else
                                     <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 600; color: #be123c; background: #ffe4e6; border-radius: 999px;">Nonaktif</span>
@@ -246,7 +246,7 @@
                                 <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase;">Status SPP/Infaq</p>
                                 <p style="font-size: 0.8125rem; font-weight: 600; color: #1e293b; margin: 0.25rem 0 0;">{{ ucfirst($student->infaq_status) }}</p>
                             </div>
-                            @if($student->infaq_status == 'bayar' || $student->infaq_status == 'subsidi')
+                            @if ($student->infaq_status == 'bayar' || $student->infaq_status == 'subsidi')
                             <div>
                                 <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase;">Nominal Kewajiban</p>
                                 <p style="font-size: 0.8125rem; font-weight: 600; color: #10b981; margin: 0.25rem 0 0;">Rp {{ number_format($student->infaq_nominal ?? ($student->classroom->infaq_nominal ?? 0), 0, ',', '.') }} <span style="font-size: 0.6875rem; color: #94a3b8;">/ bulan</span></p>
@@ -257,7 +257,7 @@
                 </div>
 
                 <!-- F. Kartu Infaq/SPP -->
-                @if($paymentCard)
+                @if ($paymentCard)
                 <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
                     <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -266,7 +266,7 @@
                         </div>
                         <form method="GET" action="{{ route('students.show', $student) }}" style="margin: 0;">
                             <select name="academic_year_id" onchange="this.form.submit()" style="padding: 0.375rem 0.75rem; font-size: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; color: #475569; cursor: pointer;">
-                                @foreach($academicYears as $yr)
+                                @foreach ($academicYears as $yr)
                                 <option value="{{ $yr->id }}" {{ ($activeYear && $activeYear->id == $yr->id) ? 'selected' : '' }}>{{ $yr->name }}</option>
                                 @endforeach
                             </select>
@@ -275,7 +275,7 @@
                     <div style="padding: 1.5rem;">
                         <!-- Grid 12 Bulan (4 kolom x 3 baris) -->
                         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
-                            @foreach($paymentCard['months'] as $m)
+                            @foreach ($paymentCard['months'] as $m)
                             @php
                                 $statusClass = match($m['status']) {
                                     'lunas' => 'spp-lunas',
@@ -291,14 +291,14 @@
                                 };
                             @endphp
                             <div class="spp-card {{ $statusClass }}"
-                                 @if($m['status'] === 'belum_lunas' && $m['bill_id'])
+                                 @if ($m['status'] === 'belum_lunas' && $m['bill_id'])
                                  data-href="{{ route('infaq.payments.create', $m['bill_id']) }}"
                                  title="Klik untuk bayar"
                                  @endif
                             >
                                 <p class="spp-card-month">{{ $m['name'] }}</p>
                                 <p class="spp-card-icon">{{ $icon }}</p>
-                                @if($m['nominal'] > 0)
+                                @if ($m['nominal'] > 0)
                                 <p class="spp-card-nominal">Rp {{ number_format($m['nominal'], 0, ',', '.') }}</p>
                                 @endif
                             </div>

@@ -26,7 +26,7 @@
                     <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Kelas Sumber Data</label>
                     <select name="source_classroom_id" onchange="this.form.submit()" style="width: 100%; box-sizing: border-box;">
                         <option value="">-- Pilih Kelas --</option>
-                        @foreach($classrooms as $cls)
+                        @foreach ($classrooms as $cls)
                             <option value="{{ $cls->id }}" {{ $sourceClassroomId == $cls->id ? 'selected' : '' }}>Tingkat {{ $cls->level }} : {{ $cls->name }}</option>
                         @endforeach
                     </select>
@@ -34,7 +34,7 @@
             </form>
         </div>
 
-        @if($sourceClassroomId)
+        @if ($sourceClassroomId)
             <form action="{{ route('mutations.execute') }}" method="POST">
                 @csrf
                 <input type="hidden" name="source_classroom_id" value="{{ $sourceClassroomId }}">
@@ -57,7 +57,7 @@
                                     <th style="padding: 0.75rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">NISN / NIS</th>
                                 </tr></thead>
                                 <tbody>
-                                    @forelse($students as $index => $student)
+                                    @forelse ($students as $index => $student)
                                         <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                             <td style="padding: 0.75rem 1rem; text-align: center; vertical-align: middle;">
                                                 <input type="checkbox" name="student_ids[]" value="{{ $student->id }}" class="student-checkbox" style="width: 1rem; height: 1rem; accent-color: #6366f1; cursor: pointer;">
@@ -87,8 +87,8 @@
                             <select name="target_classroom_id" id="target_classroom_id" required style="width: 100%; box-sizing: border-box;">
                                 <option value="" disabled selected>-- Pilih Tujuan --</option>
                                 <optgroup label="Kelas Lain">
-                                    @foreach($classrooms as $cls)
-                                        @if($cls->id != $sourceClassroomId)
+                                    @foreach ($classrooms as $cls)
+                                        @if ($cls->id != $sourceClassroomId)
                                             <option value="{{ $cls->id }}">Tingkat {{ $cls->level }} : {{ $cls->name }}</option>
                                         @endif
                                     @endforeach

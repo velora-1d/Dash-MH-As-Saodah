@@ -46,7 +46,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($classrooms as $index => $cls)
+                        @forelse ($classrooms as $index => $cls)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $index + 1 }}</td>
                                 <td style="padding: 1rem 1.5rem; vertical-align: middle;">

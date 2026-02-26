@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        @if($errors->any())
+        @if ($errors->any())
         <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem;">
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
                 <div style="width: 24px; height: 24px; background: #e11d48; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -33,7 +33,7 @@
                 <p style="font-size: 0.8125rem; font-weight: 700; color: #9f1239; margin: 0;">Terdapat kesalahan pada input Anda:</p>
             </div>
             <ul style="margin: 0; padding-left: 2.5rem; font-size: 0.8125rem; color: #be123c;">
-                @foreach($errors->all() as $error)
+                @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
@@ -99,7 +99,7 @@
                         @endphp
                         
                         <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-                            @foreach($availableRoles as $roleValue => $roleLabel)
+                            @foreach ($availableRoles as $roleValue => $roleLabel)
                             <label style="display: inline-flex; align-items: center; cursor: pointer; padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: #f8fafc; transition: all 0.2s ease;">
                                 <input type="checkbox" name="roles[]" value="{{ $roleValue }}" {{ in_array($roleValue, $selectedRoles) ? 'checked' : '' }}
                                        class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" style="margin-right: 0.5rem;">

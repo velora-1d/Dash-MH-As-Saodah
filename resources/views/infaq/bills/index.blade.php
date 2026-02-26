@@ -46,14 +46,14 @@
                     <label style="display: block; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.375rem;">Kelas</label>
                     <select name="classroom_id" style="width: 100%; box-sizing: border-box;">
                         <option value="">Semua</option>
-                        @foreach($classrooms as $room)<option value="{{ $room->id }}" {{ request('classroom_id') == $room->id ? 'selected' : '' }}>{{ $room->name }}</option>@endforeach
+                        @foreach ($classrooms as $room)<option value="{{ $room->id }}" {{ request('classroom_id') == $room->id ? 'selected' : '' }}>{{ $room->name }}</option>@endforeach
                     </select>
                 </div>
                 <div>
                     <label style="display: block; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.375rem;">Bulan</label>
                     <select name="month" style="width: 100%; box-sizing: border-box;">
                         <option value="">Semua</option>
-                        @foreach([1=>'Jan', 2=>'Feb', 3=>'Mar', 4=>'Apr', 5=>'Mei', 6=>'Jun', 7=>'Jul', 8=>'Agu', 9=>'Sep', 10=>'Okt', 11=>'Nov', 12=>'Des'] as $key => $name)<option value="{{ $key }}" {{ request('month') == $key ? 'selected' : '' }}>{{ $name }}</option>@endforeach
+                        @foreach ([1=>'Jan', 2=>'Feb', 3=>'Mar', 4=>'Apr', 5=>'Mei', 6=>'Jun', 7=>'Jul', 8=>'Agu', 9=>'Sep', 10=>'Okt', 11=>'Nov', 12=>'Des'] as $key => $name)<option value="{{ $key }}" {{ request('month') == $key ? 'selected' : '' }}>{{ $name }}</option>@endforeach
                     </select>
                 </div>
                 <div>
@@ -122,19 +122,19 @@
                                     <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $bill->academicYear->name }}</p>
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: right;">
-                                    @if($bill->nominal <= 0)
+                                    @if ($bill->nominal <= 0)
                                         <span style="font-weight: 700; font-size: 0.8125rem; color: #059669;">GRATIS</span>
                                     @else
                                         <span style="font-weight: 700; font-size: 0.8125rem; color: #1e293b;">Rp {{ number_format($bill->nominal, 0, ',', '.') }}</span>
                                     @endif
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
-                                    @if($bill->status == 'lunas')
+                                    @if ($bill->status == 'lunas')
                                         <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">
                                             <svg style="width: 0.75rem; height: 0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                                             Lunas
                                         </span>
-                                    @elseif($bill->status == 'belum_lunas')
+                                    @elseif ($bill->status == 'belum_lunas')
                                         <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #be123c; background: #ffe4e6; border-radius: 999px;">
                                             <svg style="width: 0.75rem; height: 0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                             Belum Lunas
@@ -145,13 +145,13 @@
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.375rem;">
-                                        @if($bill->status == 'belum_lunas')
+                                        @if ($bill->status == 'belum_lunas')
                                             <a href="{{ route('infaq.payments.create', $bill->id) }}" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #059669; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Bayar</a>
                                             <form action="{{ route('infaq.bills.void', $bill->id) }}" method="POST" style="display: inline;">
                                                 @csrf
                                                 <button type="button" onclick="confirmVoid(this)" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Void</button>
                                             </form>
-                                        @elseif($bill->status == 'lunas')
+                                        @elseif ($bill->status == 'lunas')
                                             <form action="{{ route('infaq.bills.revert', $bill->id) }}" method="POST" style="display: inline;">
                                                 @csrf
                                                 <button type="button" onclick="confirmRevert(this)" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #d97706; background: #fef3c7; border: 1px solid #fde68a; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Buka Kembali</button>
@@ -178,7 +178,7 @@
                     </tbody>
                 </table>
             </div>
-            @if($bills->hasPages())
+            @if ($bills->hasPages())
                 <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">{{ $bills->links() }}</div>
             @endif
         </div>

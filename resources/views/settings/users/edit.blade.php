@@ -65,7 +65,7 @@
                             <option value="bendahara" {{ old('role', $user->role) == 'bendahara' ? 'selected' : '' }}>Bendahara (Keuangan)</option>
                             <option value="kepsek" {{ old('role', $user->role) == 'kepsek' ? 'selected' : '' }}>Kepala Sekolah</option>
                         </select>
-                        @if($user->id === Auth::id())
+                        @if ($user->id === Auth::id())
                             <p style="color: #64748b; font-size: 0.7rem; margin-top: 0.5rem; font-style: italic;">Anda tidak dapat mengubah role Anda sendiri.</p>
                         @endif
                         @error('role')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror

@@ -68,7 +68,7 @@
                             <div style="position: relative;">
                                 <select name="cash_account_id" id="cash_account_id" required style="width: 100%; box-sizing: border-box; padding: 0.625rem 1rem 0.625rem 2.5rem; font-size: 0.875rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; transition: all 0.2s; background: #fff; color: #1e293b; appearance: none;">
                                     <option value="" disabled selected>-- Pilih Rekening Kas --</option>
-                                    @foreach($cashAccounts as $cash)
+                                    @foreach ($cashAccounts as $cash)
                                         <option value="{{ $cash->id }}" {{ old('cash_account_id') == $cash->id ? 'selected' : '' }}>
                                             {{ $cash->name }} (Saldo: Rp {{ number_format($cash->balance, 0, ',', '.') }})
                                         </option>
@@ -85,7 +85,7 @@
                             <div style="position: relative;">
                                 <select name="category_id" id="category_id" required style="width: 100%; box-sizing: border-box; padding: 0.625rem 1rem 0.625rem 2.5rem; font-size: 0.875rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; transition: all 0.2s; background: #fff; color: #1e293b; appearance: none;">
                                     <option value="" disabled selected>-- Pilih Kategori --</option>
-                                    @foreach($categories as $cat)
+                                    @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}" data-type="{{ $cat->type }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
                                             {{ $cat->name }}
                                         </option>

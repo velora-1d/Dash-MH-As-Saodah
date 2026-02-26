@@ -26,7 +26,7 @@
                     <div>
                         <label for="donor_name" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nama Donatur <span style="color: #e11d48;">*</span></label>
                         <input type="text" name="donor_name" id="donor_name" required list="donor-list" placeholder="Ketik atau pilih donatur" value="{{ old('donor_name') }}" style="width: 100%; box-sizing: border-box;" autocomplete="off">
-                        <datalist id="donor-list">@foreach($donors as $d)<option value="{{ $d->name }}">@endforeach</datalist>
+                        <datalist id="donor-list">@foreach ($donors as $d)<option value="{{ $d->name }}">@endforeach</datalist>
                         @error('donor_name')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
                     <div>
@@ -47,7 +47,7 @@
                             <svg style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); width: 1.25rem; height: 1.25rem; color: #94a3b8;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                         </div>
                         <datalist id="purpose_names">
-                            @foreach($purposes as $purpose)
+                            @foreach ($purposes as $purpose)
                                 <option value="{{ $purpose->name }}"></option>
                             @endforeach
                         </datalist>
@@ -59,7 +59,7 @@
                         <label for="cash_account_id" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Masuk ke Kas <span style="color: #e11d48;">*</span></label>
                         <select name="cash_account_id" id="cash_account_id" required style="width: 100%; box-sizing: border-box;">
                             <option value="" disabled selected>-- Pilih Kas --</option>
-                            @foreach($cashAccounts as $ca)<option value="{{ $ca->id }}" {{ old('cash_account_id') == $ca->id ? 'selected' : '' }}>{{ $ca->name }}</option>@endforeach
+                            @foreach ($cashAccounts as $ca)<option value="{{ $ca->id }}" {{ old('cash_account_id') == $ca->id ? 'selected' : '' }}>{{ $ca->name }}</option>@endforeach
                         </select>
                         @error('cash_account_id')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>
@@ -67,7 +67,7 @@
                         <label for="category_id" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Kategori Pemasukan <span style="color: #e11d48;">*</span></label>
                         <select name="category_id" id="category_id" required style="width: 100%; box-sizing: border-box;">
                             <option value="" disabled selected>-- Pilih --</option>
-                            @foreach($categories as $c)<option value="{{ $c->id }}" {{ old('category_id') == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>@endforeach
+                            @foreach ($categories as $c)<option value="{{ $c->id }}" {{ old('category_id') == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>@endforeach
                         </select>
                         @error('category_id')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
                     </div>

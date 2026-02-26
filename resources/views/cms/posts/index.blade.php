@@ -45,11 +45,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($posts as $i => $post)
+                        @forelse ($posts as $i => $post)
                         <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600;">{{ $posts->firstItem() + $i }}</td>
                             <td style="padding: 1rem 1.5rem;">
-                                @if($post->thumbnail)
+                                @if ($post->thumbnail)
                                     <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="{{ $post->title }}" style="height: 48px; width: 72px; object-fit: cover; border-radius: 0.5rem; border: 1.5px solid #e2e8f0; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                                 @else
                                     <div style="height: 48px; width: 72px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid #e2e8f0;">
@@ -62,7 +62,7 @@
                                 <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $post->author->name ?? 'Admin' }}</p>
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
-                                @if($post->status === 'published')
+                                @if ($post->status === 'published')
                                     <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #047857; background: #d1fae5;">✓ Terbit</span>
                                 @else
                                     <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #d97706; background: #fef3c7;">⏳ Draft</span>
@@ -85,7 +85,7 @@
                     </tbody>
                 </table>
             </div>
-            @if($posts->hasPages())
+            @if ($posts->hasPages())
             <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">
                 {{ $posts->links() }}
             </div>

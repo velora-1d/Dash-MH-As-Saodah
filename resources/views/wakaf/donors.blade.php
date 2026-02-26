@@ -37,7 +37,7 @@
                         <th style="padding: 0.75rem 1.5rem; text-align: right; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Total Donasi</th>
                     </tr></thead>
                     <tbody>
-                        @forelse($donors as $donor)
+                        @forelse ($donors as $donor)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 0.875rem 1.5rem;">
                                     <div style="display: flex; align-items: center; gap: 0.625rem;">
@@ -55,7 +55,7 @@
                     </tbody>
                 </table>
             </div>
-            @if($donors->hasPages())
+            @if ($donors->hasPages())
                 <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">{{ $donors->withQueryString()->links() }}</div>
             @endif
         </div>

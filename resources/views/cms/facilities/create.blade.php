@@ -22,7 +22,7 @@
             </div>
             <form action="{{ isset($facility) ? route('cms.facilities.update', $facility) : route('cms.facilities.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @if(isset($facility)) @method('PUT') @endif
+                @if (isset($facility)) @method('PUT') @endif
                 <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
                     <div>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Nama Fasilitas <span style="color: #e11d48;">*</span></label>
@@ -30,7 +30,7 @@
                     </div>
                     <div>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Foto Fasilitas</label>
-                        @if(isset($facility) && $facility->image_url)
+                        @if (isset($facility) && $facility->image_url)
                             <div style="margin-bottom: 0.5rem; display: inline-block;"><img src="{{ asset('storage/' . $facility->image_url) }}" style="max-height: 60px; border-radius: 0.5rem; border: 1.5px solid #e2e8f0;"></div>
                         @endif
                         <input type="file" name="image" accept="image/*" style="width: 100%; padding: 0.5rem; border: 1.5px dashed #cbd5e1; border-radius: 0.625rem; font-size: 0.75rem; color: #64748b; background: #f8fafc; cursor: pointer;">

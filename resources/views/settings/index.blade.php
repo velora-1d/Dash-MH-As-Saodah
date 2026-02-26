@@ -23,7 +23,7 @@
                             <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                             Profil
                         </button>
-                        @if(in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin', 'operator']))
+                        @if (in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin', 'operator']))
                         <button onclick="switchTab('users')" id="tab-btn-users" style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.15); color: #fff; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.25); cursor: pointer; transition: all 0.2s ease;">
                             <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                             Manajemen User
@@ -34,7 +34,7 @@
                         </a>
                         @endif
 
-                        @if(Auth::user()->role === 'superadmin')
+                        @if (Auth::user()->role === 'superadmin')
                         <button onclick="switchTab('danger')" id="tab-btn-danger" style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); color: #fca5a5; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(239,68,68,0.3); cursor: pointer; transition: all 0.2s ease;">
                             <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 15c-.77 1.333.192 3 1.732 3z" /></svg>
                             Zona Bahaya
@@ -103,7 +103,7 @@
                             <div style="background: #f5f3ff; border: 2px dashed #c4b5fd; border-radius: 1rem; padding: 1.5rem; text-align: center;">
                                 <p style="font-size: 0.6875rem; font-weight: 600; color: #4c1d95; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 1rem 0;">Logo Lembaga</p>
                                 <div style="width: 120px; height: 120px; margin: 0 auto; background: #fff; border-radius: 0.75rem; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; padding: 0.75rem; overflow: hidden;">
-                                    @if($setting->logo_path)
+                                    @if ($setting->logo_path)
                                         <img src="{{ asset('storage/' . $setting->logo_path) }}" alt="Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                     @else
                                         <svg style="width: 48px; height: 48px; color: #c4b5fd;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -129,7 +129,7 @@
         </section>
 
         <!-- Tab 2: Manajemen User -->
-        @if(in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin', 'operator']))
+        @if (in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin', 'operator']))
         <section id="tab-users" style="display: none;">
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
                 <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
@@ -154,7 +154,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($users as $user)
+                            @foreach ($users as $user)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 1rem 1.5rem;">
                                     <div style="display: flex; align-items: center; gap: 0.75rem;">
@@ -171,7 +171,7 @@
                                     <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; border-radius: 999px; text-transform: capitalize;">{{ $user->role }}</span>
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
-                                    @if($user->status === 'aktif')
+                                    @if ($user->status === 'aktif')
                                         <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">
                                             <svg style="width: 0.75rem; height: 0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                                             Aktif
@@ -186,10 +186,10 @@
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
                                     <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                                         <a href="{{ route('settings.users.edit', $user) }}" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #4f46e5; background: #e0e7ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Edit</a>
-                                        @if($user->id !== Auth::id())
+                                        @if ($user->id !== Auth::id())
                                         <form action="{{ route('settings.users.toggle', $user) }}" method="POST" style="margin: 0;">
                                             @csrf
-                                            @if($user->status === 'aktif')
+                                            @if ($user->status === 'aktif')
                                                 <button type="submit" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Nonaktifkan</button>
                                             @else
                                                 <button type="submit" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #059669; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Akses Kembali</button>
@@ -210,7 +210,7 @@
         @endif
 
         <!-- Tab 3: Zona Bahaya (Super Admin Only) -->
-        @if(Auth::user()->role === 'superadmin')
+        @if (Auth::user()->role === 'superadmin')
         <section id="tab-danger" style="display: none;">
             <div style="background: #18181b; border-radius: 1rem; border: 2px solid #ef4444; overflow: hidden; box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);">
                 <div style="padding: 1.5rem; border-bottom: 1px solid #3f3f46; background: linear-gradient(135deg, #450a0a, #7f1d1d); display: flex; align-items: center; gap: 0.75rem;">

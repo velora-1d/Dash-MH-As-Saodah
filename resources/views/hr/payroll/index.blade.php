@@ -38,7 +38,7 @@
                         <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Tahun Ajaran Aktif</label>
                         <select name="academic_year_id" required style="width: 200px; padding: 0.625rem 1rem; font-size: 0.8125rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none; cursor: pointer;">
                             <option value="">Pilih Tahun Ajaran...</option>
-                            @foreach($academicYears as $ay)
+                            @foreach ($academicYears as $ay)
                                 <option value="{{ $ay->id }}">{{ $ay->name }}</option>
                             @endforeach
                         </select>
@@ -89,7 +89,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($payrolls as $pay)
+                        @forelse ($payrolls as $pay)
                         <tr style="transition: background-color 0.15s ease;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
                             <td style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9;">
                                 <div style="font-weight: 600; color: #334155; font-size: 0.8125rem;">SLIP-{{ str_pad($pay->id, 5, '0', STR_PAD_LEFT) }}</div>
@@ -129,7 +129,7 @@
             </div>
 
             <!-- Pagination -->
-            @if($payrolls->hasPages())
+            @if ($payrolls->hasPages())
             <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">
                 {{ $payrolls->links() }}
             </div>

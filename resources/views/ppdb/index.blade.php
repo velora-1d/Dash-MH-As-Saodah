@@ -188,7 +188,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($registrations as $index => $reg)
+                        @forelse ($registrations as $index => $reg)
                         <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $registrations->firstItem() + $index }}</td>
                             <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #0ea5e9; vertical-align: middle;">{{ $reg->registration_number }}</td>
@@ -197,7 +197,7 @@
                                 <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $reg->parent_name ?? '-' }}</p>
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
-                                @if($reg->gender === 'L')
+                                @if ($reg->gender === 'L')
                                 <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #6366f1; background: #eef2ff;">Putra</span>
                                 @else
                                 <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #ec4899; background: #fdf2f8;">Putri</span>
@@ -205,23 +205,23 @@
                             </td>
                             <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; color: #475569; text-align: center;">{{ $reg->previous_school ?? '-' }}</td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
-                                @if($reg->registration_source === 'online')
+                                @if ($reg->registration_source === 'online')
                                 <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #0ea5e9; background: #f0f9ff; border: 1px solid #bae6fd;">Website</span>
                                 @else
                                 <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #64748b; background: #f8fafc; border: 1px solid #e2e8f0;">Manual</span>
                                 @endif
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
-                                @if($reg->status === 'pending')
+                                @if ($reg->status === 'pending')
                                     <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #d97706; background: #fef3c7; border-radius: 999px;">⏳ Menunggu</span>
-                                @elseif($reg->status === 'diterima')
+                                @elseif ($reg->status === 'diterima')
                                     <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">✓ Diterima</span>
                                 @else
                                     <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #be123c; background: #ffe4e6; border-radius: 999px;">✗ Ditolak</span>
                                 @endif
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: left; vertical-align: top;">
-                                @if($reg->registrationPayment)
+                                @if ($reg->registrationPayment)
                                 <div style="display: flex; flex-direction: column; gap: 0.375rem; min-width: 140px;">
                                     @php $rp = $reg->registrationPayment; @endphp
                                     <button class="admin-badge {{ $rp->is_fee_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_fee_paid" data-amount="{{ $rp->is_fee_paid ? (int)$rp->fee_amount : $feePendaftaran }}" title="{{ $rp->is_fee_paid ? 'Lunas: Rp ' . number_format($rp->fee_amount, 0, ',', '.') : 'Harga Rekomendasi: Rp ' . number_format($feePendaftaran, 0, ',', '.') }}">
@@ -253,14 +253,14 @@
                                 <div style="display: flex; align-items: center; justify-content: center; gap: 0.375rem;">
                                     <a href="{{ route('ppdb.show', $reg) }}" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Detail</a>
                                     
-                                    @if($reg->status === 'pending')
+                                    @if ($reg->status === 'pending')
                                     <form action="{{ route('ppdb.approve', $reg) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <button type="submit" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #059669; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Terima</button>
                                     </form>
                                     @endif
 
-                                    @if($reg->status === 'pending' || $reg->status === 'diterima')
+                                    @if ($reg->status === 'pending' || $reg->status === 'diterima')
                                     <form action="{{ route('ppdb.reject', $reg) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <button type="submit" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Tolak</button>
@@ -279,7 +279,7 @@
             </div>
 
             <!-- Pagination -->
-            @if($registrations->hasPages())
+            @if ($registrations->hasPages())
             <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">
                 {{ $registrations->links() }}
             </div>

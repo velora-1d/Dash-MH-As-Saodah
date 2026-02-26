@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                @if($classroom->students()->count() > 0)
+                @if ($classroom->students()->count() > 0)
                     <div style="margin: 0 2rem 1rem; padding: 0.875rem 1rem; background: #fef3c7; border: 1px solid #fde68a; border-radius: 0.625rem; font-size: 0.8125rem; color: #92400e; font-weight: 500;">
                         ⚠️ Kelas ini memiliki <strong>{{ $classroom->students()->count() }} siswa</strong> aktif. Perubahan akan berdampak langsung.
                     </div>

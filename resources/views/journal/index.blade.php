@@ -74,12 +74,12 @@
                     
                     <select name="cash_account_id" onchange="this.form.submit()" style="padding: 0.5rem 1rem; font-size: 0.8125rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; color: #475569; background: #fff; outline: none; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);">
                         <option value="">Semua Rekening Kas</option>
-                        @foreach($cashAccounts as $ca)
+                        @foreach ($cashAccounts as $ca)
                             <option value="{{ $ca->id }}" {{ request('cash_account_id') == $ca->id ? 'selected' : '' }}>{{ $ca->name }}</option>
                         @endforeach
                     </select>
 
-                    @if(request()->anyFilled(['type', 'cash_account_id']))
+                    @if (request()->anyFilled(['type', 'cash_account_id']))
                         <a href="{{ route('journal.index') }}" style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: #f1f5f9; color: #64748b; font-size: 0.8125rem; font-weight: 600; border-radius: 0.5rem; text-decoration: none;">Reset</a>
                     @endif
                 </form>
@@ -100,13 +100,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($transactions as $index => $trx)
+                        @forelse ($transactions as $index => $trx)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $transactions->firstItem() + $index }}</td>
                                 <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #1e293b; font-weight: 500; vertical-align: middle;">{{ $trx->date?->format('d M Y') ?? '-' }}</td>
                                 <td style="padding: 0.875rem 1.5rem;">
                                     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                                        @if($trx->status == 'void')
+                                        @if ($trx->status == 'void')
                                             <span style="font-size: 0.875rem; font-weight: 600; color: #94a3b8; text-decoration: line-through;">{{ $trx->description ?? 'Tanpa Keterangan' }}</span>
                                         @else
                                             <span style="font-size: 0.875rem; font-weight: 600; color: #0f172a;">{{ $trx->description ?? 'Tanpa Keterangan' }}</span>
@@ -122,8 +122,8 @@
                                     </span>
                                 </td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: right; font-family: 'Outfit', sans-serif;">
-                                    @if($trx->type === 'in')
-                                        @if($trx->status == 'void')
+                                    @if ($trx->type === 'in')
+                                        @if ($trx->status == 'void')
                                             <span style="font-weight: 700; color: #94a3b8;">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
                                         @else
                                             <span style="font-weight: 700; color: #059669;">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
@@ -133,8 +133,8 @@
                                     @endif
                                 </td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: right; font-family: 'Outfit', sans-serif;">
-                                    @if($trx->type === 'out')
-                                        @if($trx->status == 'void')
+                                    @if ($trx->type === 'out')
+                                        @if ($trx->status == 'void')
                                             <span style="font-weight: 700; color: #94a3b8;">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
                                         @else
                                             <span style="font-weight: 700; color: #e11d48;">Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
@@ -144,7 +144,7 @@
                                     @endif
                                 </td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: right;">
-                                    @if($trx->status === 'valid')
+                                    @if ($trx->status === 'valid')
                                         <form action="{{ route('journal.void', $trx->id) }}" method="POST" onsubmit="return confirm('Void jurnal ini? Saldo Kas akan dikembalikan ke kondisi sebelum transaksi.');" style="display: inline;">
                                             @csrf
                                             <button type="submit" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#ffe4e6'" onmouseout="this.style.background='#fff1f2'" title="Void Transaksi">

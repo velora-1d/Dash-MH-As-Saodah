@@ -17,7 +17,7 @@
         <div class="relative z-10 text-center px-12">
             <div class="mb-8 inline-block p-4 bg-white/10 rounded-2xl backdrop-blur-xl border border-white/20">
                 @php $schoolSetting = \App\Models\SchoolSetting::first(); @endphp
-                @if($schoolSetting && $schoolSetting->logo_path)
+                @if ($schoolSetting && $schoolSetting->logo_path)
                     <img src="{{ asset('storage/' . $schoolSetting->logo_path) }}" alt="Logo Madrasah" class="w-24 h-24 object-contain">
                 @else
                     <x-application-logo class="w-24 h-24 fill-current text-amber-500" />
@@ -38,7 +38,7 @@
     <div class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-slate-50">
         <div class="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
             <div class="lg:hidden text-center mb-10">
-                @if($schoolSetting && $schoolSetting->logo_path)
+                @if ($schoolSetting && $schoolSetting->logo_path)
                     <img src="{{ asset('storage/' . $schoolSetting->logo_path) }}" alt="Logo Madrasah" class="w-16 h-16 mx-auto object-contain mb-2">
                 @else
                     <x-application-logo class="w-16 h-16 mx-auto fill-current text-amber-500 mb-2" />

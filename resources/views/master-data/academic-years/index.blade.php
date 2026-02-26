@@ -40,7 +40,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($academicYears as $index => $year)
+                        @forelse ($academicYears as $index => $year)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $index + 1 }}</td>
                                 <td style="padding: 1rem 1.5rem; vertical-align: middle;">
@@ -55,7 +55,7 @@
                                     </div>
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
-                                    @if($year->is_active)
+                                    @if ($year->is_active)
                                         <span style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">
                                             <span style="width: 6px; height: 6px; background: #059669; border-radius: 50%; animation: pulse 2s infinite;"></span>
                                             Aktif

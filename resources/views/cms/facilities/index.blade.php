@@ -25,9 +25,9 @@
 
         <!-- Grid Fasilitas -->
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
-            @forelse($facilities as $facility)
+            @forelse ($facilities as $facility)
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; transition: all 0.2s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,0.08)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow=''; this.style.transform=''">
-                @if($facility->image_url)
+                @if ($facility->image_url)
                     <img src="{{ asset('storage/' . $facility->image_url) }}" alt="{{ $facility->name }}" style="width: 100%; height: 160px; object-fit: cover;">
                 @else
                     <div style="width: 100%; height: 160px; background: linear-gradient(135deg, #fffbeb, #fef3c7); display: flex; align-items: center; justify-content: center;">
@@ -37,7 +37,7 @@
                 <div style="padding: 1.25rem;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
                         <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">{{ $facility->name }}</h4>
-                        @if($facility->is_active)
+                        @if ($facility->is_active)
                             <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.125rem 0.5rem; border-radius: 999px; color: #047857; background: #d1fae5;">Aktif</span>
                         @else
                             <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.125rem 0.5rem; border-radius: 999px; color: #64748b; background: #f1f5f9;">Nonaktif</span>

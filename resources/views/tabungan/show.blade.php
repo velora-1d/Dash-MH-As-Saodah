@@ -64,7 +64,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($mutations as $m)
+                        @forelse ($mutations as $m)
                             <tr @style([
                                 'border-bottom: 1px solid #f1f5f9',
                                 'transition: background 0.15s ease',
@@ -72,7 +72,7 @@
                             ]) onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; color: #475569; white-space: nowrap;">{{ $m->date->format('d M Y') }}</td>
                                 <td style="padding: 1rem 1.5rem;">
-                                    @if($m->type === 'in')
+                                    @if ($m->type === 'in')
                                         <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">
                                             <svg style="width: 0.75rem; height: 0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 11l5-5m0 0l5 5m-5-5v12" /></svg>
                                             Setoran
@@ -97,14 +97,14 @@
                                 </td>
                                 <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; color: #64748b; max-width: 200px; overflow: hidden; text-overflow: ellipsis;">{{ $m->description ?: '-' }}</td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
-                                    @if($m->status === 'void')
+                                    @if ($m->status === 'void')
                                         <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #6b7280; background: #e5e7eb; border-radius: 999px;">VOID</span>
                                     @else
                                         <span style="display: inline-flex; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">Aktif</span>
                                     @endif
                                 </td>
                                 <td style="padding: 1rem 1.5rem; text-align: center;">
-                                    @if($m->status === 'active')
+                                    @if ($m->status === 'active')
                                         <form action="{{ route('tabungan.void', $m->id) }}" method="POST" style="display: inline;">
                                             @csrf
                                             <button type="button" onclick="confirmVoidTabungan(this)" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(225,29,72,0.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">

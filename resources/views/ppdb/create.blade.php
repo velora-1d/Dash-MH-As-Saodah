@@ -33,7 +33,7 @@
                     <div style="grid-column: span 2;">
                         <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tahun Ajaran <span style="color: #e11d48;">*</span></label>
                         <select name="academic_year_id" required style="width: 100%; box-sizing: border-box; padding: 0.625rem 0.875rem; border: 1px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.8125rem; outline: none;">
-                            @foreach($academicYears as $year)
+                            @foreach ($academicYears as $year)
                                 <option value="{{ $year->id }}" {{ $year->is_active ? 'selected' : '' }}>{{ $year->name }}</option>
                             @endforeach
                         </select>

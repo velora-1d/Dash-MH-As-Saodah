@@ -154,14 +154,14 @@
             <div class="detail-section">
                 <h3>Pendapatan</h3>
                 @php $hasEarnings = false; @endphp
-                @foreach($payroll->details->where('type', 'earning') as $detail)
+                @foreach ($payroll->details->where('type', 'earning') as $detail)
                     @php $hasEarnings = true; @endphp
                     <div class="item-row">
                         <span class="item-name">{{ $detail->component_name }}</span>
                         <span class="item-value plus">Rp {{ number_format($detail->nominal, 0, ',', '.') }}</span>
                     </div>
                 @endforeach
-                @if(!$hasEarnings)
+                @if (!$hasEarnings)
                     <div class="item-row" style="color: #94a3b8; font-style: italic;">Tidak ada pendapatan khusus.</div>
                 @endif
                 <div class="total-row">
@@ -174,14 +174,14 @@
             <div class="detail-section">
                 <h3>Potongan</h3>
                 @php $hasDeductions = false; @endphp
-                @foreach($payroll->details->where('type', 'deduction') as $detail)
+                @foreach ($payroll->details->where('type', 'deduction') as $detail)
                     @php $hasDeductions = true; @endphp
                     <div class="item-row">
                         <span class="item-name">{{ $detail->component_name }}</span>
                         <span class="item-value minus">Rp {{ number_format($detail->nominal, 0, ',', '.') }}</span>
                     </div>
                 @endforeach
-                @if(!$hasDeductions)
+                @if (!$hasDeductions)
                     <div class="item-row" style="color: #94a3b8; font-style: italic;">Tidak ada potongan bulan ini.</div>
                 @endif
                 <div class="total-row">

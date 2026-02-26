@@ -43,7 +43,7 @@
                         <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 15%;">Aksi</th>
                     </tr></thead>
                     <tbody>
-                        @forelse($inCats as $index => $cat)
+                        @forelse ($inCats as $index => $cat)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $index + 1 }}</td>
                                 <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b; vertical-align: middle;">{{ $cat->name }}</td>
@@ -81,7 +81,7 @@
                         <th style="padding: 0.75rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 15%;">Aksi</th>
                     </tr></thead>
                     <tbody>
-                        @forelse($outCats as $index => $cat)
+                        @forelse ($outCats as $index => $cat)
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $index + 1 }}</td>
                                 <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b; vertical-align: middle;">{{ $cat->name }}</td>

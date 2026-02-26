@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        @if(session('success'))
+        @if (session('success'))
         <div style="padding: 0.875rem 1.25rem; background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
             <svg style="width: 18px; height: 18px; color: #059669; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <p style="font-size: 0.8125rem; font-weight: 600; color: #047857; margin: 0;">{{ session('success') }}</p>
@@ -71,7 +71,7 @@
             @csrf
             @method('PUT')
 
-            @foreach($settings as $group => $items)
+            @foreach ($settings as $group => $items)
             @php
                 $meta = $groupMeta[$group] ?? [
                     'title' => ucfirst(str_replace('_', ' ', $group)),
@@ -94,7 +94,7 @@
                         </div>
                         <div>
                             <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">{{ $meta['title'] }}</h4>
-                            @if($meta['desc'])
+                            @if ($meta['desc'])
                             <p style="font-size: 0.6875rem; color: #94a3b8; margin: 0.125rem 0 0;">{{ $meta['desc'] }}</p>
                             @endif
                         </div>
@@ -103,20 +103,20 @@
                 </div>
                 <!-- Isi Setting -->
                 <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
-                    @foreach($items as $setting)
+                    @foreach ($items as $setting)
                     <div {!! in_array($setting->type, ['textarea']) ? 'style="grid-column: span 2;"' : '' !!}>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">
                             {{ $setting->label ?? ucfirst(str_replace('_', ' ', $setting->key)) }}
                         </label>
 
-                        @if($setting->type === 'textarea')
+                        @if ($setting->type === 'textarea')
                             @php
                                 $focusTa = 'this.style.borderColor=\'' . $focusColor . '\';this.style.background=\'#fff\';this.style.boxShadow=\'0 0 0 3px ' . $focusColor . '18\'';
                                 $blurTa = 'this.style.borderColor=\'#e2e8f0\';this.style.background=\'#f8fafc\';this.style.boxShadow=\'none\'';
                             @endphp
                             <textarea name="{{ $setting->key }}" rows="3" style="width: 100%; padding: 0.625rem 0.875rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.8125rem; color: #1e293b; background: #f8fafc; transition: all 0.2s ease; resize: vertical; font-family: inherit;" {!! 'onfocus="' . $focusTa . '" onblur="' . $blurTa . '"' !!}>{{ old($setting->key, $setting->value) }}</textarea>
-                        @elseif($setting->type === 'image')
-                            @if($setting->value)
+                        @elseif ($setting->type === 'image')
+                            @if ($setting->value)
                                 <div style="margin-bottom: 0.5rem; display: inline-block; position: relative;">
                                     <img src="{{ asset('storage/' . $setting->value) }}" alt="{{ $setting->label }}" style="max-height: 80px; border-radius: 0.625rem; border: 1.5px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
                                 </div>

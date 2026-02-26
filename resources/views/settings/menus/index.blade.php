@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        @if(session('success'))
+        @if (session('success'))
         <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 0.75rem; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
             <div style="width: 24px; height: 24px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                 <svg style="width: 14px; height: 14px; color: #fff;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
@@ -52,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($menus as $menu)
+                        @forelse ($menus as $menu)
                         <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 1rem 1.5rem; text-align: center;">
                                 <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #e0e7ff; color: #4f46e5; border-radius: 0.5rem; font-weight: 700; font-size: 0.75rem;">
@@ -70,7 +70,7 @@
                                         <p style="font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">{{ $menu->name }}</p>
                                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
                                             <span style="font-size: 0.6875rem; color: #64748b; background: #f1f5f9; padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-family: monospace;">{{ $menu->route_name }}</span>
-                                            @if($menu->group_name)
+                                            @if ($menu->group_name)
                                             <span style="font-size: 0.625rem; font-weight: 600; color: #8b5cf6; text-transform: uppercase;">• {{ $menu->group_name }}</span>
                                             @endif
                                         </div>
@@ -79,13 +79,13 @@
                             </td>
                             <td style="padding: 1rem 1.5rem;">
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.25rem;">
-                                    @foreach($menu->roles ?? [] as $role)
+                                    @foreach ($menu->roles ?? [] as $role)
                                         <span style="font-size: 0.625rem; font-weight: 600; color: #4338ca; background: #e0e7ff; padding: 0.125rem 0.5rem; border-radius: 999px; text-transform: capitalize;">{{ $role }}</span>
                                     @endforeach
                                 </div>
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
-                                @if($menu->is_active)
+                                @if ($menu->is_active)
                                     <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">
                                         <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span>
                                         Aktif

@@ -22,7 +22,7 @@
             </div>
             <form id="prestasiForm" action="{{ isset($achievement) ? route('cms.achievements.update', $achievement) : route('cms.achievements.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @if(isset($achievement)) @method('PUT') @endif
+                @if (isset($achievement)) @method('PUT') @endif
                 <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
                     <div>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Judul Prestasi <span style="color: #e11d48;">*</span></label>
@@ -35,7 +35,7 @@
                     <div>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Level <span style="color: #e11d48;">*</span></label>
                         <select name="level" required style="width: 100%; padding: 0.625rem 0.875rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.8125rem; color: #1e293b; background: #f8fafc; transition: all 0.2s ease;" onfocus="this.style.borderColor='#ec4899'; this.style.background='#fff'" onblur="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc'">
-                            @foreach(['internasional', 'nasional', 'provinsi', 'kabupaten', 'kecamatan', 'lainnya'] as $level)
+                            @foreach (['internasional', 'nasional', 'provinsi', 'kabupaten', 'kecamatan', 'lainnya'] as $level)
                                 <option value="{{ $level }}" {{ old('level', $achievement->level ?? 'kabupaten') === $level ? 'selected' : '' }}>{{ ucfirst($level) }}</option>
                             @endforeach
                         </select>
@@ -50,7 +50,7 @@
                     </div>
                     <div>
                         <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Foto Dokumentasi</label>
-                        @if(isset($achievement) && $achievement->image_url)
+                        @if (isset($achievement) && $achievement->image_url)
                             <div style="margin-bottom: 0.5rem;"><img src="{{ asset('storage/' . $achievement->image_url) }}" style="max-height: 60px; border-radius: 0.5rem; border: 1.5px solid #e2e8f0;"></div>
                         @endif
                         <input type="file" name="image" id="image_upload" accept="image/*" style="width: 100%; padding: 0.5rem; border: 1.5px dashed #cbd5e1; border-radius: 0.625rem; font-size: 0.75rem; color: #64748b; background: #f8fafc; cursor: pointer;">

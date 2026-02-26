@@ -27,9 +27,71 @@
             </div>
         </div>
 
-        
+        </div>
 
-        
+        <!-- Tabel Inventaris -->
+        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
+            <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #0ea5e9, #6366f1); border-radius: 50%;"></div>
+                    <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Daftar Aset</h4>
+                    <span style="font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #3b82f6; background: #eff6ff;">{{ $inventories->total() }} item</span>
+                </div>
+                <a href="{{ route('inventory.create') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.75rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #0ea5e9, #3b82f6); border-radius: 0.625rem; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+                    <svg style="width: 0.875rem; height: 0.875rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                    Tambah Aset
+                </a>
+            </div>
+
+            <!-- Filter & Search -->
+            <div style="padding: 1rem 1.5rem; background: #f8fafc; border-bottom: 1px solid #f1f5f9;">
+                <form method="GET" action="{{ route('inventory.index') }}" style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, kode, lokasi..."
+                           style="flex: 1; min-width: 200px; padding: 0.5rem 0.875rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.8125rem; outline: none;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
+                    <select name="category" style="padding: 0.5rem 0.875rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.8125rem; outline: none; background: #fff;">
+                        <option value="">Semua Kategori</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                        @endforeach
+                    </select>
+                    <select name="condition" style="padding: 0.5rem 0.875rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.8125rem; outline: none; background: #fff;">
+                        <option value="">Semua Kondisi</option>
+                        <option value="Baik" {{ request('condition') == 'Baik' ? 'selected' : '' }}>Baik</option>
+                        <option value="Rusak Ringan" {{ request('condition') == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
+                        <option value="Rusak Berat" {{ request('condition') == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                    </select>
+                    <button type="submit" style="padding: 0.5rem 1rem; background: #3b82f6; color: #fff; border: none; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; cursor: pointer;">Filter</button>
+                    @if (request('search') || request('category') || request('condition'))
+                        <a href="{{ route('inventory.index') }}" style="padding: 0.5rem 1rem; background: #f1f5f9; color: #64748b; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; text-decoration: none;">Reset</a>
+                    @endif
+                </form>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0; width: 50px;">No</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Nama Barang</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Kategori</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Jumlah</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Kondisi</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: right; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Nilai Total</th>
+                            <th style="padding: 0.875rem 1.5rem; text-align: right; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1.5px solid #e2e8f0;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($inventories as $i => $item)
+                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 1.25rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600;">{{ $inventories->firstItem() + $i }}</td>
+                            <td style="padding: 1.25rem 1.5rem;">
+                                <p style="font-weight: 600; font-size: 0.8125rem; color: #1e293b; margin: 0;">{{ $item->name }}</p>
+                                @if ($item->item_code)
+                                <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $item->item_code }}</p>
+                                @endif
+                                @if ($item->location)
+                                <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">📍 {{ $item->location }}</p>
+                                @endif
                             </td>
                             <td style="padding: 1.25rem 1.5rem;">
                                 <span style="background: #f1f5f9; color: #475569; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">
@@ -40,11 +102,11 @@
                                 {{ $item->quantity }}
                             </td>
                             <td style="padding: 1.25rem 1.5rem; text-align: center;">
-                                @if($item->condition == 'Baik')
+                                @if ($item->condition == 'Baik')
                                     <span style="background: rgba(34, 197, 94, 0.1); color: #166534; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;">
                                         Pristine / Baik
                                     </span>
-                                @elseif($item->condition == 'Rusak Ringan')
+                                @elseif ($item->condition == 'Rusak Ringan')
                                     <span style="background: rgba(245, 158, 11, 0.1); color: #b45309; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;">
                                         Rusak Ringan
                                     </span>
@@ -55,8 +117,8 @@
                                 @endif
                             </td>
                             <td style="padding: 1.25rem 1.5rem; text-align: right; font-variant-numeric: tabular-nums;">
-                                <div style="font-weight: 700; color: #1e293b;">@if($item->unit_price) Rp {{ number_format($item->quantity * $item->unit_price, 0, ',', '.') }} @else <span style="color:#cbd5e1">-</span> @endif</div>
-                                @if($item->unit_price)
+                                <div style="font-weight: 700; color: #1e293b;">@if ($item->unit_price) Rp {{ number_format($item->quantity * $item->unit_price, 0, ',', '.') }} @else <span style="color:#cbd5e1">-</span> @endif</div>
+                                @if ($item->unit_price)
                                 <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;">(Rp {{ number_format($item->unit_price, 0, ',', '.') }} / item)</div>
                                 @endif
                             </td>
@@ -91,7 +153,7 @@
                 </table>
             </div>
             
-            @if($inventories->hasPages())
+            @if ($inventories->hasPages())
             <div style="padding: 1rem 1.5rem; background: #f8fafc; border-top: 1px solid #f1f5f9;">
                 {{ $inventories->links() }}
             </div>

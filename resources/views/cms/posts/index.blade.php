@@ -49,8 +49,8 @@
                         <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600;">{{ $posts->firstItem() + $i }}</td>
                             <td style="padding: 1rem 1.5rem;">
-                                @if ($post->thumbnail)
-                                    <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="{{ $post->title }}" style="height: 48px; width: 72px; object-fit: cover; border-radius: 0.5rem; border: 1.5px solid #e2e8f0; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                                @if ($post->thumbnail_url)
+                                    <img src="{{ asset('storage/' . $post->thumbnail_url) }}" alt="{{ $post->title }}" style="height: 48px; width: 72px; object-fit: cover; border-radius: 0.5rem; border: 1.5px solid #e2e8f0; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                                 @else
                                     <div style="height: 48px; width: 72px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid #e2e8f0;">
                                         <svg style="width: 18px; height: 18px; color: #3b82f6;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>

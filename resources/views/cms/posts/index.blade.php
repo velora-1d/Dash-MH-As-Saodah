@@ -62,10 +62,10 @@
                                 <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $post->author->name ?? 'Admin' }}</p>
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
-                                @if ($post->status === 'published')
-                                    <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #047857; background: #d1fae5;">✓ Terbit</span>
+                                @if ($post->is_published)
+                                    <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #047857; background: #d1fae5;"><svg style="width: 0.75rem; height: 0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Terbit</span>
                                 @else
-                                    <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #d97706; background: #fef3c7;">⏳ Draft</span>
+                                    <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 999px; color: #d97706; background: #fef3c7;"><svg style="width: 0.75rem; height: 0.75rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>Draft</span>
                                 @endif
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #64748b;">{{ $post->published_at ? $post->published_at->format('d M Y') : '-' }}</td>

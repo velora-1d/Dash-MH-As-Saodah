@@ -152,7 +152,7 @@
                 <button onclick="document.getElementById('importModalGuru').style.display='none'" style="background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 1.25rem;">✕</button>
             </div>
             <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1.25rem;">
-                <p style="font-size: 0.75rem; color: #166534; margin: 0;">💡 <strong>Tips:</strong> Download template terlebih dahulu agar format kolom sesuai.</p>
+                <p style="font-size: 0.75rem; color: #166534; margin: 0;"><strong>Tips:</strong> Download template terlebih dahulu agar format kolom sesuai.</p>
                 <a href="{{ route('hr.teachers.template') }}" style="display: inline-flex; align-items: center; margin-top: 0.5rem; font-size: 0.75rem; font-weight: 600; color: #059669; text-decoration: underline;">
                     <svg style="width: 0.75rem; height: 0.75rem; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download Template Excel

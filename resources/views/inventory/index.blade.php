@@ -90,7 +90,7 @@
                                 <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $item->item_code }}</p>
                                 @endif
                                 @if ($item->location)
-                                <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">📍 {{ $item->location }}</p>
+                                <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $item->location }}</p>
                                 @endif
                             </td>
                             <td style="padding: 1.25rem 1.5rem;">

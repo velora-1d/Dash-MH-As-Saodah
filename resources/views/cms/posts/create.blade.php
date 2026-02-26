@@ -54,9 +54,9 @@
                         <div style="padding: 1.25rem;">
                             <div style="margin-bottom: 1rem;">
                                 <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Status</label>
-                                <select name="status" style="width: 100%; padding: 0.625rem 0.875rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.8125rem; color: #1e293b; background: #f8fafc;">
-                                    <option value="draft" {{ old('status', $post->status ?? 'draft') === 'draft' ? 'selected' : '' }}>📝 Draft</option>
-                                    <option value="published" {{ old('status', $post->status ?? '') === 'published' ? 'selected' : '' }}>✅ Terbitkan</option>
+                                <select name="is_published" style="width: 100%; padding: 0.625rem 0.875rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.8125rem; color: #1e293b; background: #f8fafc;">
+                                    <option value="0" {{ old('is_published', $post->is_published ?? false) ? '' : 'selected' }}>Draft</option>
+                                    <option value="1" {{ old('is_published', $post->is_published ?? false) ? 'selected' : '' }}>Terbitkan</option>
                                 </select>
                             </div>
                             <button type="submit" style="width: 100%; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 0.625rem; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(59,130,246,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">

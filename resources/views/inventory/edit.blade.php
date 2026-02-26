@@ -114,9 +114,9 @@
                         <label for="condition" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Kondisi Aset Saat Ini <span style="color: #ef4444;">*</span></label>
                         <select name="condition" id="condition" required
                             class="inv-input inv-select {{ $errors->has('condition') ? 'inv-input-error' : 'inv-input-normal' }}">
-                            <option value="Baik" {{ old('condition', $inventory->condition) == 'Baik' ? 'selected' : '' }}>🟢 Baik (Pristine)</option>
-                            <option value="Rusak Ringan" {{ old('condition', $inventory->condition) == 'Rusak Ringan' ? 'selected' : '' }}>🟠 Rusak Ringan (Bisa Digunakan)</option>
-                            <option value="Rusak Berat" {{ old('condition', $inventory->condition) == 'Rusak Berat' ? 'selected' : '' }}>🔴 Rusak Berat</option>
+                            <option value="Baik" {{ old('condition', $inventory->condition) == 'Baik' ? 'selected' : '' }}>Baik (Pristine)</option>
+                            <option value="Rusak Ringan" {{ old('condition', $inventory->condition) == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan (Bisa Digunakan)</option>
+                            <option value="Rusak Berat" {{ old('condition', $inventory->condition) == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
                         </select>
                         @error('condition')
                             <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>

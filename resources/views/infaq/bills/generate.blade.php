@@ -29,7 +29,7 @@
                     <li>Siswa <strong>Bayar</strong> → Nominal standar sesuai kelas</li>
                 </ul>
                 <div style="margin-top: 1rem; padding: 0.75rem 1rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 0.625rem; color: #991b1b; font-weight: 500; font-size: 0.8125rem;">
-                    ⚠️ Siswa yang sudah memiliki tagihan di bulan & tahun ajaran yang sama akan otomatis dilewati.
+                    Siswa yang sudah memiliki tagihan di bulan & tahun ajaran yang sama akan otomatis dilewati.
                 </div>
             </div>
         </div>

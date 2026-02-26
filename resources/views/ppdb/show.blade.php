@@ -256,7 +256,7 @@
                 @if ($ppdb->status === 'diterima')
                 <form action="{{ route('ppdb.convert', $ppdb) }}" method="POST">
                     @csrf
-                    <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(99,102,241,0.3);" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">🎓 Konversi ke Siswa Aktif</button>
+                    <button type="submit" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(99,102,241,0.3);" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Konversi ke Siswa Aktif</button>
                 </form>
                 @endif
 

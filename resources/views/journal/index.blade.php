@@ -118,7 +118,7 @@
                                 </td>
                                 <td style="padding: 0.875rem 1.5rem;">
                                     <span style="display: inline-flex; align-items: center; padding: 0.25rem 0.625rem; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 999px; font-size: 0.6875rem; font-weight: 600; color: #475569;">
-                                        💳 {{ $trx->cashAccount->name ?? '-' }}
+                                        {{ $trx->cashAccount->name ?? '-' }}
                                     </span>
                                 </td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: right; font-family: 'Outfit', sans-serif;">

@@ -18,21 +18,21 @@ class BackupController extends Controller
     {
         // 1. Tentukan nama file backup
         $filename = 'backup_mhas_saodah_' . date('Y_m_d_His') . '.sql';
-        
+
         // 2. Pastikan direktori backup ada
         $backupPath = storage_path('app/backups');
         if (!file_exists($backupPath)) {
             mkdir($backupPath, 0755, true);
         }
-        
+
         $filePath = $backupPath . '/' . $filename;
 
         // 3. Ambil konfigurasi database dari environment
-        $dbHost     = env('DB_HOST', '127.0.0.1');
-        $dbPort     = env('DB_PORT', '5432');
-        $dbDatabase = env('DB_DATABASE', 'mh_assaodah');
-        $dbUsername = env('DB_USERNAME', 'root');
-        $dbPassword = env('DB_PASSWORD', 'password');
+        $dbHost = config('database.connections.pgsql.host', '127.0.0.1');
+        $dbPort = config('database.connections.pgsql.port', '5432');
+        $dbDatabase = config('database.connections.pgsql.database', 'mh_assaodah');
+        $dbUsername = config('database.connections.pgsql.username', 'root');
+        $dbPassword = config('database.connections.pgsql.password', '');
 
         // 4. Siapkan perintah pg_dump (Pastikan pg_dump terinstal di server)
         // Format: PGPASSWORD=password pg_dump -h host -p port -U username -d database > file.sql
@@ -58,7 +58,8 @@ class BackupController extends Controller
             // 7. Kembalikan response download dan hapus file setelahnya (bisa dimatikan hapusnya jika ingin disimpan di server)
             return Response::download($filePath)->deleteFileAfterSend(true);
 
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             Log::error('Backup Database Error: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan sistem saat melakukan backup: ' . $e->getMessage());
         }
@@ -86,7 +87,7 @@ class BackupController extends Controller
         }
 
         $file = $request->file('sql_file');
-        
+
         // Cek ekstensi (MIME type bervariasi bergantung OS)
         if ($file->getClientOriginalExtension() !== 'sql') {
             return back()->with('error', 'File yang diunggah harus berformat .sql (database backup).');
@@ -96,15 +97,15 @@ class BackupController extends Controller
             // Gunakan path absolut ke file sementara dari PHP upload
             $filePath = escapeshellarg($file->getRealPath());
 
-            $dbHost     = env('DB_HOST', '127.0.0.1');
-            $dbPort     = env('DB_PORT', '5432');
-            $dbDatabase = escapeshellarg(env('DB_DATABASE', 'mh_assaodah'));
-            $dbUsername = escapeshellarg(env('DB_USERNAME', 'root'));
-            $dbPassword = env('DB_PASSWORD', 'password');
+            $dbHost = config('database.connections.pgsql.host', '127.0.0.1');
+            $dbPort = config('database.connections.pgsql.port', '5432');
+            $dbDatabase = escapeshellarg(config('database.connections.pgsql.database', 'mh_assaodah'));
+            $dbUsername = escapeshellarg(config('database.connections.pgsql.username', 'root'));
+            $dbPassword = config('database.connections.pgsql.password', '');
 
             // Eksekusi pemulihan data menggunakan CLI psql
             $command = "PGPASSWORD=\"{$dbPassword}\" psql -h {$dbHost} -p {$dbPort} -U {$dbUsername} -d {$dbDatabase} -f {$filePath}";
-            
+
             $output = null;
             $resultCode = null;
             exec($command, $output, $resultCode);
@@ -123,7 +124,8 @@ class BackupController extends Controller
 
             return redirect()->route('settings.index')->with('success', 'DATABASE BERHASIL DIRESTORE. Sistem berjalan normal dengan dataset terbaru dari file backup.');
 
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             Log::error('Restore Database Error: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan sistem saat melakukan restore: ' . $e->getMessage());
         }

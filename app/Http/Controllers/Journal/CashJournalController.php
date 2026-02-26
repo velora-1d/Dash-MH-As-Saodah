@@ -39,14 +39,14 @@ class CashJournalController extends Controller
 
         // KPI Data
         $totalBalance = CashAccount::sum('balance');
-        
+
         $thisMonthIn = GeneralTransaction::whereNull('wakaf_donor_id')
             ->where('status', 'valid')
             ->where('type', 'in')
             ->whereMonth('date', now()->month)
             ->whereYear('date', now()->year)
             ->sum('amount');
-            
+
         $thisMonthOut = GeneralTransaction::whereNull('wakaf_donor_id')
             ->where('status', 'valid')
             ->where('type', 'out')
@@ -85,41 +85,48 @@ class CashJournalController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $cash = CashAccount::findOrFail($request->cash_account_id);
+        try {
+            DB::transaction(function () use ($request) {
+                // Lock row kas untuk mencegah race condition
+                $cash = CashAccount::lockForUpdate()->findOrFail($request->cash_account_id);
 
-        // Validasi khusus untuk PENGELUARAN (out)
-        if ($request->type === 'out') {
-            if ($cash->balance < $request->amount) {
-                return back()->withInput()->with('error', 'Saldo kas (' . number_format($cash->balance, 0, ',', '.') . ') tidak mencukupi untuk pengeluaran ini.');
-            }
+                // Validasi khusus untuk PENGELUARAN (out) — di dalam lock
+                if ($request->type === 'out') {
+                    if ($cash->balance < $request->amount) {
+                        throw new \RuntimeException('Saldo kas (' . number_format($cash->balance, 0, ',', '.') . ') tidak mencukupi untuk pengeluaran ini.');
+                    }
+                }
+
+                // Simpan transaksi
+                GeneralTransaction::create([
+                    'category_id' => $request->category_id,
+                    'cash_account_id' => $request->cash_account_id,
+                    'user_id' => Auth::id(),
+                    'type' => $request->type,
+                    'amount' => $request->amount,
+                    'date' => $request->date,
+                    'description' => $request->description,
+                    'status' => 'valid',
+                    'wakaf_donor_id' => null,
+                    'wakaf_purpose_id' => null,
+                ]);
+
+                // Update Saldo Kas
+                if ($request->type === 'in') {
+                    $cash->increment('balance', $request->amount);
+                } else {
+                    $cash->decrement('balance', $request->amount);
+                }
+            });
+
+            $msg = $request->type === 'in' ? 'Pemasukan berhasil dicatat.' : 'Pengeluaran berhasil dicatat.';
+            return redirect()->route('journal.index')->with('success', $msg);
+
+        } catch (\RuntimeException $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Gagal mencatat transaksi: ' . $e->getMessage());
         }
-
-        DB::transaction(function () use ($request, $cash) {
-            // Simpan transaksi
-            GeneralTransaction::create([
-                'category_id' => $request->category_id,
-                'cash_account_id' => $request->cash_account_id,
-                'user_id' => Auth::id(),
-                'type' => $request->type,
-                'amount' => $request->amount,
-                'date' => $request->date,
-                'description' => $request->description,
-                'status' => 'valid',
-                // Pastikan wakaf ID null
-                'wakaf_donor_id' => null,
-                'wakaf_purpose_id' => null,
-            ]);
-
-            // Update Saldo Kas
-            if ($request->type === 'in') {
-                $cash->increment('balance', $request->amount);
-            } else {
-                $cash->decrement('balance', $request->amount);
-            }
-        });
-
-        $msg = $request->type === 'in' ? 'Pemasukan berhasil dicatat.' : 'Pengeluaran berhasil dicatat.';
-        return redirect()->route('journal.index')->with('success', $msg);
     }
 
     /**
@@ -138,14 +145,15 @@ class CashJournalController extends Controller
 
         DB::transaction(function () use ($transaction) {
             $transaction->update(['status' => 'void']);
-            
+
             $cash = CashAccount::find($transaction->cash_account_id);
             if ($cash) {
                 // Revert saldo (Kebalikan dari saat store)
                 if ($transaction->type === 'in') {
-                    $cash->decrement('balance', (float) $transaction->amount);
-                } else {
-                    $cash->increment('balance', (float) $transaction->amount);
+                    $cash->decrement('balance', (float)$transaction->amount);
+                }
+                else {
+                    $cash->increment('balance', (float)$transaction->amount);
                 }
             }
         });

@@ -75,29 +75,48 @@ class TabunganController extends Controller
         $type = $request->type;
         $amount = $request->amount;
 
-        // Validasi saldo cukup untuk penarikan
-        if ($type === 'out') {
-            $balance = StudentSaving::getBalance($student->id);
-            if ($amount > $balance) {
-                return redirect()->back()
-                    ->withInput()
-                    ->with('error', 'Saldo tidak mencukupi! Saldo saat ini: Rp ' . number_format($balance, 0, ',', '.'));
+        try {
+            DB::beginTransaction();
+
+            // Pessimistic lock: kunci semua row tabungan siswa ini
+            // agar request konkuren tidak bisa baca saldo bersamaan
+            if ($type === 'out') {
+                $balance = StudentSaving::where('student_id', $student->id)
+                    ->where('status', 'active')
+                    ->lockForUpdate()
+                    ->get()
+                    ->sum(fn($s) => $s->type === 'in' ? $s->amount : -$s->amount);
+
+                if ($amount > $balance) {
+                    DB::rollBack();
+                    return redirect()->back()
+                        ->withInput()
+                        ->with('error', 'Saldo tidak mencukupi! Saldo saat ini: Rp ' . number_format($balance, 0, ',', '.'));
+                }
             }
+
+            StudentSaving::create([
+                'student_id' => $student->id,
+                'type' => $type,
+                'amount' => $amount,
+                'date' => $request->date,
+                'description' => $request->description,
+                'status' => 'active',
+                'user_id' => Auth::id(),
+            ]);
+
+            DB::commit();
+
+            $label = $type === 'in' ? 'Setoran' : 'Penarikan';
+            return redirect()->route('tabungan.show', $student->id)
+                ->with('success', $label . ' sebesar Rp ' . number_format($amount, 0, ',', '.') . ' berhasil dicatat.');
+
         }
-
-        StudentSaving::create([
-            'student_id' => $student->id,
-            'type' => $type,
-            'amount' => $amount,
-            'date' => $request->date,
-            'description' => $request->description,
-            'status' => 'active',
-            'user_id' => Auth::id(),
-        ]);
-
-        $label = $type === 'in' ? 'Setoran' : 'Penarikan';
-        return redirect()->route('tabungan.show', $student->id)
-            ->with('success', $label . ' sebesar Rp ' . number_format($amount, 0, ',', '.') . ' berhasil dicatat.');
+        catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withInput()
+                ->with('error', 'Gagal menyimpan transaksi tabungan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -109,18 +128,35 @@ class TabunganController extends Controller
             return redirect()->back()->with('error', 'Transaksi ini sudah di-void sebelumnya.');
         }
 
-        // Jika void penarikan, pastikan tidak membuat saldo negatif di masa depan
-        // Jika void setoran, pastikan saldo tidak negatif setelah void
-        if ($mutation->type === 'in') {
-            $currentBalance = StudentSaving::getBalance($mutation->student_id);
-            if ($currentBalance < $mutation->amount) {
-                return redirect()->back()->with('error', 'Tidak bisa void setoran ini karena saldo sudah terpakai.');
+        try {
+            DB::beginTransaction();
+
+            // Pessimistic lock: kunci row tabungan siswa
+            if ($mutation->type === 'in') {
+                $currentBalance = StudentSaving::where('student_id', $mutation->student_id)
+                    ->where('status', 'active')
+                    ->lockForUpdate()
+                    ->get()
+                    ->sum(fn($s) => $s->type === 'in' ? $s->amount : -$s->amount);
+
+                if ($currentBalance < $mutation->amount) {
+                    DB::rollBack();
+                    return redirect()->back()->with('error', 'Tidak bisa void setoran ini karena saldo sudah terpakai.');
+                }
             }
+
+            $mutation->update(['status' => 'void']);
+
+            DB::commit();
+
+            return redirect()->route('tabungan.show', $mutation->student_id)
+                ->with('success', 'Transaksi berhasil di-void.');
+
         }
-
-        $mutation->update(['status' => 'void']);
-
-        return redirect()->route('tabungan.show', $mutation->student_id)
-            ->with('success', 'Transaksi berhasil di-void.');
+        catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Gagal void transaksi: ' . $e->getMessage());
+        }
     }
 }

@@ -26,7 +26,8 @@ class InfaqBillController extends Controller
         // Filters
         if ($request->filled('academic_year_id')) {
             $query->where('infaq_bills.academic_year_id', $request->academic_year_id);
-        } else {
+        }
+        else {
             // Default to active academic year
             $activeYear = AcademicYear::where('is_active', true)->first();
             if ($activeYear) {
@@ -85,7 +86,7 @@ class InfaqBillController extends Controller
         $academicYear = AcademicYear::findOrFail($academicYearId);
         // Parse start year from academic year name (e.g. "2025/2026 Ganjil" → 2025)
         preg_match('/(\d{4})/', $academicYear->name, $matches);
-        $startYear = isset($matches[1]) ? (int) $matches[1] : (int) date('Y');
+        $startYear = isset($matches[1]) ? (int)$matches[1] : (int)date('Y');
 
         // Get all active students with their associated classroom
         $students = Student::with('classroom')->where('status', 'aktif')->get();
@@ -101,7 +102,7 @@ class InfaqBillController extends Controller
 
         try {
             foreach ($months as $month) {
-                $month = (int) $month;
+                $month = (int)$month;
                 // Jul-Dec = startYear, Jan-Jun = startYear + 1
                 $billYear = ($month >= 7) ? $startYear : $startYear + 1;
 
@@ -124,12 +125,14 @@ class InfaqBillController extends Controller
                     if ($student->infaq_status === 'gratis') {
                         $nominal = 0;
                         $status = 'lunas';
-                    } elseif ($student->infaq_status === 'subsidi') {
+                    }
+                    elseif ($student->infaq_status === 'subsidi') {
                         $nominal = $student->infaq_nominal ?? 0;
                         if ($nominal <= 0) {
                             $status = 'lunas';
                         }
-                    } else {
+                    }
+                    else {
                         $nominal = $student->classroom ? ($student->classroom->infaq_nominal ?? 0) : 0;
                         if ($nominal <= 0) {
                             $status = 'lunas';
@@ -154,11 +157,13 @@ class InfaqBillController extends Controller
             $monthCount = count($months);
             if ($billsCreated > 0) {
                 return redirect()->route('infaq.bills.index')->with('success', "Berhasil men-generate {$billsCreated} tagihan Infaq/SPP untuk {$monthCount} bulan.");
-            } else {
+            }
+            else {
                 return redirect()->route('infaq.bills.index')->with('info', "Semua siswa aktif sudah memiliki tagihan untuk bulan yang dipilih. ({$billsSkipped} tagihan dilewati)");
             }
 
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan sistem saat mencoba meng-generate tagihan: ' . $e->getMessage());
         }
@@ -173,13 +178,25 @@ class InfaqBillController extends Controller
             return back()->with('error', 'Tagihan yang sudah LUNAS tidak dapat dibatalkan (void).');
         }
 
+        if ($sppBill->status === 'void') {
+            return back()->with('error', 'Tagihan ini sudah berstatus void.');
+        }
+
         if ($sppBill->payments()->count() > 0) {
             return back()->with('error', 'Tagihan ini memiliki riwayat pembayaran. Hapus pembayaran terlebih dahulu sebelum me-void tagihan.');
         }
 
-        $sppBill->update(['status' => 'void']);
+        try {
+            DB::beginTransaction();
+            $sppBill->update(['status' => 'void']);
+            DB::commit();
 
-        return back()->with('success', 'Tagihan berhasil dibatalkan (void).');
+            return back()->with('success', 'Tagihan berhasil dibatalkan (void).');
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal void tagihan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -191,9 +208,17 @@ class InfaqBillController extends Controller
             return back()->with('error', 'Hanya tagihan berstatus LUNAS yang bisa di-revert.');
         }
 
-        $sppBill->update(['status' => 'belum_lunas']);
+        try {
+            DB::beginTransaction();
+            $sppBill->update(['status' => 'belum_lunas']);
+            DB::commit();
 
-        return back()->with('success', 'Status tagihan berhasil dikembalikan ke Belum Lunas.');
+            return back()->with('success', 'Status tagihan berhasil dikembalikan ke Belum Lunas.');
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal revert tagihan: ' . $e->getMessage());
+        }
     }
 
     /**

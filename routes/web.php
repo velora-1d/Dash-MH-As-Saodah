@@ -145,6 +145,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/', [\App\Http\Controllers\HR\PayrollController::class, 'index'])->name('index');
             Route::post('/generate', [\App\Http\Controllers\HR\PayrollController::class, 'generate'])->name('generate');
             Route::get('/{payroll}/print', [\App\Http\Controllers\HR\PayrollController::class, 'print'])->name('print');
+            Route::get('/{payroll}/edit', [\App\Http\Controllers\HR\PayrollController::class, 'edit'])->name('edit');
+            Route::put('/{payroll}', [\App\Http\Controllers\HR\PayrollController::class, 'update'])->name('update');
+            Route::delete('/{payroll}', [\App\Http\Controllers\HR\PayrollController::class, 'destroy'])->name('destroy');
 
             Route::get('/components', [\App\Http\Controllers\HR\PayrollController::class, 'components'])->name('components');
             Route::post('/components', [\App\Http\Controllers\HR\PayrollController::class, 'storeComponent'])->name('components.store');

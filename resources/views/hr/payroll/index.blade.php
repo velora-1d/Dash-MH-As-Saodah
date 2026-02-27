@@ -108,7 +108,25 @@
                             <td style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9;">
                                 <div style="font-size: 0.875rem; font-weight: 700; color: #3b82f6;">Rp {{ number_format($pay->net_salary, 0, ',', '.') }}</div>
                             </td>
-                            <td style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; text-align: right;">
+                            <td style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; text-align: right; min-width: 140px;">
+                                <!-- Fitur Edit & Hapus Tampil Jika Status Belum Paid (Aman dihapus) -->
+                                @if($pay->status === 'draft')
+                                    <!-- Tombol Edit Nominal Gaji -->
+                                    <a href="{{ route('hr.payroll.edit', $pay->id) }}" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 0.5rem; color: #10b981; background: #ecfdf5; border: 1px solid #a7f3d0; cursor: pointer; transition: all 0.2s ease; margin-right: 0.25rem;" title="Edit Nominal">
+                                        <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                    </a>
+                                    
+                                    <!-- Tombol Hapus Log Slip Gaji -->
+                                    <form action="{{ route('hr.payroll.destroy', $pay->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus slip gaji ini secara permanen?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 0.5rem; color: #ef4444; background: #fef2f2; border: 1px solid #fecaca; cursor: pointer; transition: all 0.2s ease; margin-right: 0.25rem;" title="Hapus Riwayat Gaji">
+                                            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                        </button>
+                                    </form>
+                                @endif
+
+                                <!-- Tombol Cetak Selalu Tersedia -->
                                 <a href="{{ route('hr.payroll.print', $pay->id) }}" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 0.5rem; color: #3b82f6; background: #eff6ff; border: 1px solid #bfdbfe; cursor: pointer; transition: all 0.2s ease;" title="Cetak Slip">
                                     <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
                                 </a>

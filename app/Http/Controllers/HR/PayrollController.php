@@ -186,6 +186,91 @@ class PayrollController extends Controller
     }
 
     /**
+     * Tampilkan form Edit Nominal Gaji Manual (Khusus Draft)
+     */
+    public function edit($id)
+    {
+        $payroll = Payroll::with(['employee', 'academicYear', 'details'])->findOrFail($id);
+        
+        if ($payroll->status !== 'draft') {
+            return redirect()->route('hr.payroll.index')->with('error', 'Hanya slip gaji berstatus draft yang dapat diedit nominalnya.');
+        }
+
+        // Ambil master komponen untuk form tambah manual jika ada
+        $components = SalaryComponent::orderBy('type')->orderBy('name')->get();
+
+        return view('hr.payroll.edit', compact('payroll', 'components'));
+    }
+
+    /**
+     * Hitung ulang dan simpan perubahan Nominal Detail Slip Gaji
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'components' => 'array',
+            'components.*' => 'numeric|min:0',
+        ]);
+
+        $payroll = Payroll::with('details')->findOrFail($id);
+
+        if ($payroll->status !== 'draft') {
+            return redirect()->route('hr.payroll.index')->with('error', 'Hanya slip gaji berstatus draft yang dapat disimpan perubahannya.');
+        }
+
+        $totalEarning = 0;
+        $totalDeduction = 0;
+
+        // Loop inputan dari user dan sesuaikan nominal PayrollDetail
+        if ($request->has('components')) {
+            foreach ($request->components as $detailId => $nominal) {
+                if ($nominal >= 0) {
+                    $detail = PayrollDetail::where('payroll_id', $payroll->id)->where('id', $detailId)->first();
+                    if ($detail) {
+                        $detail->nominal = $nominal;
+                        $detail->save();
+
+                        if ($detail->type === 'earning') {
+                            $totalEarning += $nominal;
+                        } else {
+                            $totalDeduction += $nominal;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Update total kalkulasi di tabel induk
+        $payroll->total_earnings = $totalEarning;
+        $payroll->total_deductions = $totalDeduction;
+        $payroll->net_salary = $totalEarning - $totalDeduction;
+        // Simpan field deskripsi/catatan misal ada
+        if ($request->has('description')) {
+            $payroll->description = $request->description;
+        }
+        $payroll->save();
+
+        return redirect()->route('hr.payroll.index')->with('success', 'Riwayat Gaji ' . $payroll->employee->name . ' berhasi diperbarui.');
+    }
+
+    /**
+     * Hapus Riwayat Gaji (Khusus Draft)
+     */
+    public function destroy($id)
+    {
+        $payroll = Payroll::findOrFail($id);
+
+        if ($payroll->status !== 'draft') {
+            return redirect()->route('hr.payroll.index')->with('error', 'Gagal: Slip gaji yang sudah terbayar tidak boleh dihapus begitu saja.');
+        }
+
+        $payroll->details()->delete();
+        $payroll->delete();
+
+        return redirect()->route('hr.payroll.index')->with('success', 'Riwayat log gaji (' . $payroll->employee->name . ') berhasil dihapus.');
+    }
+
+    /**
      * Mode Cetak (Print View) Halaman Slip Gaji Tunggal.
      */
     public function print($id)

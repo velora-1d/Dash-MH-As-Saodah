@@ -110,41 +110,62 @@
 
     {{-- Script: Simpan & pulihkan posisi scroll sidebar --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar-nav');
-            if (!sidebar) return;
+    (function() {
+        const sidebar = document.getElementById('sidebar-nav');
+        if (!sidebar) return;
 
-            // Restore scroll position setelah Alpine.js selesai render
-            function restoreScroll() {
-                const savedPos = sessionStorage.getItem('sidebarScrollPos');
-                if (savedPos) {
-                    sidebar.scrollTop = parseInt(savedPos, 10);
-                } else {
-                    const activeMenu = sidebar.querySelector('.sidebar-active');
-                    if (activeMenu) {
-                        activeMenu.scrollIntoView({ block: 'center', behavior: 'instant' });
-                    }
+        const KEY = 'sidebarScrollPos';
+
+        // Simpan scroll position saat klik link navigasi
+        sidebar.addEventListener('click', function(e) {
+            const link = e.target.closest('a[href]');
+            if (link && link.getAttribute('href') !== '#') {
+                sessionStorage.setItem(KEY, sidebar.scrollTop);
+            }
+        });
+
+        // Simpan juga saat halaman akan unload
+        window.addEventListener('beforeunload', function() {
+            sessionStorage.setItem(KEY, sidebar.scrollTop);
+        });
+
+        // Restore: retry beberapa kali karena Alpine.js x-collapse butuh waktu
+        var savedPos = sessionStorage.getItem(KEY);
+        var attempts = 0;
+        var maxAttempts = 15;
+
+        function tryRestore() {
+            attempts++;
+            if (savedPos !== null) {
+                var pos = parseInt(savedPos, 10);
+                sidebar.scrollTop = pos;
+                // Jika belum berhasil scroll dan masih ada attempt
+                if (sidebar.scrollTop < pos - 5 && attempts < maxAttempts) {
+                    setTimeout(tryRestore, 50);
+                    return;
+                }
+            } else {
+                // Tidak ada saved position, scroll ke menu aktif
+                var active = sidebar.querySelector('.sidebar-active');
+                if (!active) {
+                    // Coba cari parent accordion yang aktif
+                    active = sidebar.querySelector('[class*="bg-indigo-900"][class*="border-amber"]');
+                }
+                if (active) {
+                    active.scrollIntoView({ block: 'center', behavior: 'instant' });
                 }
             }
+        }
 
-            // Tunggu Alpine.js selesai render accordion (x-collapse)
-            requestAnimationFrame(function() {
-                setTimeout(restoreScroll, 100);
+        // Mulai restore setelah DOM siap
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(tryRestore, 50);
             });
-
-            // Simpan posisi scroll saat klik link navigasi
-            sidebar.addEventListener('click', function(e) {
-                const link = e.target.closest('a[href]');
-                if (link && link.getAttribute('href') !== '#') {
-                    sessionStorage.setItem('sidebarScrollPos', sidebar.scrollTop);
-                }
-            });
-
-            // Simpan juga saat beforeunload sebagai fallback
-            window.addEventListener('beforeunload', function() {
-                sessionStorage.setItem('sidebarScrollPos', sidebar.scrollTop);
-            });
-        });
+        } else {
+            setTimeout(tryRestore, 50);
+        }
+    })();
     </script>
         
     <!-- User Section Footer Sidebar -->

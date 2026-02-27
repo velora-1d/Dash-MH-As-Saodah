@@ -44,18 +44,17 @@
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <!-- Status PPDB -->
                     @php
                         $isOpen = $ppdbSettings['ppdb_is_open'] === '1';
                         $badgeStyle = 'display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.75rem;border-radius:999px;font-size:0.6875rem;font-weight:700;' . ($isOpen ? 'background:#d1fae5;color:#047857;' : 'background:#fee2e2;color:#991b1b;');
                         $dotStyle = 'width:6px;height:6px;border-radius:50%;' . ($isOpen ? 'background:#10b981;' : 'background:#ef4444;');
-                        $toggleAreaStyle = 'background:' . ($isOpen ? '#f0fdf4' : '#fef2f2') . ';border:1.5px solid ' . ($isOpen ? '#bbf7d0' : '#fecaca') . ';border-radius:0.75rem;padding:1rem;text-align:center;';
-                        $sliderBg = 'position:absolute;top:0;left:0;right:0;bottom:0;background:' . ($isOpen ? '#10b981' : '#cbd5e1') . ';border-radius:999px;transition:all 0.3s ease;';
-                        $knobStyle = 'position:absolute;top:2px;left:' . ($isOpen ? '26px' : '2px') . ';width:20px;height:20px;background:#fff;border-radius:50%;transition:all 0.3s ease;box-shadow:0 1px 3px rgba(0,0,0,0.2);';
+                        $toggleAreaStyle = 'border-radius:0.75rem;padding:1rem;text-align:center;' . ($isOpen ? 'background:#f0fdf4;border:1.5px solid #bbf7d0;' : 'background:#fef2f2;border:1.5px solid #fecaca;');
+                        $sliderBg = 'position:absolute;top:0;left:0;right:0;bottom:0;border-radius:999px;transition:all 0.3s ease;' . ($isOpen ? 'background:#10b981;' : 'background:#cbd5e1;');
+                        $knobStyle = 'position:absolute;top:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:all 0.3s ease;box-shadow:0 1px 3px rgba(0,0,0,0.2);' . ($isOpen ? 'left:26px;' : 'left:2px;');
                         $statusTextStyle = 'font-size:0.6875rem;font-weight:700;margin:0.375rem 0 0;' . ($isOpen ? 'color:#047857;' : 'color:#991b1b;');
                     @endphp
-                    <span {!! 'style="' . $badgeStyle . '"' !!}>
-                        <span {!! 'style="' . $dotStyle . '"' !!}></span>
+                    <span style="{!! $badgeStyle !!}">
+                        <span style="{!! $dotStyle !!}"></span>
                         {{ $isOpen ? 'PPDB DIBUKA' : 'PPDB DITUTUP' }}
                     </span>
                     <svg class="chevron" style="width: 16px; height: 16px; color: #94a3b8; transition: transform 0.2s ease;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -65,38 +64,41 @@
                 <!-- Baris 1: Toggle + Nominal -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
                     <!-- Toggle Buka/Tutup PPDB -->
-                    <div {!! 'style="' . $toggleAreaStyle . '"' !!}>
+                    <div style="{!! $toggleAreaStyle !!}">
                         <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.5rem;">Status PPDB</p>
                         <label style="position: relative; display: inline-block; width: 48px; height: 24px; cursor: pointer;">
                             <input type="checkbox" id="ppdb-toggle" {{ $isOpen ? 'checked' : '' }} style="display: none;" onchange="togglePpdb(this.checked)">
-                            <span {!! 'style="' . $sliderBg . '"' !!}>
-                                <span {!! 'style="' . $knobStyle . '"' !!}></span>
+                            <span style="{!! $sliderBg !!}">
+                                <span style="{!! $knobStyle !!}"></span>
                             </span>
                         </label>
-                        <p {!! 'style="' . $statusTextStyle . '"' !!}>{{ $isOpen ? 'Dibuka' : 'Ditutup' }}</p>
+                        <p style="{!! $statusTextStyle !!}">{{ $isOpen ? 'Dibuka' : 'Ditutup' }}</p>
                     </div>
                     <!-- Biaya Pendaftaran -->
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem;">
                         <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.375rem; display: flex; align-items: center; gap: 0.25rem;"><svg style="width:12px;height:12px;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Biaya Pendaftaran</p>
-                        <div style="display: flex; align-items: center; gap: 0.25rem;">
-                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Rp</span>
-                            <input type="number" id="set-ppdb-fee" value="{{ $ppdbSettings['ppdb_registration_fee'] }}" style="width: 100%; padding: 0.375rem 0.5rem; border: 1.5px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 700; color: #1e293b; background: #fff;" onfocus="this.style.borderColor='#0ea5e9'" onblur="this.style.borderColor='#e2e8f0'">
+                        <div class="fi-money-wrap">
+                            <span class="fi-money-prefix">Rp</span>
+                            <input type="text" inputmode="numeric" class="fi-input fi-money-input ppdb-nominal" data-target="set-ppdb-fee" value="{{ number_format($ppdbSettings['ppdb_registration_fee'], 0, ',', '.') }}" autocomplete="off">
+                            <input type="hidden" id="set-ppdb-fee" value="{{ $ppdbSettings['ppdb_registration_fee'] }}">
                         </div>
                     </div>
                     <!-- Biaya Buku -->
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem;">
                         <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.375rem; display: flex; align-items: center; gap: 0.25rem;"><svg style="width:12px;height:12px;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg> Biaya Buku / LKS</p>
-                        <div style="display: flex; align-items: center; gap: 0.25rem;">
-                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Rp</span>
-                            <input type="number" id="set-books-fee" value="{{ $ppdbSettings['books_fee'] }}" style="width: 100%; padding: 0.375rem 0.5rem; border: 1.5px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 700; color: #1e293b; background: #fff;" onfocus="this.style.borderColor='#0ea5e9'" onblur="this.style.borderColor='#e2e8f0'">
+                        <div class="fi-money-wrap">
+                            <span class="fi-money-prefix">Rp</span>
+                            <input type="text" inputmode="numeric" class="fi-input fi-money-input ppdb-nominal" data-target="set-books-fee" value="{{ number_format($ppdbSettings['books_fee'], 0, ',', '.') }}" autocomplete="off">
+                            <input type="hidden" id="set-books-fee" value="{{ $ppdbSettings['books_fee'] }}">
                         </div>
                     </div>
                     <!-- Biaya Seragam -->
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem;">
                         <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.375rem; display: flex; align-items: center; gap: 0.25rem;"><svg style="width:12px;height:12px;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg> Biaya Seragam</p>
-                        <div style="display: flex; align-items: center; gap: 0.25rem;">
-                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Rp</span>
-                            <input type="number" id="set-uniform-fee" value="{{ $ppdbSettings['uniform_fee'] }}" style="width: 100%; padding: 0.375rem 0.5rem; border: 1.5px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 700; color: #1e293b; background: #fff;" onfocus="this.style.borderColor='#0ea5e9'" onblur="this.style.borderColor='#e2e8f0'">
+                        <div class="fi-money-wrap">
+                            <span class="fi-money-prefix">Rp</span>
+                            <input type="text" inputmode="numeric" class="fi-input fi-money-input ppdb-nominal" data-target="set-uniform-fee" value="{{ number_format($ppdbSettings['uniform_fee'], 0, ',', '.') }}" autocomplete="off">
+                            <input type="hidden" id="set-uniform-fee" value="{{ $ppdbSettings['uniform_fee'] }}">
                         </div>
                     </div>
                 </div>
@@ -404,6 +406,16 @@
             })
             .catch(() => Swal.fire('Error', 'Gagal mengubah status PPDB.', 'error'));
         }
+
+        // === Input Nominal Format Ribuan ===
+        document.querySelectorAll('.ppdb-nominal').forEach(function(el) {
+            el.addEventListener('input', function() {
+                var raw = el.value.replace(/\D/g, '');
+                el.value = raw.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                var hiddenId = el.dataset.target;
+                if (hiddenId) document.getElementById(hiddenId).value = raw;
+            });
+        });
 
         function savePpdbSettings() {
             const payload = {

@@ -439,17 +439,25 @@
             .fi-textarea { resize: vertical; min-height: 5rem; line-height: 1.6; }
 
             /* --- Money Input Wrapper --- */
-            .fi-money-wrap { position: relative; }
+            .fi-money-wrap { position: relative; display: flex; align-items: stretch; }
             .fi-money-prefix {
-                position: absolute; left: 0; top: 0; bottom: 0;
-                display: flex; align-items: center;
-                padding: 0 0.75rem;
+                position: absolute; left: 0; top: 0; bottom: 0; z-index: 2;
+                display: flex; align-items: center; justify-content: center;
+                min-width: 2.75rem; padding: 0 0.75rem;
                 font-size: 0.8125rem; font-weight: 700; color: #64748b;
                 background: #f1f5f9; border-right: 1.5px solid #e2e8f0;
                 border-radius: 0.625rem 0 0 0.625rem;
                 pointer-events: none; user-select: none;
             }
-            .fi-money-input { padding-left: 3.25rem; font-family: 'Outfit', 'Inter', sans-serif; font-weight: 600; }
+            .fi-money-input,
+            form .fi-money-input,
+            form input.fi-money-input {
+                padding-left: 3.75rem !important;
+                font-family: 'Outfit', 'Inter', sans-serif !important;
+                font-weight: 600 !important;
+                font-variant-numeric: tabular-nums;
+                letter-spacing: 0.01em;
+            }
 
             /* --- Icon Prefix/Suffix --- */
             .fi-icon-wrap { position: relative; }

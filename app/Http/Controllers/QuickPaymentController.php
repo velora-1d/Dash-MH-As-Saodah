@@ -73,6 +73,19 @@ class QuickPaymentController extends Controller
                             elseif ($field === 'is_books_paid') $descText .= "Biaya LKS";
                             elseif ($field === 'is_uniform_paid') $descText .= "Biaya Seragam";
 
+                            // Tambah konteks PPDB atau Daftar Ulang
+                            $contextLabel = '';
+                            if ($registrationPayment->registrationable_type === \App\Models\PpdbRegistration::class) {
+                                $contextLabel = 'PPDB';
+                            } else {
+                                $contextLabel = 'Daftar Ulang';
+                            }
+
+                            // Format user-friendly: "Penerimaan Biaya Pendaftaran - Nama Siswa (Daftar Ulang)"
+                            // REF ID tetap disimpan di akhir untuk kebutuhan void/lookup
+                            $displayDesc = $descText . " - " . $studentName . " (" . $contextLabel . ")";
+                            $refTag = " [ref:" . $registrationPayment->id . "_" . $field . "]";
+
                             \App\Models\GeneralTransaction::create([
                                 'category_id' => $category->id,
                                 'cash_account_id' => $cashAccount->id,
@@ -80,7 +93,7 @@ class QuickPaymentController extends Controller
                                 'type' => 'in',
                                 'amount' => $nominal,
                                 'date' => now(),
-                                'description' => $descText . " - " . $studentName . " | " . $refSource,
+                                'description' => $displayDesc . $refTag,
                                 'status' => 'valid',
                             ]);
 
@@ -94,8 +107,13 @@ class QuickPaymentController extends Controller
                 if ($amountField) {
                     $registrationPayment->{$amountField} = 0;
 
-                    // Cari transaksi dengan ref khusus
-                    $transactions = \App\Models\GeneralTransaction::where('description', 'like', "%{$refSource}")
+                    // Cari transaksi dengan ref khusus (format baru: [ref:X_field] atau format lama: REF:REGPAY_X_field)
+                    $refNew = "[ref:" . $registrationPayment->id . "_" . $field . "]";
+                    $transactions = \App\Models\GeneralTransaction::where(function($q) use ($refSource, $refNew) {
+                            $q->where('description', 'like', "%{$refSource}")
+                              ->orWhere('description', 'like', "%{$refSource} (DIBATALKAN)")
+                              ->orWhere('description', 'like', "%{$refNew}%");
+                        })
                         ->where('status', 'valid')
                         ->get();
 

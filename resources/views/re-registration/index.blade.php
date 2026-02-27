@@ -63,25 +63,28 @@
                     <!-- Biaya Daftar Ulang -->
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem;">
                         <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.375rem; display: flex; align-items: center; gap: 0.25rem;"><svg style="width:12px;height:12px;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Biaya Daftar Ulang</p>
-                        <div style="display: flex; align-items: center; gap: 0.25rem;">
-                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Rp</span>
-                            <input type="number" id="set-rereg-fee" value="{{ $reRegSettings['re_registration_fee'] }}" style="width: 100%; padding: 0.375rem 0.5rem; border: 1.5px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 700; color: #1e293b; background: #fff;" onfocus="this.style.borderColor='#8b5cf6'" onblur="this.style.borderColor='#e2e8f0'">
+                        <div class="fi-money-wrap">
+                            <span class="fi-money-prefix">Rp</span>
+                            <input type="text" inputmode="numeric" class="fi-input fi-money-input rereg-nominal" data-target="set-rereg-fee" value="{{ number_format($reRegSettings['re_registration_fee'], 0, ',', '.') }}" autocomplete="off">
+                            <input type="hidden" id="set-rereg-fee" value="{{ $reRegSettings['re_registration_fee'] }}">
                         </div>
                     </div>
                     <!-- Biaya Buku -->
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem;">
                         <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.375rem; display: flex; align-items: center; gap: 0.25rem;"><svg style="width:12px;height:12px;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg> Biaya Buku / LKS</p>
-                        <div style="display: flex; align-items: center; gap: 0.25rem;">
-                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Rp</span>
-                            <input type="number" id="set-rereg-books" value="{{ $reRegSettings['books_fee'] }}" style="width: 100%; padding: 0.375rem 0.5rem; border: 1.5px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 700; color: #1e293b; background: #fff;" onfocus="this.style.borderColor='#8b5cf6'" onblur="this.style.borderColor='#e2e8f0'">
+                        <div class="fi-money-wrap">
+                            <span class="fi-money-prefix">Rp</span>
+                            <input type="text" inputmode="numeric" class="fi-input fi-money-input rereg-nominal" data-target="set-rereg-books" value="{{ number_format($reRegSettings['books_fee'], 0, ',', '.') }}" autocomplete="off">
+                            <input type="hidden" id="set-rereg-books" value="{{ $reRegSettings['books_fee'] }}">
                         </div>
                     </div>
                     <!-- Biaya Seragam -->
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem;">
                         <p style="font-size: 0.625rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.375rem; display: flex; align-items: center; gap: 0.25rem;"><svg style="width:12px;height:12px;flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg> Biaya Seragam</p>
-                        <div style="display: flex; align-items: center; gap: 0.25rem;">
-                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Rp</span>
-                            <input type="number" id="set-rereg-uniform" value="{{ $reRegSettings['uniform_fee'] }}" style="width: 100%; padding: 0.375rem 0.5rem; border: 1.5px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 700; color: #1e293b; background: #fff;" onfocus="this.style.borderColor='#8b5cf6'" onblur="this.style.borderColor='#e2e8f0'">
+                        <div class="fi-money-wrap">
+                            <span class="fi-money-prefix">Rp</span>
+                            <input type="text" inputmode="numeric" class="fi-input fi-money-input rereg-nominal" data-target="set-rereg-uniform" value="{{ number_format($reRegSettings['uniform_fee'], 0, ',', '.') }}" autocomplete="off">
+                            <input type="hidden" id="set-rereg-uniform" value="{{ $reRegSettings['uniform_fee'] }}">
                         </div>
                     </div>
                 </div>
@@ -242,8 +245,16 @@
                                         <button type="submit" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Tidak Daftar</button>
                                     </form>
                                 </div>
-                                @else
-                                    <span style="font-size: 0.6875rem; color: #94a3b8;">—</span>
+                                @elseif (in_array($reg->status, ['confirmed', 'not_registered']))
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 0.375rem;">
+                                    <form action="{{ route('re-registration.cancel-confirmation', $reg) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin membatalkan? Status akan dikembalikan ke Pending.')">
+                                        @csrf
+                                        <button type="submit" style="display: inline-flex; align-items: center; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #d97706; background: #fffbeb; border: 1px solid #fde68a; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+                                            <svg style="width: 0.75rem; height: 0.75rem; margin-right: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
+                                            Batalkan
+                                        </button>
+                                    </form>
+                                </div>
                                 @endif
                             </td>
                         </tr>
@@ -361,6 +372,16 @@
                     Swal.fire('Error', 'Gagal menyimpan perubahan.', 'error');
                 });
             }
+        });
+
+        // === Input Nominal Format Ribuan ===
+        document.querySelectorAll('.rereg-nominal').forEach(function(el) {
+            el.addEventListener('input', function() {
+                var raw = el.value.replace(/\D/g, '');
+                el.value = raw.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                var hiddenId = el.dataset.target;
+                if (hiddenId) document.getElementById(hiddenId).value = raw;
+            });
         });
 
         // === Fungsi Setting Daftar Ulang ===

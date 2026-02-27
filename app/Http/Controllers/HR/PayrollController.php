@@ -120,9 +120,17 @@ class PayrollController extends Controller
 
         $employees = $query->get();
         $generatedCount = 0;
+        $skippedCount = 0;
 
         foreach ($employees as $employee) {
-            // Cek apakah slip bulan/tahun tersebut sudah terbuat. Jika draft bisa digitmngka, jika paid abaikan.
+            // Validasi: jangan generate slip jika tidak ada komponen gaji yang diisi
+            $activeSalaryComponents = $employee->salaryComponents->filter(fn($s) => $s->nominal > 0);
+            if ($activeSalaryComponents->isEmpty()) {
+                $skippedCount++;
+                continue; // Lewati pegawai tanpa pengaturan gaji
+            }
+
+            // Cek apakah slip bulan/tahun tersebut sudah terbuat. Jika draft bisa ditimpa, jika paid abaikan.
             $existingPayroll = Payroll::where('employee_id', $employee->id)
                 ->where('academic_year_id', $request->academic_year_id)
                 ->where('month', $request->month)
@@ -148,7 +156,7 @@ class PayrollController extends Controller
             $payroll->status = 'draft';
             $payroll->save();
 
-            foreach ($employee->salaryComponents as $empSal) {
+            foreach ($activeSalaryComponents as $empSal) {
                 $payroll->details()->create([
                     'component_name' => $empSal->salaryComponent->name,
                     'type' => $empSal->salaryComponent->type,
@@ -169,7 +177,12 @@ class PayrollController extends Controller
             $generatedCount++;
         }
 
-        return redirect()->route('hr.payroll.index')->with('success', "Proses Generate Gaji Bulanan Selesai ($generatedCount Diterbitkan).");
+        $message = "Proses Generate Gaji Bulanan Selesai ($generatedCount Diterbitkan).";
+        if ($skippedCount > 0) {
+            $message .= " $skippedCount pegawai dilewati karena belum ada pengaturan gaji.";
+        }
+
+        return redirect()->route('hr.payroll.index')->with('success', $message);
     }
 
     /**

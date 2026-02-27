@@ -239,4 +239,31 @@ class InfaqBillController extends Controller
     {
         return Excel::download(new InfaqExport, 'rekap-infaq-' . date('Y-m-d') . '.xlsx');
     }
+
+    /**
+     * Tampilkan rekapitulasi SPP 12 bulan untuk satu siswa.
+     */
+    public function tracking(Student $student)
+    {
+        // Ambil tahun ajaran aktif
+        $activeAcademicYear = AcademicYear::where('is_active', true)->first();
+        if (!$activeAcademicYear) {
+            return redirect()->route('infaq.bills.index')->with('error', 'Tidak ada Tahun Ajaran yang aktif. Silakan atur terlebih dahulu di menu Setting Tahun Ajaran.');
+        }
+
+        // Ambil semua tagihan untuk siswa ini pada tahun ajaran aktif
+        $bills = SppBill::where('student_id', $student->id)
+            ->where('academic_year_id', $activeAcademicYear->id)
+            ->get();
+
+        // Siapkan array 12 bulan dengan default null (belum ada tagihan di-generate)
+        // Bulan yang kita track mengikuti tahun ajaran lokal: Juli - Juni
+        // Array mapping standar 1-12 supaya mudah diakses di view
+        $trackedBills = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $trackedBills[$i] = $bills->firstWhere('month', $i);
+        }
+
+        return view('infaq.bills.tracking', compact('student', 'activeAcademicYear', 'trackedBills'));
+    }
 }

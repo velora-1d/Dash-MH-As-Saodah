@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/update-settings', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'updateSettings'])->name('update-settings');
         Route::post('/{reRegistration}/confirm', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'confirm'])->name('confirm');
         Route::post('/{reRegistration}/not-registered', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'markNotRegistered'])->name('not-registered');
+        Route::post('/{reRegistration}/cancel-confirmation', [\App\Http\Controllers\ReRegistration\ReRegistrationController::class, 'cancelConfirmation'])->name('cancel-confirmation');
     });
 
     // Quick Payment Toggle (PPDB & Daftar Ulang — tracking biaya, buku, seragam)
@@ -62,9 +63,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('master-data/academic-years', AcademicYearController::class)->except('show');
     Route::resource('master-data/classrooms', ClassroomController::class)->except('show');
     // Export/Import/Template Siswa (HARUS sebelum resource agar tidak terganggu wildcard)
-    Route::get('master-data/students/export', [\App\Http\Controllers\MasterData\StudentController::class, 'export'])->name('students.export');
-    Route::get('master-data/students/template', [\App\Http\Controllers\MasterData\StudentController::class, 'downloadTemplate'])->name('students.template');
-    Route::post('master-data/students/import', [\App\Http\Controllers\MasterData\StudentController::class, 'import'])->name('students.import');
+    Route::get('master-data/students/export', [StudentController::class, 'export'])->name('students.export');
+    Route::get('master-data/students/template', [StudentController::class, 'downloadTemplate'])->name('students.template');
+    Route::post('master-data/students/import', [StudentController::class, 'import'])->name('students.import');
     Route::resource('master-data/students', StudentController::class);
     Route::resource('master-data/transaction-categories', TransactionCategoryController::class)->except('show');
 
@@ -80,6 +81,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('infaq/bills', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'index'])->name('infaq.bills.index');
         Route::get('infaq/bills/generate', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'createGenerate'])->name('infaq.bills.generate.create');
         Route::post('infaq/bills/generate', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'storeGenerate'])->name('infaq.bills.generate.store');
+        Route::get('infaq/bills/tracking/{student}', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'tracking'])->name('infaq.bills.tracking');
         Route::post('infaq/bills/{sppBill}/void', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'void'])->name('infaq.bills.void');
         Route::post('infaq/bills/{sppBill}/revert', [\App\Http\Controllers\Infaq\InfaqBillController::class, 'revert'])->name('infaq.bills.revert');
         Route::get('infaq/payments/{bill}/create', [\App\Http\Controllers\Infaq\InfaqPaymentController::class, 'create'])->name('infaq.payments.create');

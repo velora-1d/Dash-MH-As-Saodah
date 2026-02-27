@@ -110,7 +110,13 @@
                                         <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8125rem; color: #b45309;">{{ strtoupper(substr($bill->student->name, 0, 1)) }}</div>
                                         <div>
                                             <p style="font-weight: 600; font-size: 0.8125rem; color: #1e293b; margin: 0;">{{ $bill->student->name }}</p>
-                                            <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">{{ $bill->student->nisn ?? '-' }}</p>
+                                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
+                                                <p style="font-size: 0.6875rem; color: #94a3b8; margin: 0;">{{ $bill->student->nisn ?? '-' }}</p>
+                                                <a href="{{ route('infaq.bills.tracking', $bill->student->id) }}" style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.625rem; font-weight: 600; color: #3b82f6; background: #eff6ff; padding: 0.125rem 0.375rem; border-radius: 999px; text-decoration: none; border: 1px solid #bfdbfe; transition: all 0.15s ease;" onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'">
+                                                    <svg style="width: 0.625rem; height: 0.625rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                                                    Rekap SPP
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>

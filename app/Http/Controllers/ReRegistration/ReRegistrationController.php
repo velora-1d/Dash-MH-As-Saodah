@@ -182,4 +182,27 @@ class ReRegistrationController extends Controller
             return redirect()->back()->with('error', 'Gagal memproses data.');
         }
     }
+
+    /**
+     * Batalkan konfirmasi daftar ulang — kembalikan status ke pending.
+     */
+    public function cancelConfirmation(ReRegistration $reRegistration)
+    {
+        try {
+            if (!in_array($reRegistration->status, ['confirmed', 'not_registered'])) {
+                return redirect()->back()->with('error', 'Status siswa tidak dapat dibatalkan karena sudah pending.');
+            }
+
+            $reRegistration->update([
+                'status' => 'pending',
+                'confirmed_by' => null,
+                'confirmed_at' => null,
+            ]);
+
+            return redirect()->back()->with('success', 'Konfirmasi daftar ulang siswa "' . $reRegistration->student->name . '" dibatalkan. Status dikembalikan ke Pending.');
+        } catch (\Exception $e) {
+            Log::error('Gagal membatalkan konfirmasi daftar ulang: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal membatalkan konfirmasi.');
+        }
+    }
 }

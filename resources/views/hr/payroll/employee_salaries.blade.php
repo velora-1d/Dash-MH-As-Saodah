@@ -76,9 +76,14 @@
                                             </span>
                                             @endif
                                         </label>
-                                        <div style="position: relative;">
-                                            <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.8125rem; color: #94a3b8; font-weight: 500;">Rp</span>
-                                            <input type="number" name="components[{{ $comp->id }}]" value="{{ floatval($empSalNominal) }}" min="0" step="1" class="payroll-input">
+                                        <div class="fi-money-wrap">
+                                            <span class="fi-money-prefix">Rp</span>
+                                            <input type="text" inputmode="numeric"
+                                                class="fi-input fi-money-input salary-nominal"
+                                                data-comp-id="{{ $comp->id }}"
+                                                value="{{ $empSalNominal > 0 ? number_format($empSalNominal, 0, ',', '.') : '0' }}"
+                                                autocomplete="off">
+                                            <input type="hidden" name="components[{{ $comp->id }}]" value="{{ floatval($empSalNominal) }}">
                                         </div>
                                     </div>
                                 @endforeach
@@ -111,4 +116,22 @@
 
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function formatRibuan(val) {
+                var num = String(val).replace(/\D/g, '');
+                return num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            document.querySelectorAll('.salary-nominal').forEach(function(el) {
+                var hiddenInput = el.closest('.fi-money-wrap').querySelector('input[type="hidden"]');
+                el.addEventListener('input', function() {
+                    var raw = el.value.replace(/\D/g, '');
+                    el.value = formatRibuan(raw);
+                    if (hiddenInput) hiddenInput.value = raw;
+                });
+            });
+        });
+    </script>
 </x-app-layout>

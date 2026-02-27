@@ -107,9 +107,9 @@
                                 <td style="padding: 0.875rem 1.5rem;">
                                     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
                                         @if ($trx->status == 'void')
-                                            <span style="font-size: 0.875rem; font-weight: 600; color: #94a3b8; text-decoration: line-through;">{{ $trx->description ?? 'Tanpa Keterangan' }}</span>
+                                            <span style="font-size: 0.875rem; font-weight: 600; color: #94a3b8; text-decoration: line-through;">{{ preg_replace('/(\s*\|\s*REF:REGPAY_\S+|\s*\[ref:\S+\])/', '', $trx->description ?? 'Tanpa Keterangan') }}</span>
                                         @else
-                                            <span style="font-size: 0.875rem; font-weight: 600; color: #0f172a;">{{ $trx->description ?? 'Tanpa Keterangan' }}</span>
+                                            <span style="font-size: 0.875rem; font-weight: 600; color: #0f172a;">{{ preg_replace('/(\s*\|\s*REF:REGPAY_\S+|\s*\[ref:\S+\])/', '', $trx->description ?? 'Tanpa Keterangan') }}</span>
                                         @endif
                                         <span style="font-size: 0.6875rem; color: #64748b; font-weight: 500;">
                                             Tag: {{ $trx->category->name ?? '-' }}

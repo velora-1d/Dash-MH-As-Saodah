@@ -35,7 +35,11 @@
                 </div>
                 <div>
                     <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Target Dana <span style="color: #94a3b8; font-weight: 400;">(Opsional)</span></label>
-                    <input type="number" name="target_amount" min="0" step="100000" placeholder="100000000" style="width: 100%; box-sizing: border-box;">
+                    <div class="fi-money-wrap">
+                        <span class="fi-money-prefix">Rp</span>
+                        <input type="text" inputmode="numeric" class="fi-input fi-money-input" id="wakaf-target-display" placeholder="100.000.000" autocomplete="off">
+                        <input type="hidden" name="target_amount" id="wakaf-target-raw" value="">
+                    </div>
                 </div>
                 <button type="submit" style="padding: 0.625rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #7c3aed, #6d28d9); border: none; border-radius: 0.5rem; cursor: pointer; white-space: nowrap; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">+ Tambah</button>
             </form>
@@ -83,4 +87,18 @@
             @endforelse
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var display = document.getElementById('wakaf-target-display');
+            var raw = document.getElementById('wakaf-target-raw');
+            if (display && raw) {
+                display.addEventListener('input', function() {
+                    var val = display.value.replace(/\D/g, '');
+                    display.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    raw.value = val;
+                });
+            }
+        });
+    </script>
 </x-app-layout>

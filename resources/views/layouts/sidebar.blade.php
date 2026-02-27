@@ -114,16 +114,33 @@
             const sidebar = document.getElementById('sidebar-nav');
             if (!sidebar) return;
 
-            const savedPos = sessionStorage.getItem('sidebarScrollPos');
-            if (savedPos) {
-                sidebar.scrollTop = parseInt(savedPos, 10);
-            } else {
-                const activeMenu = sidebar.querySelector('.sidebar-active');
-                if (activeMenu) {
-                    activeMenu.scrollIntoView({ block: 'center', behavior: 'instant' });
+            // Restore scroll position setelah Alpine.js selesai render
+            function restoreScroll() {
+                const savedPos = sessionStorage.getItem('sidebarScrollPos');
+                if (savedPos) {
+                    sidebar.scrollTop = parseInt(savedPos, 10);
+                } else {
+                    const activeMenu = sidebar.querySelector('.sidebar-active');
+                    if (activeMenu) {
+                        activeMenu.scrollIntoView({ block: 'center', behavior: 'instant' });
+                    }
                 }
             }
 
+            // Tunggu Alpine.js selesai render accordion (x-collapse)
+            requestAnimationFrame(function() {
+                setTimeout(restoreScroll, 100);
+            });
+
+            // Simpan posisi scroll saat klik link navigasi
+            sidebar.addEventListener('click', function(e) {
+                const link = e.target.closest('a[href]');
+                if (link && link.getAttribute('href') !== '#') {
+                    sessionStorage.setItem('sidebarScrollPos', sidebar.scrollTop);
+                }
+            });
+
+            // Simpan juga saat beforeunload sebagai fallback
             window.addEventListener('beforeunload', function() {
                 sessionStorage.setItem('sidebarScrollPos', sidebar.scrollTop);
             });

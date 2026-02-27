@@ -85,6 +85,7 @@
                             <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 0.875rem 1.5rem; text-align: center; font-size: 0.8125rem; color: #94a3b8; font-weight: 600; vertical-align: middle;">{{ $index + 1 }}</td>
                                 <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b; vertical-align: middle;">{{ $cat->name }}</td>
+                                <td style="padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #64748b;">{{ $cat->description ?: '-' }}</td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.375rem;">
                                         <a href="{{ route('transaction-categories.edit', $cat->id) }}" style="display: inline-flex; padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Edit</a>

@@ -431,7 +431,7 @@ class DashboardController extends Controller
         $currentYear = now()->year;
         $query = GeneralTransaction::where('type', 'out')
             ->whereYear('date', $currentYear)
-            ->join('transaction_categories', 'general_transactions.transaction_category_id', '=', 'transaction_categories.id')
+            ->join('transaction_categories', 'general_transactions.category_id', '=', 'transaction_categories.id')
             ->selectRaw('transaction_categories.name as category, SUM(general_transactions.amount) as total')
             ->groupBy('transaction_categories.name');
         if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {

@@ -100,7 +100,7 @@
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; padding: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
                 <div>
                     <h3 style="font-size: 0.6875rem; font-weight: 700; color: #059669; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.25rem 0;">Saldo Kas Berjalan</h3>
-                    <p style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; color: {{ $balance >= 0 ? '#059669' : '#e11d48' }}; margin: 0;">Rp {{ number_format($balance, 0, ',', '.') }}</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; color: <?= $balance >= 0 ? '#059669' : '#e11d48' ?>; margin: 0;">Rp {{ number_format($balance, 0, ',', '.') }}</p>
                 </div>
                 <div style="width: 48px; height: 48px; background: #ecfdf5; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;">
                     <svg style="width: 24px; height: 24px; color: #059669;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -133,7 +133,7 @@
                             <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b;">{{ $trx->date->translatedFormat('d M Y') }}</td>
                             <td style="padding: 1rem 1.5rem;">
                                 @if ($trx->category)
-                                <span style="font-size: 0.6875rem; font-weight: 600; color: {{ $trx->type === 'income' ? '#6366f1' : '#e11d48' }}; background: {{ $trx->type === 'income' ? '#eef2ff' : '#fff1f2' }}; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $trx->category->name }}</span>
+                                <span style="font-size: 0.6875rem; font-weight: 600; color: <?= $trx->type === 'income' ? '#6366f1' : '#e11d48' ?>; background: <?= $trx->type === 'income' ? '#eef2ff' : '#fff1f2' ?>; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $trx->category->name }}</span>
                                 @else
                                 <span style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; background: #f1f5f9; padding: 0.25rem 0.625rem; border-radius: 999px;">Tanpa Kategori</span>
                                 @endif
@@ -149,7 +149,7 @@
                                 @endif
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: right;">
-                                <span style="font-weight: 700; font-size: 0.8125rem; color: {{ $trx->type === 'income' ? '#6366f1' : '#e11d48' }};">{{ $trx->type === 'expense' ? '- ' : '' }}Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
+                                <span style="font-weight: 700; font-size: 0.8125rem; color: <?= $trx->type === 'income' ? '#6366f1' : '#e11d48' ?>;">{{ $trx->type === 'expense' ? '- ' : '' }}Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
                             </td>
                         </tr>
                         @empty

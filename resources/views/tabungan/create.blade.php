@@ -95,7 +95,7 @@
         document.querySelector('form').addEventListener('submit', function(e) {
             const type = document.getElementById('type_input').value;
             const amount = parseFloat(document.getElementById('amount').value) || 0;
-            const balance = {{ $balance }};
+            const balance = Number("{{ $balance }}") || 0;
 
             if (type === 'out' && amount > balance) {
                 e.preventDefault();

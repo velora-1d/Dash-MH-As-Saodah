@@ -27,7 +27,7 @@
                         <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 50%;"></div>
                         <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Konten Artikel</h4>
                     </div>
-                    <div style="padding: 1.5rem; space-y: 1.25rem;">
+                    <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
                         <div style="margin-bottom: 1.25rem;">
                             <label style="display: block; margin-bottom: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #475569;">Judul Artikel <span style="color: #e11d48;">*</span></label>
                             <input type="text" name="title" value="{{ old('title', $post->title ?? '') }}" required placeholder="Masukkan judul artikel..." style="width: 100%; padding: 0.75rem 0.875rem; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; font-size: 0.9375rem; font-weight: 600; color: #1e293b; background: #f8fafc; transition: all 0.2s ease;" onfocus="this.style.borderColor='#3b82f6'; this.style.background='#fff'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'" onblur="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc'; this.style.boxShadow='none'">

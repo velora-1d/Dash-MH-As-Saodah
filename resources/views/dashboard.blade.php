@@ -57,10 +57,10 @@
             </div>
         </div>
 
-        <!-- KPI Cards -->
+        <!-- KPI Cards — Baris 1: Akademik & SDM -->
         <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;">
 
-            <!-- KPI 1: Total Siswa Aktif -->
+            <!-- 1. Total Siswa Aktif -->
             <div class="kpi-card anim-card-1" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(99,102,241,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
                 <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #eef2ff; border-radius: 50%; opacity: 0.5;"></div>
                 <div style="position: relative; z-index: 1;">
@@ -76,9 +76,41 @@
                 </div>
             </div>
 
-            <!-- KPI 2: Pendaftar PPDB -->
+            <!-- 2. Total Guru & Staff -->
+            <div class="kpi-card anim-card-2" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(139,92,246,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #ede9fe; border-radius: 50%; opacity: 0.5;"></div>
+                <div style="position: relative; z-index: 1;">
+                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #ede9fe; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                        <svg style="width: 20px; height: 20px; color: #8b5cf6;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    </div>
+                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Total Guru & Staff</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #1e293b; margin: 0.25rem 0 0 0;">{{ $totalGuru + $totalStaff }}</p>
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
+                        <span>Guru: <strong style="color: #8b5cf6;">{{ $totalGuru }}</strong></span>
+                        <span>Staff: <strong style="color: #a78bfa;">{{ $totalStaff }}</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Total Kelas Aktif -->
+            <div class="kpi-card anim-card-3" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(34,197,94,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #dcfce7; border-radius: 50%; opacity: 0.5;"></div>
+                <div style="position: relative; z-index: 1;">
+                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #dcfce7; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                        <svg style="width: 20px; height: 20px; color: #22c55e;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                    </div>
+                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Total Kelas Aktif</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #1e293b; margin: 0.25rem 0 0 0;">{{ $totalKelas }}</p>
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
+                        <span>Terdaftar: <strong style="color: #22c55e;">{{ $totalSiswaKelas }}</strong></span>
+                        <span>Siswa: <strong style="color: #6366f1;">{{ $totalSiswa }}</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Pendaftar PPDB -->
             @if (in_array(auth()->user()->role, ['kepsek', 'operator', 'admin', 'superadmin']))
-            <div class="kpi-card anim-card-2" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(14,165,233,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+            <div class="kpi-card anim-card-4" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(14,165,233,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
                 <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #e0f2fe; border-radius: 50%; opacity: 0.5;"></div>
                 <div style="position: relative; z-index: 1;">
                     <div class="kpi-icon" style="width: 40px; height: 40px; background: #e0f2fe; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
@@ -94,9 +126,31 @@
             </div>
             @endif
 
+            <!-- 5. Kepatuhan Lunas Infaq -->
             @if (in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
-            <!-- KPI 3: Pemasukan Bulan Ini -->
-            <div class="kpi-card anim-card-3" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(16,185,129,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+            <div class="kpi-card anim-card-5" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(245,158,11,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #fef3c7; border-radius: 50%; opacity: 0.5;"></div>
+                <div style="position: relative; z-index: 1;">
+                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #fef3c7; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                        <svg style="width: 20px; height: 20px; color: #f59e0b;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Kepatuhan Lunas Infaq</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #1e293b; margin: 0.25rem 0 0 0;">{{ $kepatuhanPa + $kepatuhanPi }}</p>
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
+                        <span>PA: <strong style="color: #10b981;">{{ $kepatuhanPa }}</strong></span>
+                        <span>PI: <strong style="color: #f59e0b;">{{ $kepatuhanPi }}</strong></span>
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+
+        <!-- KPI Cards — Baris 2: Keuangan -->
+        @if (in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;">
+
+            <!-- 6. Pemasukan Bulan Ini -->
+            <div class="kpi-card anim-card-6" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(16,185,129,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
                 <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #d1fae5; border-radius: 50%; opacity: 0.5;"></div>
                 <div style="position: relative; z-index: 1;">
                     <div class="kpi-icon" style="width: 40px; height: 40px; background: #d1fae5; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
@@ -111,61 +165,7 @@
                 </div>
             </div>
 
-            <!-- KPI 4: Kepatuhan Infaq -->
-            <div class="kpi-card anim-card-4" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(245,158,11,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
-                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #fef3c7; border-radius: 50%; opacity: 0.5;"></div>
-                <div style="position: relative; z-index: 1;">
-                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #fef3c7; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
-                        <svg style="width: 20px; height: 20px; color: #f59e0b;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    </div>
-                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Kepatuhan Lunas Infaq</p>
-                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #1e293b; margin: 0.25rem 0 0 0;">{{ $kepatuhanPa + $kepatuhanPi }}</p>
-                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
-                        <span>PA: <strong style="color: #10b981;">{{ $kepatuhanPa }}</strong></span>
-                        <span>PI: <strong style="color: #f59e0b;">{{ $kepatuhanPi }}</strong></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- KPI 5: Tunggakan Infaq -->
-            <div class="kpi-card anim-card-5" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(244,63,94,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
-                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #ffe4e6; border-radius: 50%; opacity: 0.5;"></div>
-                <div style="position: relative; z-index: 1;">
-                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #ffe4e6; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
-                        <svg style="width: 20px; height: 20px; color: #f43f5e;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    </div>
-                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Siswa Menunggak Infaq</p>
-                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #f43f5e; margin: 0.25rem 0 0 0;">{{ $tunggakanPa + $tunggakanPi }}</p>
-                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
-                        <span>PA: <strong style="color: #f43f5e;">{{ $tunggakanPa }} (Rp{{ number_format($tunggakanPaRp, 0, ',', '.') }})</strong></span>
-                        <span>PI: <strong style="color: #f43f5e;">{{ $tunggakanPi }} (Rp{{ number_format($tunggakanPiRp, 0, ',', '.') }})</strong></span>
-                    </div>
-                </div>
-            </div>
-            @endif
-        </div>
-
-        <!-- KPI Cards Baris Kedua -->
-        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;">
-
-            <!-- KPI 6: Total Guru & Staff -->
-            <div class="kpi-card anim-card-6" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(139,92,246,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
-                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #ede9fe; border-radius: 50%; opacity: 0.5;"></div>
-                <div style="position: relative; z-index: 1;">
-                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #ede9fe; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
-                        <svg style="width: 20px; height: 20px; color: #8b5cf6;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                    </div>
-                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Total Guru & Staff</p>
-                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #1e293b; margin: 0.25rem 0 0 0;">{{ $totalGuru + $totalStaff }}</p>
-                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
-                        <span>Guru: <strong style="color: #8b5cf6;">{{ $totalGuru }}</strong></span>
-                        <span>Staff: <strong style="color: #a78bfa;">{{ $totalStaff }}</strong></span>
-                    </div>
-                </div>
-            </div>
-
-            @if (in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
-            <!-- KPI 7: Pengeluaran Bulan Ini -->
+            <!-- 7. Pengeluaran Bulan Ini -->
             <div class="kpi-card anim-card-7" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(244,63,94,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
                 <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #ffe4e6; border-radius: 50%; opacity: 0.5;"></div>
                 <div style="position: relative; z-index: 1;">
@@ -181,7 +181,7 @@
                 </div>
             </div>
 
-            <!-- KPI 8: Total Saldo Tabungan -->
+            <!-- 8. Total Saldo Tabungan -->
             <div class="kpi-card anim-card-8" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(6,182,212,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
                 <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #cffafe; border-radius: 50%; opacity: 0.5;"></div>
                 <div style="position: relative; z-index: 1;">
@@ -197,7 +197,7 @@
                 </div>
             </div>
 
-            <!-- KPI 9: Total Wakaf Masuk -->
+            <!-- 9. Total Wakaf Masuk -->
             <div class="kpi-card anim-card-9" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(217,119,6,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
                 <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #fef3c7; border-radius: 50%; opacity: 0.5;"></div>
                 <div style="position: relative; z-index: 1;">
@@ -212,25 +212,24 @@
                     </div>
                 </div>
             </div>
-            @endif
 
-            <!-- KPI 10: Total Kelas Aktif -->
-            <div class="kpi-card anim-card-10" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(34,197,94,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
-                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #dcfce7; border-radius: 50%; opacity: 0.5;"></div>
+            <!-- 10. Siswa Menunggak Infaq -->
+            <div class="kpi-card anim-card-10" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(244,63,94,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #ffe4e6; border-radius: 50%; opacity: 0.5;"></div>
                 <div style="position: relative; z-index: 1;">
-                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #dcfce7; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
-                        <svg style="width: 20px; height: 20px; color: #22c55e;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #ffe4e6; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                        <svg style="width: 20px; height: 20px; color: #f43f5e;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
-                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Total Kelas Aktif</p>
-                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #1e293b; margin: 0.25rem 0 0 0;">{{ $totalKelas }}</p>
+                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Siswa Menunggak Infaq</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #f43f5e; margin: 0.25rem 0 0 0;">{{ $tunggakanPa + $tunggakanPi }}</p>
                     <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
-                        <span>Terdaftar: <strong style="color: #22c55e;">{{ $totalSiswaKelas }}</strong></span>
-                        <span>Siswa: <strong style="color: #6366f1;">{{ $totalSiswa }}</strong></span>
+                        <span>PA: <strong style="color: #f43f5e;">{{ $tunggakanPa }} (Rp{{ number_format($tunggakanPaRp, 0, ',', '.') }})</strong></span>
+                        <span>PI: <strong style="color: #f43f5e;">{{ $tunggakanPi }} (Rp{{ number_format($tunggakanPiRp, 0, ',', '.') }})</strong></span>
                     </div>
                 </div>
             </div>
         </div>
-
+        @endif
         <!-- Tabel Tunggakan -->
         @if (in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
         <div class="anim-section" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">

@@ -1,28 +1,13 @@
 <x-app-layout>
-    <style>
-        .inv-input {
-            width: 100%; padding: 0.625rem 1rem; font-size: 0.875rem; 
-            border-radius: 0.5rem; outline: none; transition: border-color 0.15s ease;
-        }
-        .inv-input:focus { border-color: #3b82f6 !important; }
-        .inv-input-normal { border: 1px solid #e2e8f0; }
-        .inv-input-error { border: 1px solid #f87171; }
-        .inv-input-money { padding-left: 2.5rem; }
-        .inv-select { background: #ffffff; cursor: pointer; }
-        .inv-textarea { resize: vertical; }
-        .inv-item-code { font-family: monospace; }
-    </style>
     <div class="space-y-6">
-        <!-- Header Section -->
         <div style="background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #6366f1 100%); border-radius: 1rem; overflow: hidden; position: relative;">
-            <div style="position: absolute; inset: 0; background: url('data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z\' fill=\'rgba(255,255,255,0.05)\' fill-rule=\'evenodd\'/%3E%3C/svg%3E'); opacity: 0.5;"></div>
-            
-            <div style="padding: 2.5rem; position: relative; z-index: 10;">
+            <div style="position: absolute; right: -20px; top: -20px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+            <div style="padding: 2rem; position: relative; z-index: 10;">
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                    <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
                         <div>
-                            <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.875rem; color: #ffffff; letter-spacing: -0.025em; margin: 0; line-height: 1.2;">Update Kondisi Aset</h2>
-                            <p style="color: #e0e7ff; margin: 0.25rem 0 0 0; font-size: 0.95rem; font-weight: 500;">Ubah rincian kuantitas aset yang terdata: <strong style="color:white">{{ $inventory->name }}</strong></p>
+                            <h2 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.5rem; color: #ffffff; margin: 0;">Update Kondisi Aset</h2>
+                            <p style="color: rgba(255,255,255,0.7); margin: 0.25rem 0 0 0; font-size: 0.8125rem;">Ubah rincian aset: <strong style="color:white">{{ $inventory->name }}</strong></p>
                         </div>
                     </div>
                     <x-back-button href="{{ route('inventory.index') }}" label="Kembali ke Daftar" />
@@ -30,142 +15,97 @@
             </div>
         </div>
 
-        <div style="background: #ffffff; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border: 1px solid #f1f5f9; overflow: hidden;">
-            <div style="padding: 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.75rem; background: #faf8fd;">
-                <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #0ea5e9, #6366f1); border-radius: 50%;"></div>
-                <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; color: #1e293b; margin: 0;">Pengkinian Form Spesifikasi</h4>
+        <div style="background: #ffffff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
+            <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                <div class="fi-section-dot"></div>
+                <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Form Spesifikasi Aset</h4>
             </div>
 
-            <form action="{{ route('inventory.update', $inventory->id) }}" method="POST" style="padding: 2rem;">
+            <form action="{{ route('inventory.update', $inventory->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
-                <!-- Informasi Sistem Otomatis -> Pencatatan Log Mutasi Jika Stok/Kondisi Berubah -->
-                <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 0 0.5rem 0.5rem 0; margin-bottom: 2rem;">
-                    <p style="margin: 0; color: #1e3a8a; font-size: 0.8125rem; font-weight: 500;"><strong style="font-weight: 700;">Catatan Sistem:</strong> Apabila terjadi perubahan pada kolom <strong>Jumlah Tersedia (Stok)</strong> atau <strong>Kondisi Saat Ini</strong>, sistem akan secara otomatis merespons mutasi ini menuju Buku Tabel Rekam Jejak (<i>Log History</i>) Inventaris.</p>
+                <!-- Info Sistem -->
+                <div style="margin: 1.5rem 2rem 0; background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 0 0.5rem 0.5rem 0;">
+                    <p style="margin: 0; color: #1e3a8a; font-size: 0.8125rem; font-weight: 500;"><strong>Catatan Sistem:</strong> Perubahan pada <strong>Jumlah Stok</strong> atau <strong>Kondisi</strong> akan dicatat otomatis ke Log Rekam Jejak Inventaris.</p>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-                    <!-- Nama Barang -->
-                    <div>
-                        <label for="name" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Nama Aset / Barang <span style="color: #ef4444;">*</span></label>
-                        <input type="text" name="name" id="name" value="{{ old('name', $inventory->name) }}" required
-                            class="inv-input {{ $errors->has('name') ? 'inv-input-error' : 'inv-input-normal' }}"
-                            placeholder="Contoh: Meja Guru Kelas 1A, TV Tabung 21 Inch...">
-                        @error('name')
-                            <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
-                        @enderror
+                <div style="padding: 2rem;">
+                    <div class="fi-grid fi-grid-2">
+                        <x-form-group label="Nama Aset / Barang" name="name" :required="true">
+                            <input type="text" name="name" id="name" value="{{ old('name', $inventory->name) }}" required
+                                placeholder="Contoh: Meja Guru Kelas 1A..."
+                                class="fi-input @error('name') fi-error @enderror">
+                        </x-form-group>
+
+                        <x-form-group label="Nomor / Kode Barang" name="item_code" hint="Opsional">
+                            <input type="text" name="item_code" id="item_code" value="{{ old('item_code', $inventory->item_code) }}"
+                                placeholder="INV-0001..." style="font-family: monospace;"
+                                class="fi-input @error('item_code') fi-error @enderror">
+                        </x-form-group>
+
+                        <x-form-group label="Kategori Aset" name="category" :required="true">
+                            <input type="text" name="category" id="category" value="{{ old('category', $inventory->category) }}" required list="categories"
+                                placeholder="Pilih atau ketik (Elektronik, ATK, Mebel...)"
+                                class="fi-input @error('category') fi-error @enderror">
+                            <datalist id="categories">
+                                <option value="Elektronik">
+                                <option value="Mebel / Kayu">
+                                <option value="Buku Teks">
+                                <option value="Alat Olahraga">
+                                <option value="Perlengkapan Kelas">
+                                <option value="ATK">
+                            </datalist>
+                        </x-form-group>
+
+                        <x-form-group label="Lokasi / Penempatan Ruang" name="location" hint="Opsional">
+                            <input type="text" name="location" id="location" value="{{ old('location', $inventory->location) }}"
+                                placeholder="Gudang, Ruang TU, Kelas 3B..."
+                                class="fi-input @error('location') fi-error @enderror">
+                        </x-form-group>
+
+                        <x-form-group label="Jumlah Tersedia (Stok)" name="quantity" :required="true">
+                            <div style="position: relative;">
+                                <input type="number" name="quantity" id="quantity" value="{{ old('quantity', $inventory->quantity) }}" min="0" required
+                                    class="fi-input @error('quantity') fi-error @enderror">
+                                <span style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: #64748b;">(Saat ini: {{ $inventory->quantity }})</span>
+                            </div>
+                        </x-form-group>
+
+                        <x-form-group label="Kondisi Aset Saat Ini" name="condition" :required="true">
+                            <select name="condition" id="condition" required class="fi-input fi-select @error('condition') fi-error @enderror">
+                                <option value="Baik" {{ old('condition', $inventory->condition) == 'Baik' ? 'selected' : '' }}>Baik (Pristine)</option>
+                                <option value="Rusak Ringan" {{ old('condition', $inventory->condition) == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan (Bisa Digunakan)</option>
+                                <option value="Rusak Berat" {{ old('condition', $inventory->condition) == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                            </select>
+                        </x-form-group>
                     </div>
 
-                    <!-- Kode Barang -->
-                    <div>
-                        <label for="item_code" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Nomor / Kode Barang (Opsional)</label>
-                        <input type="text" name="item_code" id="item_code" value="{{ old('item_code', $inventory->item_code) }}"
-                            class="inv-input inv-item-code {{ $errors->has('item_code') ? 'inv-input-error' : 'inv-input-normal' }}"
-                            placeholder="INV-0001...">
-                        @error('item_code')
-                            <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #e2e8f0;" />
 
-                    <!-- Kategori Baru -->
-                    <div>
-                        <label for="category" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Kategori Aset <span style="color: #ef4444;">*</span></label>
-                        <input type="text" name="category" id="category" value="{{ old('category', $inventory->category) }}" required list="categories"
-                            class="inv-input {{ $errors->has('category') ? 'inv-input-error' : 'inv-input-normal' }}"
-                            placeholder="Pilih ketikan Kategori (Elektronik, ATK, Mebel, ...)">
-                        <datalist id="categories">
-                            <option value="Elektronik">
-                            <option value="Mebel / Kayu">
-                            <option value="Buku Teks">
-                            <option value="Alat Olahraga">
-                            <option value="Perlengkapan Kelas">
-                            <option value="ATK">
-                        </datalist>
-                        @error('category')
-                            <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <div class="fi-grid fi-grid-2">
+                        <x-form-group label="Harga Penilaian per Unit" name="unit_price" hint="Opsional">
+                            <x-money-input name="unit_price" :value="old('unit_price', $inventory->unit_price ? round($inventory->unit_price) : '')" placeholder="0" />
+                        </x-form-group>
 
-                    <!-- Lokasi Penempatan -->
-                    <div>
-                        <label for="location" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Lokasi / Penempatan Ruang (Opsional)</label>
-                        <input type="text" name="location" id="location" value="{{ old('location', $inventory->location) }}"
-                            class="inv-input {{ $errors->has('location') ? 'inv-input-error' : 'inv-input-normal' }}"
-                            placeholder="Gudang, Ruang TU, Kelas 3B...">
-                        @error('location')
-                            <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
-                        @enderror
-                    </div>
+                        <x-form-group label="Tanggal Diperoleh / Pembelian" name="acquire_date">
+                            <input type="date" name="acquire_date" id="acquire_date" value="{{ old('acquire_date', $inventory->acquire_date) }}"
+                                class="fi-input @error('acquire_date') fi-error @enderror">
+                        </x-form-group>
 
-                    <!-- Kuantitas/Jumlah -->
-                    <div style="background: rgba(248,250,252,0.8); padding: 1rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; position:relative;">
-                        <label for="quantity" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Jumlah Tersedia (Stok) <span style="color: #ef4444;">*</span></label>
-                        <input type="number" name="quantity" id="quantity" value="{{ old('quantity', $inventory->quantity) }}" min="0" required
-                            class="inv-input {{ $errors->has('quantity') ? 'inv-input-error' : 'inv-input-normal' }}">
-                        <div style="position: absolute; right:1.5rem; top:3rem; font-size: 0.75rem; color:#64748b;">(Saat ini: {{ $inventory->quantity }})</div>
-                        @error('quantity')
-                            <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Status Kondisi -->
-                    <div style="background: rgba(248,250,252,0.8); padding: 1rem; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
-                        <label for="condition" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Kondisi Aset Saat Ini <span style="color: #ef4444;">*</span></label>
-                        <select name="condition" id="condition" required
-                            class="inv-input inv-select {{ $errors->has('condition') ? 'inv-input-error' : 'inv-input-normal' }}">
-                            <option value="Baik" {{ old('condition', $inventory->condition) == 'Baik' ? 'selected' : '' }}>Baik (Pristine)</option>
-                            <option value="Rusak Ringan" {{ old('condition', $inventory->condition) == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan (Bisa Digunakan)</option>
-                            <option value="Rusak Berat" {{ old('condition', $inventory->condition) == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
-                        </select>
-                        @error('condition')
-                            <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
-                        @enderror
+                        <x-form-group label="Spesifikasi Detail atau Catatan Lain" name="notes" class="fi-grid-full">
+                            <textarea name="notes" id="notes" rows="3"
+                                class="fi-input fi-textarea @error('notes') fi-error @enderror">{{ old('notes', $inventory->notes) }}</textarea>
+                        </x-form-group>
                     </div>
                 </div>
 
-                <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #e2e8f0;" />
-
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-                    <!-- Harga Satuan -->
-                    <div>
-                        <label for="unit_price" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Harga Penilaian per Unit (Opsional)</label>
-                        <div style="position: relative;">
-                            <div style="position: absolute; top: 50%; transform: translateY(-50%); left: 1rem; color: #64748b; font-size: 0.875rem; font-weight: 600;">Rp</div>
-                            <input type="number" name="unit_price" id="unit_price" value="{{ old('unit_price', $inventory->unit_price ? round($inventory->unit_price) : '') }}" min="0" step="1000"
-                                class="inv-input inv-input-money {{ $errors->has('unit_price') ? 'inv-input-error' : 'inv-input-normal' }}">
-                        </div>
-                        @error('unit_price')
-                            <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Tanggal Pengadaan -->
-                    <div>
-                        <label for="acquire_date" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Tanggal Diperoleh / Pembelian</label>
-                        <input type="date" name="acquire_date" id="acquire_date" value="{{ old('acquire_date', $inventory->acquire_date) }}"
-                            class="inv-input {{ $errors->has('acquire_date') ? 'inv-input-error' : 'inv-input-normal' }}">
-                        @error('acquire_date')
-                            <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Keterangan -->
-                    <div style="grid-column: 1 / -1;">
-                        <label for="notes" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Spesifikasi Detail atau Catatan Lain</label>
-                        <textarea name="notes" id="notes" rows="3"
-                            class="inv-input inv-textarea {{ $errors->has('notes') ? 'inv-input-error' : 'inv-input-normal' }}">{{ old('notes', $inventory->notes) }}</textarea>
-                        @error('notes')
-                            <p style="color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
-                    <div>
-                        <a href="{{ route('inventory.index') }}" style="padding: 0.5rem 1.25rem; font-size: 0.875rem; font-weight: 600; color: #475569; text-decoration: none; border-radius: 0.5rem; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f1f5f9'" onmouseout="this.style.backgroundColor='transparent'">Batal</a>
-                    </div>
-                    <button type="submit" style="padding: 0.5rem 1.5rem; font-size: 0.875rem; font-weight: 600; color: #ffffff; background: linear-gradient(135deg, #0ea5e9, #3b82f6); border: none; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 8px -1px rgba(59, 130, 246, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(59, 130, 246, 0.2)'">Log Transaksi Mutasi & Update Aset</button>
+                <div style="padding: 1.25rem 2rem; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; background: #fafbfc;">
+                    <a href="{{ route('inventory.index') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none; transition: all 0.15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">Batal</a>
+                    <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(79,70,229,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+                        <svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        Update Aset
+                    </button>
                 </div>
             </form>
         </div>

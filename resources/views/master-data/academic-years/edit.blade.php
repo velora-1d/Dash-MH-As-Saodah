@@ -20,31 +20,30 @@
         <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
             <form action="{{ route('academic-years.update', $academicYear->id) }}" method="POST">
                 @csrf @method('PUT')
-                <div style="padding: 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-                    <div>
-                        <label for="name" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nama Tahun Ajaran <span style="color: #e11d48;">*</span></label>
-                        <input type="text" name="name" id="name" required value="{{ old('name', $academicYear->name) }}" style="width: 100%; box-sizing: border-box;">
-                        @error('name')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                <div style="padding: 2rem;">
+                    <div class="fi-grid fi-grid-2">
+                        <x-form-group label="Nama Tahun Ajaran" name="name" :required="true">
+                            <input type="text" name="name" id="name" required value="{{ old('name', $academicYear->name) }}"
+                                class="fi-input @error('name') fi-error @enderror">
+                        </x-form-group>
+                        <x-form-group label="Semester" name="semester" :required="true">
+                            <select id="semester" name="semester" required class="fi-input fi-select @error('semester') fi-error @enderror">
+                                <option value="ganjil" {{ old('semester', $academicYear->semester) == 'ganjil' ? 'selected' : '' }}>Ganjil</option>
+                                <option value="genap" {{ old('semester', $academicYear->semester) == 'genap' ? 'selected' : '' }}>Genap</option>
+                            </select>
+                        </x-form-group>
                     </div>
-                    <div>
-                        <label for="semester" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Semester <span style="color: #e11d48;">*</span></label>
-                        <select id="semester" name="semester" required style="width: 100%; box-sizing: border-box;">
-                            <option value="ganjil" {{ old('semester', $academicYear->semester) == 'ganjil' ? 'selected' : '' }}>Ganjil</option>
-                            <option value="genap" {{ old('semester', $academicYear->semester) == 'genap' ? 'selected' : '' }}>Genap</option>
-                        </select>
-                        @error('semester')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
-                    </div>
-                </div>
-                <div style="margin: 0 2rem 1rem; padding: 1rem; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.625rem; display: flex; align-items: center; gap: 0.75rem;">
-                    <input id="is_active" name="is_active" type="checkbox" value="1" {{ old('is_active', $academicYear->is_active) ? 'checked' : '' }} style="width: 1.125rem; height: 1.125rem; cursor: pointer; accent-color: #6366f1;">
-                    <div>
-                        <label for="is_active" style="font-weight: 600; font-size: 0.8125rem; color: #1e293b; cursor: pointer;">Aktifkan Tahun Ajaran Ini?</label>
-                        <p style="font-size: 0.6875rem; color: #64748b; margin-top: 0.125rem;">Tahun ajaran lain akan otomatis dinonaktifkan.</p>
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.625rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <input id="is_active" name="is_active" type="checkbox" value="1" {{ old('is_active', $academicYear->is_active) ? 'checked' : '' }} style="width: 1.125rem; height: 1.125rem; cursor: pointer; accent-color: #6366f1;">
+                        <div>
+                            <label for="is_active" style="font-weight: 600; font-size: 0.8125rem; color: #1e293b; cursor: pointer;">Aktifkan Tahun Ajaran Ini?</label>
+                            <p style="font-size: 0.6875rem; color: #64748b; margin-top: 0.125rem;">Tahun ajaran lain akan otomatis dinonaktifkan.</p>
+                        </div>
                     </div>
                 </div>
                 <div style="padding: 1.25rem 2rem; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; background: #fafbfc;">
-                    <a href="{{ route('academic-years.index') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none;">Batal</a>
-                    <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(79,70,229,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+                    <a href="{{ route('academic-years.index') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none; transition: all 0.15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">Batal</a>
+                    <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(79,70,229,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
                         <svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                         Simpan Perubahan
                     </button>

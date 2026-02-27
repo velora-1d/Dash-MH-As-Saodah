@@ -383,6 +383,114 @@
                     font-size: 1.125rem !important;
                 }
             }
+
+            /* =====================================================
+               MODERN FORM INPUT SYSTEM
+               ===================================================== */
+
+            /* --- Form Group Container --- */
+            .fi-group { position: relative; margin-bottom: 0; }
+            .fi-group label,
+            .fi-label {
+                display: block; font-size: 0.8125rem; font-weight: 600; color: #374151;
+                margin-bottom: 0.375rem; letter-spacing: -0.01em;
+            }
+            .fi-label .fi-required { color: #ef4444; margin-left: 0.125rem; }
+            .fi-hint { font-size: 0.6875rem; color: #94a3b8; margin-top: 0.25rem; }
+
+            /* --- Base Input Styles --- */
+            .fi-input {
+                width: 100%; box-sizing: border-box;
+                padding: 0.625rem 0.875rem; font-size: 0.875rem; font-family: 'Inter', sans-serif;
+                color: #1e293b; background: #ffffff;
+                border: 1.5px solid #e2e8f0; border-radius: 0.625rem;
+                outline: none; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                -webkit-appearance: none; appearance: none;
+            }
+            .fi-input::placeholder { color: #94a3b8; font-weight: 400; }
+            .fi-input:hover { border-color: #cbd5e1; background: #fafbfc; }
+            .fi-input:focus {
+                border-color: #6366f1; background: #ffffff;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            }
+            .fi-input:disabled, .fi-input[readonly] {
+                background: #f8fafc; color: #94a3b8; cursor: not-allowed;
+                border-color: #e2e8f0;
+            }
+            .fi-input.fi-error {
+                border-color: #fca5a5; background: #fef2f2;
+            }
+            .fi-input.fi-error:focus {
+                border-color: #ef4444;
+                box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            }
+
+            /* --- Select Input --- */
+            .fi-select {
+                cursor: pointer;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 0.75rem center;
+                background-size: 1rem;
+                padding-right: 2.25rem;
+            }
+
+            /* --- Textarea --- */
+            .fi-textarea { resize: vertical; min-height: 5rem; line-height: 1.6; }
+
+            /* --- Money Input Wrapper --- */
+            .fi-money-wrap { position: relative; }
+            .fi-money-prefix {
+                position: absolute; left: 0; top: 0; bottom: 0;
+                display: flex; align-items: center;
+                padding: 0 0.75rem;
+                font-size: 0.8125rem; font-weight: 700; color: #64748b;
+                background: #f1f5f9; border-right: 1.5px solid #e2e8f0;
+                border-radius: 0.625rem 0 0 0.625rem;
+                pointer-events: none; user-select: none;
+            }
+            .fi-money-input { padding-left: 3.25rem; font-family: 'Outfit', 'Inter', sans-serif; font-weight: 600; }
+
+            /* --- Icon Prefix/Suffix --- */
+            .fi-icon-wrap { position: relative; }
+            .fi-icon-left {
+                position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);
+                width: 1rem; height: 1rem; color: #94a3b8; pointer-events: none;
+            }
+            .fi-icon-wrap .fi-input { padding-left: 2.25rem; }
+
+            /* --- Error Messages --- */
+            .fi-error-msg {
+                display: flex; align-items: center; gap: 0.25rem;
+                font-size: 0.75rem; font-weight: 500; color: #ef4444;
+                margin-top: 0.25rem;
+            }
+            .fi-error-msg svg { width: 0.75rem; height: 0.75rem; flex-shrink: 0; }
+
+            /* --- Form Grid --- */
+            .fi-grid { display: grid; gap: 1.25rem; }
+            .fi-grid-2 { grid-template-columns: repeat(2, 1fr); }
+            .fi-grid-3 { grid-template-columns: repeat(3, 1fr); }
+            .fi-grid-full { grid-column: 1 / -1; }
+            @media (max-width: 768px) {
+                .fi-grid-2, .fi-grid-3 { grid-template-columns: 1fr; }
+            }
+
+            /* --- Form Section Divider --- */
+            .fi-section {
+                padding: 1.25rem 0 0.75rem;
+                border-top: 1px solid #f1f5f9;
+                margin-top: 0.5rem;
+            }
+            .fi-section-title {
+                font-family: 'Outfit', sans-serif; font-weight: 700;
+                font-size: 0.875rem; color: #1e293b;
+                display: flex; align-items: center; gap: 0.5rem;
+            }
+            .fi-section-dot {
+                width: 6px; height: 6px; border-radius: 50%;
+                background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            }
         </style>
     </head>
     <body class="font-sans antialiased text-slate-900 bg-slate-50 h-screen overflow-hidden" x-data="{ sidebarOpen: false }">
@@ -500,6 +608,44 @@
                     });
                 });
             });
+        </script>
+
+        {{-- Global: Money Input Formatter --}}
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Format ribuan: 1000000 -> 1.000.000
+            function formatRibuan(val) {
+                var num = String(val).replace(/\D/g, '');
+                return num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            // Init semua money-input
+            document.querySelectorAll('[data-money-input]').forEach(function(el) {
+                var rawInput = el.closest('.fi-money-wrap').querySelector('[data-money-raw]');
+                // Set initial value
+                if (el.dataset.rawValue) {
+                    el.value = formatRibuan(el.dataset.rawValue);
+                }
+                el.addEventListener('input', function() {
+                    var raw = el.value.replace(/\D/g, '');
+                    el.value = formatRibuan(raw);
+                    if (rawInput) rawInput.value = raw;
+                });
+                // Pastikan name pada display input dihapus (supaya yang terkirim hidden field)
+                el.removeAttribute('name');
+            });
+
+            // Auto-apply fi-input class pada input/select/textarea yang belum punya
+            document.querySelectorAll('.fi-group input:not(.fi-input):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([data-money-input])').forEach(function(el) {
+                el.classList.add('fi-input');
+            });
+            document.querySelectorAll('.fi-group select:not(.fi-input):not(.fi-select)').forEach(function(el) {
+                el.classList.add('fi-input', 'fi-select');
+            });
+            document.querySelectorAll('.fi-group textarea:not(.fi-input)').forEach(function(el) {
+                el.classList.add('fi-input', 'fi-textarea');
+            });
+        });
         </script>
 
         {{-- Scripts Stack --}}

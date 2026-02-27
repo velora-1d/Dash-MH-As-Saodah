@@ -176,19 +176,104 @@ class WakafController extends Controller
     }
 
     /**
-     * Void transaksi wakaf
+     * Tampilkan form edit transaksi wakaf
      */
-    public function void(GeneralTransaction $transaction)
+    public function edit(GeneralTransaction $transaction)
     {
         if ($transaction->status === 'void') {
-            return back()->with('error', 'Transaksi sudah di-void.');
+            return redirect()->route('wakaf.index')->with('error', 'Transaksi yang sudah di-void tidak dapat diedit.');
         }
 
-        DB::transaction(function () use ($transaction) {
-            $transaction->update(['status' => 'void']);
-            CashAccount::find($transaction->cash_account_id)?->decrement('balance', $transaction->amount);
+        $donors = WakafDonor::orderBy('name')->get();
+        $purposes = WakafPurpose::orderBy('name')->get();
+        $cashAccounts = CashAccount::orderBy('name')->get();
+        $categories = TransactionCategory::where('type', 'in')->orderBy('name')->get();
+
+        return view('wakaf.edit', compact('transaction', 'donors', 'purposes', 'cashAccounts', 'categories'));
+    }
+
+    /**
+     * Update data transaksi wakaf
+     */
+    public function update(Request $request, GeneralTransaction $transaction)
+    {
+        if ($transaction->status === 'void') {
+             return redirect()->route('wakaf.index')->with('error', 'Transaksi yang sudah di-void tidak dapat diedit.');
+        }
+
+        $request->validate([
+            'donor_name' => 'required|string|max:255',
+            'donor_phone' => 'nullable|string|max:20',
+            'amount' => 'required|numeric|min:1000',
+            'wakaf_purpose' => 'required|string|max:255',
+            'cash_account_id' => 'required|exists:cash_accounts,id',
+            'category_id' => 'required|exists:transaction_categories,id',
+            'date' => 'required|date',
+            'description' => 'nullable|string',
+        ]);
+
+        DB::transaction(function () use ($request, $transaction) {
+            // Register donatur jika belum ada/berubah
+            $donor = WakafDonor::firstOrCreate(
+                ['name' => $request->donor_name]
+            );
+
+            if ($request->donor_phone && $donor->phone !== $request->donor_phone) {
+                $donor->update(['phone' => $request->donor_phone]);
+            }
+
+            // Register tujuan wakaf jika belum ada
+            $purpose = WakafPurpose::firstOrCreate(
+                ['name' => $request->wakaf_purpose]
+            );
+
+            // Hitung logika saldo uang riil
+            $oldAmount = $transaction->amount;
+            $oldAccountId = $transaction->cash_account_id;
+            $newAmount = $request->amount;
+            $newAccountId = $request->cash_account_id;
+
+            if ($oldAccountId == $newAccountId) {
+                // Jika kas sama, hitung selisihnya
+                $difference = $newAmount - $oldAmount;
+                if ($difference != 0) {
+                    CashAccount::find($oldAccountId)->increment('balance', $difference);
+                }
+            } else {
+                // Jika pindah akun kas: tarik dari kas lama, masuk ke kas baru
+                CashAccount::find($oldAccountId)->decrement('balance', $oldAmount);
+                CashAccount::find($newAccountId)->increment('balance', $newAmount);
+            }
+
+            // Update transaksi
+            $transaction->update([
+                'wakaf_donor_id' => $donor->id,
+                'wakaf_purpose_id' => $purpose->id,
+                'category_id' => $request->category_id,
+                'cash_account_id' => $newAccountId,
+                'amount' => $newAmount,
+                'date' => $request->date,
+                'description' => $request->description,
+            ]);
         });
 
-        return back()->with('success', 'Transaksi wakaf berhasil di-void.');
+        return redirect()->route('wakaf.index')->with('success', 'Transaksi wakaf berhasil diperbarui.');
+    }
+
+    /**
+     * Hapus permanen transaksi wakaf
+     */
+    public function destroy(GeneralTransaction $transaction)
+    {
+        DB::transaction(function () use ($transaction) {
+            // Jika transaksi dulunya valid, tarik lagi uangnya dari kas
+            if ($transaction->status === 'valid') {
+                CashAccount::find($transaction->cash_account_id)?->decrement('balance', $transaction->amount);
+            }
+            
+            $transaction->delete();
+        });
+
+        return back()->with('success', 'Transaksi wakaf berhasil dihapus permanen.');
     }
 }

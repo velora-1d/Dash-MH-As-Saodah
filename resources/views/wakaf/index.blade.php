@@ -108,14 +108,16 @@
                                     @endif
                                 </td>
                                 <td style="padding: 0.875rem 1.5rem; text-align: center;">
-                                    @if ($trx->status === 'valid')
-                                        <form action="{{ route('wakaf.void', $trx->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin void transaksi ini?');">
+                                    <div style="display: flex; justify-content: center; gap: 0.5rem;">
+                                        @if ($trx->status === 'valid')
+                                            <a href="{{ route('wakaf.edit', $trx->id) }}" style="font-size: 0.6875rem; font-weight: 600; color: #0ea5e9; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 0.5rem; padding: 0.375rem 0.75rem; cursor: pointer; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Edit</a>
+                                        @endif
+                                        <form action="{{ route('wakaf.destroy', $trx->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin hapus permanen transaksi ini? Saldo kas akan menyesuaikan (ditarik).');">
                                             @csrf
-                                            <button type="submit" style="font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; padding: 0.375rem 0.75rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Void</button>
+                                            @method('DELETE')
+                                            <button type="submit" style="font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 0.5rem; padding: 0.375rem 0.75rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">Hapus</button>
                                         </form>
-                                    @else
-                                        <span style="font-size: 0.6875rem; color: #94a3b8;">—</span>
-                                    @endif
+                                    </div>
                                 </td>
                             </tr>
                         @empty

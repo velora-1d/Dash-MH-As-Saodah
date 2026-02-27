@@ -105,7 +105,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/purposes', [WakafController::class, 'purposes'])->name('purposes');
             Route::post('/purposes', [WakafController::class, 'storePurpose'])->name('purposes.store');
             Route::delete('/purposes/{purpose}', [WakafController::class, 'destroyPurpose'])->name('purposes.destroy');
-            Route::post('/{transaction}/void', [WakafController::class, 'void'])->name('void');
+            Route::get('/{transaction}/edit', [WakafController::class, 'edit'])->name('edit');
+            Route::put('/{transaction}', [WakafController::class, 'update'])->name('update');
+            Route::delete('/{transaction}', [WakafController::class, 'destroy'])->name('destroy');
         });
 
         // Modul Kas & Jurnal Umum

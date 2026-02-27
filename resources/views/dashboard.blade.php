@@ -224,7 +224,7 @@
                     <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Total Kelas Aktif</p>
                     <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #1e293b; margin: 0.25rem 0 0 0;">{{ $totalKelas }}</p>
                     <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
-                        <span>Kapasitas: <strong style="color: #22c55e;">{{ $totalKapasitas }}</strong></span>
+                        <span>Terdaftar: <strong style="color: #22c55e;">{{ $totalSiswaKelas }}</strong></span>
                         <span>Siswa: <strong style="color: #6366f1;">{{ $totalSiswa }}</strong></span>
                     </div>
                 </div>

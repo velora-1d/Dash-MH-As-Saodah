@@ -377,11 +377,17 @@ class DashboardController extends Controller
             $query->whereIn('unit_id', $userScopeUnitIds);
         }
         $totalKelas = $query->count();
-        $totalKapasitas = (clone $query)->sum('capacity') ?: 0;
+
+        // Hitung total siswa yang sudah terdaftar di kelas
+        $siswaQuery = Student::whereNotNull('classroom_id');
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $siswaQuery->whereIn('unit_id', $userScopeUnitIds);
+        }
+        $totalSiswaKelas = $siswaQuery->count();
 
         return [
-            'totalKelas'     => $totalKelas,
-            'totalKapasitas' => $totalKapasitas,
+            'totalKelas'      => $totalKelas,
+            'totalSiswaKelas' => $totalSiswaKelas,
         ];
     }
 }

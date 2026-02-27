@@ -53,7 +53,7 @@ class SettingController extends Controller
 
     public function createUser()
     {
-        if (!in_array(Auth::user()->role, ['kepsek', 'admin'])) {
+        if (!in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin'])) {
             abort(403);
         }
         return view('settings.users.create');
@@ -61,7 +61,7 @@ class SettingController extends Controller
 
     public function storeUser(Request $request)
     {
-        if (!in_array(Auth::user()->role, ['kepsek', 'admin'])) {
+        if (!in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin'])) {
             abort(403);
         }
 
@@ -87,7 +87,7 @@ class SettingController extends Controller
 
     public function editUser(User $user)
     {
-        if (!in_array(Auth::user()->role, ['kepsek', 'admin'])) {
+        if (!in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin'])) {
             abort(403);
         }
         return view('settings.users.edit', compact('user'));
@@ -95,7 +95,7 @@ class SettingController extends Controller
 
     public function updateUser(Request $request, User $user)
     {
-        if (!in_array(Auth::user()->role, ['kepsek', 'admin'])) {
+        if (!in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin'])) {
             abort(403);
         }
 
@@ -129,7 +129,7 @@ class SettingController extends Controller
 
     public function toggleUserStatus(User $user)
     {
-        if (!in_array(Auth::user()->role, ['kepsek', 'admin'])) {
+        if (!in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin'])) {
             abort(403);
         }
 
@@ -145,7 +145,7 @@ class SettingController extends Controller
     
     public function resetPassword(Request $request, User $user)
     {
-        if (!in_array(Auth::user()->role, ['kepsek', 'admin'])) {
+        if (!in_array(Auth::user()->role, ['kepsek', 'admin', 'superadmin'])) {
             abort(403);
         }
 

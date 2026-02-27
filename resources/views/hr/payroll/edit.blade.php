@@ -34,24 +34,30 @@
                                     Komponen Pendapatan
                                 </h3>
                                 @php
-                                    $earnings = $payroll->details->where('type', 'earning');
+                                    $earningComponents = $components->where('type', 'earning');
                                 @endphp
 
-                                @if($earnings->isEmpty())
-                                    <p class="text-sm text-gray-500 italic">Tidak ada pendapatan tercatat.</p>
+                                @if($earningComponents->isEmpty())
+                                    <p class="text-sm text-gray-500 italic">Tidak ada master komponen pendapatan.</p>
                                 @endif
 
-                                @foreach($earnings as $item)
+                                @foreach($earningComponents as $comp)
+                                    @php
+                                        // Cari apakah pegawai ini sudah punya rincian nominal untuk komponen ini sebelumnya
+                                        $existingDetail = $payroll->details->where('component_name', $comp->name)->first();
+                                        $nominal = $existingDetail ? $existingDetail->nominal : 0;
+                                        // Gunakan ID komponen sebagai key untuk form (karena di Controller akan memproses ID komponen / nama)
+                                    @endphp
                                     <div class="mb-4">
-                                        <label class="block text-sm font-medium text-gray-700">{{ $item->component_name }}</label>
+                                        <label class="block text-sm font-medium text-gray-700">{{ $comp->name }}</label>
                                         <div class="mt-1 relative rounded-md shadow-sm fi-money-wrap">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                 <span class="text-gray-500 sm:text-sm">Rp</span>
                                             </div>
                                             <!-- Hidden real value -->
-                                            <input type="hidden" name="components[{{ $item->id }}]" value="{{ $item->nominal }}">
+                                            <input type="hidden" name="components[{{ $comp->id }}]" value="{{ $nominal }}">
                                             <!-- Display string value -->
-                                            <input type="text" class="salary-nominal focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" value="{{ number_format($item->nominal, 0, ',', '.') }}">
+                                            <input type="text" class="salary-nominal focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" value="{{ number_format($nominal, 0, ',', '.') }}">
                                         </div>
                                     </div>
                                 @endforeach
@@ -64,22 +70,26 @@
                                     Potongan
                                 </h3>
                                 @php
-                                    $deductions = $payroll->details->where('type', 'deduction');
+                                    $deductionComponents = $components->where('type', 'deduction');
                                 @endphp
 
-                                @if($deductions->isEmpty())
-                                    <p class="text-sm text-gray-500 italic">Tidak ada potongan tercatat.</p>
+                                @if($deductionComponents->isEmpty())
+                                    <p class="text-sm text-gray-500 italic">Tidak ada master potongan tercatat.</p>
                                 @endif
 
-                                @foreach($deductions as $item)
+                                @foreach($deductionComponents as $comp)
+                                    @php
+                                        $existingDetail = $payroll->details->where('component_name', $comp->name)->first();
+                                        $nominal = $existingDetail ? $existingDetail->nominal : 0;
+                                    @endphp
                                     <div class="mb-4">
-                                        <label class="block text-sm font-medium text-gray-700">{{ $item->component_name }}</label>
+                                        <label class="block text-sm font-medium text-gray-700">{{ $comp->name }}</label>
                                         <div class="mt-1 relative rounded-md shadow-sm fi-money-wrap">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                 <span class="text-gray-500 sm:text-sm">Rp</span>
                                             </div>
-                                            <input type="hidden" name="components[{{ $item->id }}]" value="{{ $item->nominal }}">
-                                            <input type="text" class="salary-nominal focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" value="{{ number_format($item->nominal, 0, ',', '.') }}">
+                                            <input type="hidden" name="components[{{ $comp->id }}]" value="{{ $nominal }}">
+                                            <input type="text" class="salary-nominal focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" value="{{ number_format($nominal, 0, ',', '.') }}">
                                         </div>
                                     </div>
                                 @endforeach

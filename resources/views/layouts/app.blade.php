@@ -491,6 +491,83 @@
                 width: 6px; height: 6px; border-radius: 50%;
                 background: linear-gradient(135deg, #6366f1, #8b5cf6);
             }
+
+            /* =====================================================
+               GLOBAL AUTO-APPLY: Semua form elements otomatis estetik
+               ===================================================== */
+            form input[type="text"],
+            form input[type="email"],
+            form input[type="password"],
+            form input[type="number"],
+            form input[type="tel"],
+            form input[type="url"],
+            form input[type="search"],
+            form input[type="date"],
+            form input[type="datetime-local"],
+            form input[type="time"],
+            form input[type="month"],
+            form input[type="week"],
+            form select,
+            form textarea {
+                width: 100%; box-sizing: border-box;
+                padding: 0.625rem 0.875rem; font-size: 0.875rem;
+                font-family: 'Inter', sans-serif;
+                color: #1e293b; background: #ffffff;
+                border: 1.5px solid #e2e8f0 !important; border-radius: 0.625rem !important;
+                outline: none !important;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                -webkit-appearance: none; appearance: none;
+            }
+            form input[type="text"]::placeholder,
+            form input[type="email"]::placeholder,
+            form input[type="password"]::placeholder,
+            form input[type="number"]::placeholder,
+            form input[type="tel"]::placeholder,
+            form textarea::placeholder {
+                color: #94a3b8; font-weight: 400;
+            }
+            form input[type="text"]:hover,
+            form input[type="email"]:hover,
+            form input[type="password"]:hover,
+            form input[type="number"]:hover,
+            form input[type="tel"]:hover,
+            form input[type="date"]:hover,
+            form select:hover,
+            form textarea:hover {
+                border-color: #cbd5e1 !important; background: #fafbfc;
+            }
+            form input[type="text"]:focus,
+            form input[type="email"]:focus,
+            form input[type="password"]:focus,
+            form input[type="number"]:focus,
+            form input[type="tel"]:focus,
+            form input[type="date"]:focus,
+            form input[type="datetime-local"]:focus,
+            form select:focus,
+            form textarea:focus {
+                border-color: #6366f1 !important; background: #ffffff !important;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12) !important;
+            }
+            form select {
+                cursor: pointer;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") !important;
+                background-repeat: no-repeat !important;
+                background-position: right 0.75rem center !important;
+                background-size: 1rem !important;
+                padding-right: 2.25rem !important;
+            }
+            form textarea {
+                resize: vertical; min-height: 4.5rem; line-height: 1.6;
+            }
+            /* Exclude hidden inputs + radio/checkbox */
+            form input[type="hidden"],
+            form input[type="radio"],
+            form input[type="checkbox"],
+            form input[type="file"] {
+                width: auto; padding: inherit; border: inherit !important;
+                border-radius: inherit !important; box-shadow: none !important;
+                -webkit-appearance: revert; appearance: revert;
+            }
         </style>
     </head>
     <body class="font-sans antialiased text-slate-900 bg-slate-50 h-screen overflow-hidden" x-data="{ sidebarOpen: false }">

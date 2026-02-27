@@ -53,16 +53,15 @@
             <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 1rem; padding: 3rem; text-align: center;">
                 <svg style="width: 48px; height: 48px; margin: 0 auto 1rem; color: #059669;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 <p style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.125rem; color: #065f46; margin: 0;">Tagihan Sudah LUNAS</p>
-                <a href="{{ route('infaq.bills.index') }}" style="display: inline-flex; align-items: center; margin-top: 1rem; padding: 0.625rem 1.25rem; background: linear-gradient(135deg, #059669, #047857); color: #fff; border-radius: 0.625rem; font-size: 0.75rem; font-weight: 600; text-decoration: none;">← Kembali</a>
+                <a href="{{ route('infaq.bills.index') }}" style="display: inline-flex; align-items: center; margin-top: 1rem; padding: 0.625rem 1.25rem; background: linear-gradient(135deg, #059669, #047857); color: #fff; border-radius: 0.625rem; font-size: 0.8125rem; font-weight: 600; text-decoration: none;">← Kembali</a>
             </div>
         @else
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
                 <form action="{{ route('infaq.payments.store', $bill->id) }}" method="POST">
                     @csrf
                     <div style="padding: 2rem;">
-                        <!-- Metode Pembayaran -->
-                        <div style="margin-bottom: 2rem;">
-                            <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">Metode Pembayaran <span style="color: #e11d48;">*</span></label>
+                        {{-- Metode Pembayaran --}}
+                        <x-form-group label="Metode Pembayaran" name="payment_method" :required="true">
                             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;" id="payment-methods">
                                 <div class="pay-opt selected" data-value="tunai" onclick="selectPay(this)" style="border: 2px solid #6366f1; background: #eef2ff; border-radius: 0.75rem; padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.2s ease;">
                                     <svg style="width: 2rem; height: 2rem; margin: 0 auto 0.5rem; color: #059669;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
@@ -81,26 +80,28 @@
                                 </div>
                             </div>
                             <input type="hidden" name="payment_method" id="payment_method" value="tunai">
-                            @error('payment_method')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                        </x-form-group>
+
+                        {{-- Divider --}}
+                        <div class="fi-section">
+                            <div class="fi-section-title"><span class="fi-section-dot"></span> Detail Pembayaran</div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-                            <div>
-                                <label for="amount" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Jumlah Bayar (Rp) <span style="color: #e11d48;">*</span></label>
-                                <input type="number" name="amount" id="amount" value="{{ old('amount', $remaining) }}" min="1000" max="{{ $remaining }}" step="1000" required style="width: 100%; box-sizing: border-box;">
-                                @error('amount')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
-                            </div>
-                            <div>
-                                <label for="date" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tanggal <span style="color: #e11d48;">*</span></label>
-                                <input type="date" name="date" id="date" value="{{ old('date', date('Y-m-d')) }}" required style="width: 100%; box-sizing: border-box;">
-                                @error('date')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
-                            </div>
+                        <div class="fi-grid fi-grid-2" style="margin-top: 1rem;">
+                            <x-form-group label="Jumlah Bayar" name="amount" :required="true">
+                                <x-money-input name="amount" :value="old('amount', $remaining)" placeholder="{{ number_format($remaining, 0, ',', '.') }}" />
+                            </x-form-group>
+
+                            <x-form-group label="Tanggal" name="date" :required="true">
+                                <input type="date" name="date" id="date" value="{{ old('date', date('Y-m-d')) }}" required
+                                    class="fi-input @error('date') fi-error @enderror">
+                            </x-form-group>
                         </div>
                     </div>
 
                     <div style="padding: 1.25rem 2rem; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; background: #fafbfc;">
-                        <a href="{{ route('infaq.bills.index') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none;">Batal</a>
-                        <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(5,150,105,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+                        <a href="{{ route('infaq.bills.index') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none; transition: all 0.15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">Batal</a>
+                        <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(5,150,105,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
                             <svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                             Konfirmasi Pembayaran
                         </button>
@@ -116,7 +117,7 @@
     </style>
     <script>
         function selectPay(el) {
-            document.querySelectorAll('.pay-opt').forEach(opt => {
+            document.querySelectorAll('.pay-opt').forEach(function(opt) {
                 opt.classList.remove('selected');
                 opt.style.borderColor = '#e2e8f0';
                 opt.style.background = '#fff';

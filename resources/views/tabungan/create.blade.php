@@ -25,8 +25,8 @@
             <form action="{{ route('tabungan.store', $student->id) }}" method="POST">
                 @csrf
                 <div style="padding: 2rem;">
-                    <div style="margin-bottom: 2rem;">
-                        <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">Jenis Transaksi <span style="color: #e11d48;">*</span></label>
+                    {{-- Jenis Transaksi --}}
+                    <x-form-group label="Jenis Transaksi" name="type" :required="true">
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;" id="type-selector">
                             <div class="type-option selected" data-value="in" onclick="selectType(this)" style="border: 2px solid #6366f1; background: #eef2ff; border-radius: 0.75rem; padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.2s ease;">
                                 <svg style="width: 2rem; height: 2rem; margin: 0 auto 0.5rem; color: #059669;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" /></svg>
@@ -40,32 +40,35 @@
                             </div>
                         </div>
                         <input type="hidden" name="type" id="type_input" value="{{ old('type', 'in') }}">
-                        @error('type')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                    </x-form-group>
+
+                    {{-- Divider --}}
+                    <div class="fi-section">
+                        <div class="fi-section-title"><span class="fi-section-dot"></span> Detail Transaksi</div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
-                        <div>
-                            <label for="amount" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nominal (Rp) <span style="color: #e11d48;">*</span></label>
-                            <input type="number" name="amount" id="amount" value="{{ old('amount') }}" min="1000" step="1000" required placeholder="Contoh: 50000" style="width: 100%; box-sizing: border-box;">
-                            @error('amount')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
-                        </div>
-                        <div>
-                            <label for="date" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Tanggal <span style="color: #e11d48;">*</span></label>
-                            <input type="date" name="date" id="date" value="{{ old('date', date('Y-m-d')) }}" required style="width: 100%; box-sizing: border-box;">
-                            @error('date')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
-                        </div>
-                    </div>
+                    {{-- Fields --}}
+                    <div class="fi-grid fi-grid-2" style="margin-top: 1rem;">
+                        <x-form-group label="Nominal" name="amount" :required="true">
+                            <x-money-input name="amount" :value="old('amount')" placeholder="50.000" />
+                        </x-form-group>
 
-                    <div style="margin-bottom: 1.5rem;">
-                        <label for="description" style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Keterangan <span style="color: #94a3b8; font-weight: 400;">(Opsional)</span></label>
-                        <textarea name="description" id="description" rows="3" maxlength="500" placeholder="Contoh: Setoran rutin minggu ke-2" style="width: 100%; box-sizing: border-box;">{{ old('description') }}</textarea>
-                        @error('description')<p style="color: #e11d48; font-size: 0.75rem; margin-top: 0.5rem;">{{ $message }}</p>@enderror
+                        <x-form-group label="Tanggal" name="date" :required="true">
+                            <input type="date" name="date" id="date" value="{{ old('date', date('Y-m-d')) }}" required
+                                class="fi-input @error('date') fi-error @enderror">
+                        </x-form-group>
+
+                        <x-form-group label="Keterangan" name="description" hint="Opsional" class="fi-grid-full">
+                            <textarea name="description" id="description" rows="3" maxlength="500"
+                                placeholder="Contoh: Setoran rutin minggu ke-2"
+                                class="fi-input fi-textarea @error('description') fi-error @enderror">{{ old('description') }}</textarea>
+                        </x-form-group>
                     </div>
                 </div>
 
                 <div style="padding: 1.25rem 2rem; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem; background: #fafbfc;">
-                    <a href="{{ route('tabungan.show', $student->id) }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">Batal</a>
-                    <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(5,150,105,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 12px rgba(5,150,105,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 3px rgba(5,150,105,0.3)'">
+                    <a href="{{ route('tabungan.show', $student->id) }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none; transition: all 0.15s ease;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">Batal</a>
+                    <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 0.625rem; cursor: pointer; box-shadow: 0 1px 3px rgba(5,150,105,0.3); transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 12px rgba(5,150,105,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 3px rgba(5,150,105,0.3)'">
                         <svg style="width: 1rem; height: 1rem; margin-right: 0.375rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                         Simpan Transaksi
                     </button>
@@ -91,15 +94,16 @@
             document.getElementById('type_input').value = el.dataset.value;
         }
 
-        // Validasi overdraft sisi klien (pencegahan awal, server tetap sumber kebenaran)
+        // Validasi overdraft sisi klien
         document.querySelector('form').addEventListener('submit', function(e) {
-            const type = document.getElementById('type_input').value;
-            const amount = parseFloat(document.getElementById('amount').value) || 0;
-            const balance = Number("{{ $balance }}") || 0;
+            var type = document.getElementById('type_input').value;
+            var rawInput = document.querySelector('[data-money-raw][name="amount"]');
+            var amount = rawInput ? parseFloat(rawInput.value) : 0;
+            var balance = Number("{{ $balance }}") || 0;
 
             if (type === 'out' && amount > balance) {
                 e.preventDefault();
-                const formatted = balance.toLocaleString('id-ID');
+                var formatted = balance.toLocaleString('id-ID');
                 alert('Saldo tidak mencukupi! Saldo saat ini: Rp ' + formatted);
             }
         });

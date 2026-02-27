@@ -14,8 +14,13 @@
         .anim-card-3 { animation: fadeInUp 0.4s ease-out 0.26s both; }
         .anim-card-4 { animation: fadeInUp 0.4s ease-out 0.34s both; }
         .anim-card-5 { animation: fadeInUp 0.4s ease-out 0.42s both; }
-        .anim-section { animation: fadeInUp 0.5s ease-out 0.5s both; }
-        .anim-chart { animation: fadeInUp 0.5s ease-out 0.6s both; }
+        .anim-card-6 { animation: fadeInUp 0.4s ease-out 0.50s both; }
+        .anim-card-7 { animation: fadeInUp 0.4s ease-out 0.58s both; }
+        .anim-card-8 { animation: fadeInUp 0.4s ease-out 0.66s both; }
+        .anim-card-9 { animation: fadeInUp 0.4s ease-out 0.74s both; }
+        .anim-card-10 { animation: fadeInUp 0.4s ease-out 0.82s both; }
+        .anim-section { animation: fadeInUp 0.5s ease-out 0.9s both; }
+        .anim-chart { animation: fadeInUp 0.5s ease-out 1.0s both; }
         .kpi-card:hover .kpi-icon { transform: scale(1.1); }
         .kpi-icon { transition: transform 0.25s ease; }
     </style>
@@ -138,6 +143,92 @@
                 </div>
             </div>
             @endif
+        </div>
+
+        <!-- KPI Cards Baris Kedua -->
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;">
+
+            <!-- KPI 6: Total Guru & Staff -->
+            <div class="kpi-card anim-card-6" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(139,92,246,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #ede9fe; border-radius: 50%; opacity: 0.5;"></div>
+                <div style="position: relative; z-index: 1;">
+                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #ede9fe; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                        <svg style="width: 20px; height: 20px; color: #8b5cf6;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    </div>
+                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Total Guru & Staff</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #1e293b; margin: 0.25rem 0 0 0;">{{ $totalGuru + $totalStaff }}</p>
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
+                        <span>Guru: <strong style="color: #8b5cf6;">{{ $totalGuru }}</strong></span>
+                        <span>Staff: <strong style="color: #a78bfa;">{{ $totalStaff }}</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            @if (in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
+            <!-- KPI 7: Pengeluaran Bulan Ini -->
+            <div class="kpi-card anim-card-7" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(244,63,94,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #ffe4e6; border-radius: 50%; opacity: 0.5;"></div>
+                <div style="position: relative; z-index: 1;">
+                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #ffe4e6; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                        <svg style="width: 20px; height: 20px; color: #f43f5e;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    </div>
+                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Pengeluaran Bulan Ini</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: #f43f5e; margin: 0.25rem 0 0 0;">Rp {{ number_format($pengeluaranBulanIni, 0, ',', '.') }}</p>
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
+                        <span>Data Real</span>
+                        <strong style="color: #f43f5e;">Bulan Ini</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI 8: Total Saldo Tabungan -->
+            <div class="kpi-card anim-card-8" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(6,182,212,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #cffafe; border-radius: 50%; opacity: 0.5;"></div>
+                <div style="position: relative; z-index: 1;">
+                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #cffafe; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                        <svg style="width: 20px; height: 20px; color: #06b6d4;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                    </div>
+                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Total Saldo Tabungan</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: #1e293b; margin: 0.25rem 0 0 0;">Rp {{ number_format($totalSaldoTabungan, 0, ',', '.') }}</p>
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
+                        <span>Seluruh Siswa</span>
+                        <strong style="color: #06b6d4;">Akumulatif</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI 9: Total Wakaf Masuk -->
+            <div class="kpi-card anim-card-9" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(217,119,6,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #fef3c7; border-radius: 50%; opacity: 0.5;"></div>
+                <div style="position: relative; z-index: 1;">
+                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #fef3c7; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                        <svg style="width: 20px; height: 20px; color: #d97706;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>
+                    </div>
+                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Total Wakaf Masuk</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: #1e293b; margin: 0.25rem 0 0 0;">Rp {{ number_format($totalWakafMasuk, 0, ',', '.') }}</p>
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
+                        <span>Penerimaan</span>
+                        <strong style="color: #d97706;">Akumulatif</strong>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- KPI 10: Total Kelas Aktif -->
+            <div class="kpi-card anim-card-10" style="background: #fff; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; position: relative; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease;" onmouseover="this.style.boxShadow='0 8px 24px rgba(34,197,94,0.12)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='none'; this.style.transform=''">
+                <div style="position: absolute; right: -16px; bottom: -16px; width: 80px; height: 80px; background: #dcfce7; border-radius: 50%; opacity: 0.5;"></div>
+                <div style="position: relative; z-index: 1;">
+                    <div class="kpi-icon" style="width: 40px; height: 40px; background: #dcfce7; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                        <svg style="width: 20px; height: 20px; color: #22c55e;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                    </div>
+                    <p style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Total Kelas Aktif</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #1e293b; margin: 0.25rem 0 0 0;">{{ $totalKelas }}</p>
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; font-size: 0.6875rem; color: #64748b;">
+                        <span>Kapasitas: <strong style="color: #22c55e;">{{ $totalKapasitas }}</strong></span>
+                        <span>Siswa: <strong style="color: #6366f1;">{{ $totalSiswa }}</strong></span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Tabel Tunggakan -->

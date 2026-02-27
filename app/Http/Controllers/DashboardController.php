@@ -9,6 +9,8 @@ use App\Models\GeneralTransaction;
 use App\Models\SppPayment;
 use App\Models\AcademicYear;
 use App\Models\Classroom;
+use App\Models\Employee;
+use App\Models\StudentSaving;
 use App\Models\UserScope;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -49,7 +51,13 @@ class DashboardController extends Controller
                 ['pemasukanBulanIni' => $this->getPemasukanBulanIni($role, $isGlobalAdmin, $userScopeUnitIds)],
                 $this->getKepatuhanDanTunggakan($role, $isGlobalAdmin, $userScopeUnitIds),
                 $this->getPpdbStats($isGlobalAdmin, $userScopeUnitIds),
-                $this->getSiswaMenunggak($role, $isGlobalAdmin, $userScopeUnitIds)
+                $this->getSiswaMenunggak($role, $isGlobalAdmin, $userScopeUnitIds),
+                // 5 KPI Baru
+                $this->getGuruStaffStats($isGlobalAdmin, $userScopeUnitIds),
+                ['pengeluaranBulanIni' => $this->getPengeluaranBulanIni($role, $isGlobalAdmin, $userScopeUnitIds)],
+                ['totalSaldoTabungan' => $this->getTotalSaldoTabungan($isGlobalAdmin, $userScopeUnitIds)],
+                ['totalWakafMasuk' => $this->getTotalWakafMasuk($role, $isGlobalAdmin, $userScopeUnitIds)],
+                $this->getKelasStats($isGlobalAdmin, $userScopeUnitIds)
             );
         });
 
@@ -309,5 +317,71 @@ class DashboardController extends Controller
             $academicYearsQuery->whereIn('unit_id', $userScopeUnitIds);
         }
         return $academicYearsQuery->get();
+    }
+
+    // ========== 5 KPI BARU ==========
+
+    private function getGuruStaffStats($isGlobalAdmin, $userScopeUnitIds): array
+    {
+        $query = Employee::query();
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $query->whereIn('unit_id', $userScopeUnitIds);
+        }
+        $totalGuru  = (clone $query)->where('type', 'guru')->count();
+        $totalStaff = (clone $query)->where('type', 'staff')->count();
+
+        return [
+            'totalGuru'  => $totalGuru,
+            'totalStaff' => $totalStaff,
+        ];
+    }
+
+    private function getPengeluaranBulanIni($role, $isGlobalAdmin, $userScopeUnitIds): int
+    {
+        if (!in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) return 0;
+
+        $query = GeneralTransaction::where('type', 'out')->whereMonth('date', now()->month)->whereYear('date', now()->year);
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $query->whereIn('unit_id', $userScopeUnitIds);
+        }
+        return $query->sum('amount');
+    }
+
+    private function getTotalSaldoTabungan($isGlobalAdmin, $userScopeUnitIds): int
+    {
+        $inQuery  = StudentSaving::where('type', 'in');
+        $outQuery = StudentSaving::where('type', 'out');
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $inQuery->whereIn('unit_id', $userScopeUnitIds);
+            $outQuery->whereIn('unit_id', $userScopeUnitIds);
+        }
+        return $inQuery->sum('amount') - $outQuery->sum('amount');
+    }
+
+    private function getTotalWakafMasuk($role, $isGlobalAdmin, $userScopeUnitIds): int
+    {
+        if (!in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) return 0;
+
+        $query = GeneralTransaction::where('type', 'in')
+            ->whereNotNull('wakaf_donor_id');
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $query->whereIn('unit_id', $userScopeUnitIds);
+        }
+        return $query->sum('amount');
+    }
+
+    private function getKelasStats($isGlobalAdmin, $userScopeUnitIds): array
+    {
+        $query = Classroom::query();
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $query->whereIn('unit_id', $userScopeUnitIds);
+        }
+        $totalKelas = $query->count();
+        $totalKapasitas = (clone $query)->sum('capacity') ?: 0;
+
+        return [
+            'totalKelas'     => $totalKelas,
+            'totalKapasitas' => $totalKapasitas,
+        ];
     }
 }

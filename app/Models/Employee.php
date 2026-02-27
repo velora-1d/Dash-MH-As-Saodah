@@ -27,4 +27,20 @@ class Employee extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Relasi ke pengaturan gaji baku pegawai (pivot ke SalaryComponent).
+     */
+    public function salaryComponents()
+    {
+        return $this->hasMany(\App\Models\EmployeeSalary::class);
+    }
+
+    /**
+     * Relasi ke riwayat slip gaji (payroll) yang pernah diterbitkan.
+     */
+    public function payrolls()
+    {
+        return $this->hasMany(\App\Models\Payroll::class);
+    }
 }

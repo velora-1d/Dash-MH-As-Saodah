@@ -90,5 +90,18 @@
             el.style.background = '#eef2ff';
             document.getElementById('type_input').value = el.dataset.value;
         }
+
+        // Validasi overdraft sisi klien (pencegahan awal, server tetap sumber kebenaran)
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const type = document.getElementById('type_input').value;
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const balance = {{ $balance }};
+
+            if (type === 'out' && amount > balance) {
+                e.preventDefault();
+                const formatted = balance.toLocaleString('id-ID');
+                alert('Saldo tidak mencukupi! Saldo saat ini: Rp ' + formatted);
+            }
+        });
     </script>
 </x-app-layout>

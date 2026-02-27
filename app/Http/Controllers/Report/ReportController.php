@@ -32,8 +32,40 @@ class ReportController extends Controller
 
     public function cashFlow(Request $request)
     {
-        // TODO: Logic Jurnal Kas Report
-        return view('reports.cash-flow');
+        $month = $request->input('month', now()->month);
+        $year = $request->input('year', now()->year);
+        $type = $request->input('type'); // 'income', 'expense', atau null (semua)
+
+        $query = \App\Models\GeneralTransaction::with(['category', 'cashAccount'])
+            ->where('status', 'active')
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year);
+
+        if ($type === 'income') {
+            $query->where('type', 'income');
+        }
+        elseif ($type === 'expense') {
+            $query->where('type', 'expense');
+        }
+
+        $transactions = $query->orderBy('date', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(20)
+            ->withQueryString();
+
+        // Hitung aggregate dari SELURUH transaksi bulan/tahun (tanpa filter tipe)
+        // agar summary card selalu menampilkan ringkasan penuh
+        $baseQuery = \App\Models\GeneralTransaction::where('status', 'active')
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year);
+
+        $totalIncome = (clone $baseQuery)->where('type', 'income')->sum('amount');
+        $totalExpense = (clone $baseQuery)->where('type', 'expense')->sum('amount');
+        $balance = $totalIncome - $totalExpense;
+
+        return view('reports.cash-flow', compact(
+            'transactions', 'totalIncome', 'totalExpense', 'balance',
+            'month', 'year', 'type'
+        ));
     }
 }
-

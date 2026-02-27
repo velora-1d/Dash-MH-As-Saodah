@@ -78,7 +78,7 @@
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; padding: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
                 <div>
                     <h3 style="font-size: 0.6875rem; font-weight: 700; color: #6366f1; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.25rem 0;">Total Pemasukan (Bulan Ini)</h3>
-                    <p style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; color: #1e293b; margin: 0;">Rp 0</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; color: #1e293b; margin: 0;">Rp {{ number_format($totalIncome, 0, ',', '.') }}</p>
                 </div>
                 <div style="width: 48px; height: 48px; background: #eef2ff; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;">
                     <svg style="width: 24px; height: 24px; color: #6366f1;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" /></svg>
@@ -89,7 +89,7 @@
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; padding: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
                 <div>
                     <h3 style="font-size: 0.6875rem; font-weight: 700; color: #e11d48; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.25rem 0;">Total Pengeluaran (Bulan Ini)</h3>
-                    <p style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; color: #1e293b; margin: 0;">Rp 0</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; color: #1e293b; margin: 0;">Rp {{ number_format($totalExpense, 0, ',', '.') }}</p>
                 </div>
                 <div style="width: 48px; height: 48px; background: #fff1f2; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;">
                     <svg style="width: 24px; height: 24px; color: #e11d48;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" /></svg>
@@ -100,7 +100,7 @@
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; padding: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
                 <div>
                     <h3 style="font-size: 0.6875rem; font-weight: 700; color: #059669; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.25rem 0;">Saldo Kas Berjalan</h3>
-                    <p style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; color: #1e293b; margin: 0;">Rp 0</p>
+                    <p style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; color: {{ $balance >= 0 ? '#059669' : '#e11d48' }}; margin: 0;">Rp {{ number_format($balance, 0, ',', '.') }}</p>
                 </div>
                 <div style="width: 48px; height: 48px; background: #ecfdf5; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;">
                     <svg style="width: 24px; height: 24px; color: #059669;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -128,46 +128,46 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @forelse ($transactions as $trx)
                         <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                            <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b;">23 Feb 2026</td>
+                            <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b;">{{ $trx->date->translatedFormat('d M Y') }}</td>
                             <td style="padding: 1rem 1.5rem;">
-                                <span style="font-size: 0.6875rem; font-weight: 600; color: #6366f1; background: #eef2ff; padding: 0.25rem 0.625rem; border-radius: 999px;">Dana BOS</span>
+                                @if ($trx->category)
+                                <span style="font-size: 0.6875rem; font-weight: 600; color: {{ $trx->type === 'income' ? '#6366f1' : '#e11d48' }}; background: {{ $trx->type === 'income' ? '#eef2ff' : '#fff1f2' }}; padding: 0.25rem 0.625rem; border-radius: 999px;">{{ $trx->category->name }}</span>
+                                @else
+                                <span style="font-size: 0.6875rem; font-weight: 600; color: #94a3b8; background: #f1f5f9; padding: 0.25rem 0.625rem; border-radius: 999px;">Tanpa Kategori</span>
+                                @endif
                             </td>
                             <td style="padding: 1rem 1.5rem;">
-                                <p style="font-size: 0.8125rem; color: #64748b; margin: 0;">Penerimaan Dana BOS Tahap I</p>
+                                <p style="font-size: 0.8125rem; color: #64748b; margin: 0;">{{ $trx->description ?: '-' }}</p>
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: center;">
-                                <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">
-                                    DEBIT (Masuk)
-                                </span>
+                                @if ($trx->type === 'income')
+                                <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #047857; background: #d1fae5; border-radius: 999px;">DEBIT (Masuk)</span>
+                                @else
+                                <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #be123c; background: #ffe4e6; border-radius: 999px;">KREDIT (Keluar)</span>
+                                @endif
                             </td>
                             <td style="padding: 1rem 1.5rem; text-align: right;">
-                                <span style="font-weight: 700; font-size: 0.8125rem; color: #6366f1;">Rp 15.000.000</span>
+                                <span style="font-weight: 700; font-size: 0.8125rem; color: {{ $trx->type === 'income' ? '#6366f1' : '#e11d48' }};">{{ $trx->type === 'expense' ? '- ' : '' }}Rp {{ number_format($trx->amount, 0, ',', '.') }}</span>
                             </td>
                         </tr>
-                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                            <td style="padding: 1rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #1e293b;">24 Feb 2026</td>
-                            <td style="padding: 1rem 1.5rem;">
-                                <span style="font-size: 0.6875rem; font-weight: 600; color: #e11d48; background: #fff1f2; padding: 0.25rem 0.625rem; border-radius: 999px;">Listrik & Internet</span>
-                            </td>
-                            <td style="padding: 1rem 1.5rem;">
-                                <p style="font-size: 0.8125rem; color: #64748b; margin: 0;">Pembayaran Tagihan Listrik PLN Bulan Feb</p>
-                            </td>
-                            <td style="padding: 1rem 1.5rem; text-align: center;">
-                                <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; color: #be123c; background: #ffe4e6; border-radius: 999px;">
-                                    KREDIT (Keluar)
-                                </span>
-                            </td>
-                            <td style="padding: 1rem 1.5rem; text-align: right;">
-                                <span style="font-weight: 700; font-size: 0.8125rem; color: #e11d48;">- Rp 450.000</span>
+                        @empty
+                        <tr>
+                            <td colspan="5" style="padding: 3rem 1.5rem; text-align: center;">
+                                <div style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: #f1f5f9; margin-bottom: 1rem;">
+                                    <svg style="width: 24px; height: 24px; color: #cbd5e1;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                </div>
+                                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Belum ada transaksi untuk periode ini.</p>
                             </td>
                         </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
             
-            <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9; font-size: 0.8125rem; color: #94a3b8;">
-                Menampilkan halaman 1 dari 1
+            <div style="padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9;">
+                {{ $transactions->links() }}
             </div>
         </div>
     </div>

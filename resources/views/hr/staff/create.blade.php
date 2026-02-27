@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; width: 100%;">
+        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden;">
             <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
                 <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #0ea5e9, #3b82f6); border-radius: 50%;"></div>
                 <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Formulir Pendaftaran Staf</h4>
@@ -27,49 +27,33 @@
 
             <form action="{{ route('hr.staff.store') }}" method="POST" style="padding: 1.5rem;">
                 @csrf
-                <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;">
-                    
-                    <div>
-                        <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Nomor Induk / NIK</label>
-                        <input type="text" name="nip" value="{{ old('nip') }}" placeholder="Contoh: 123456789" style="width: 100%; padding: 0.625rem 1rem; font-size: 0.8125rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none; transition: border-color 0.15s ease;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
-                        @error('nip')
-                            <p style="margin: 0.375rem 0 0; font-size: 0.75rem; color: #ef4444;">{{ $message }}</p>
-                        @enderror
-                    </div>
+                <div class="fi-grid fi-grid-2">
+                    <x-form-group label="Nomor Induk / NIK" name="nip" class="fi-grid-full">
+                        <input type="text" name="nip" value="{{ old('nip') }}" placeholder="Contoh: 123456789"
+                            class="fi-input @error('nip') fi-error @enderror">
+                    </x-form-group>
 
-                    <div>
-                        <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Nama Lengkap (Beserta Gelar)</label>
-                        <input type="text" name="name" value="{{ old('name') }}" placeholder="Contoh: Budi Santoso, S.Kom." required style="width: 100%; padding: 0.625rem 1rem; font-size: 0.8125rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none; transition: border-color 0.15s ease;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
-                        @error('name')
-                            <p style="margin: 0.375rem 0 0; font-size: 0.75rem; color: #ef4444;">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <x-form-group label="Nama Lengkap (Beserta Gelar)" name="name" :required="true">
+                        <input type="text" name="name" value="{{ old('name') }}" placeholder="Contoh: Budi Santoso, S.Kom." required
+                            class="fi-input @error('name') fi-error @enderror">
+                    </x-form-group>
 
-                    <div>
-                        <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Posisi / Jabatan</label>
-                        <input type="text" name="position" value="{{ old('position') }}" placeholder="Contoh: Staf Tata Usaha" required style="width: 100%; padding: 0.625rem 1rem; font-size: 0.8125rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none; transition: border-color 0.15s ease;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#e2e8f0'">
-                        @error('position')
-                            <p style="margin: 0.375rem 0 0; font-size: 0.75rem; color: #ef4444;">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <x-form-group label="Posisi / Jabatan" name="position" :required="true">
+                        <input type="text" name="position" value="{{ old('position') }}" placeholder="Contoh: Staf Tata Usaha" required
+                            class="fi-input @error('position') fi-error @enderror">
+                    </x-form-group>
 
-                    <div>
-                        <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Status Kepegawaian</label>
-                        <select name="status" required style="width: 100%; padding: 0.625rem 1rem; font-size: 0.8125rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none; background: #fff; cursor: pointer;">
+                    <x-form-group label="Status Kepegawaian" name="status" :required="true">
+                        <select name="status" required class="fi-input fi-select @error('status') fi-error @enderror">
                             <option value="aktif" {{ old('status', 'aktif') == 'aktif' ? 'selected' : '' }}>Aktif</option>
                             <option value="nonaktif" {{ old('status') == 'nonaktif' ? 'selected' : '' }}>Non-Aktif / Cuti</option>
                         </select>
-                        @error('status')
-                            <p style="margin: 0.375rem 0 0; font-size: 0.75rem; color: #ef4444;">{{ $message }}</p>
-                        @enderror
-                    </div>
-
+                    </x-form-group>
                 </div>
 
                 <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end; gap: 0.75rem;">
-                    <a href="{{ route('hr.staff.index') }}" style="display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; text-decoration: none; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.background='#f1f5f9'; this.style.color='#475569'" onmouseout="this.style.background='#f8fafc'; this.style.color='#64748b'">Batal</a>
-                    
-                    <button type="submit" style="display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.5rem; font-size: 0.8125rem; font-weight: 600; color: #fff; background: linear-gradient(135deg, #0ea5e9, #3b82f6); border: none; border-radius: 0.5rem; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px -1px rgba(14, 165, 233, 0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <a href="{{ route('hr.staff.index') }}" style="display: inline-flex; align-items: center; padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; text-decoration: none; transition: all 0.15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">Batal</a>
+                    <button type="submit" style="display: inline-flex; align-items: center; padding: 0.625rem 1.5rem; font-size: 0.8125rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #0ea5e9, #3b82f6); border: none; border-radius: 0.625rem; cursor: pointer; transition: all 0.15s;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px -1px rgba(14, 165, 233, 0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                         Simpan Data
                     </button>
                 </div>

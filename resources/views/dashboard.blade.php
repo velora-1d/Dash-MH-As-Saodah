@@ -310,73 +310,115 @@
         </div>
         @endif
 
-        <!-- Charts -->
-        <div class="anim-chart" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+        <!-- Charts — Baris 1 -->
+        <div class="anim-chart" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
 
             @if (in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
-            <!-- Chart 1: Tren Arus Kas -->
+            <!-- Chart 1: Tren Arus Kas (span 2) -->
             <div style="grid-column: span 2; background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
                     <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%;"></div>
                     <div>
-                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Tren Arus Kas Tahunan</h4>
-                        <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">Perbandingan Pendapatan vs Pengeluaran dalam Setahun</p>
+                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">Tren Arus Kas Tahunan</h4>
+                        <p style="font-size: 0.625rem; color: #94a3b8; margin-top: 0.125rem;">Pendapatan vs Pengeluaran</p>
                     </div>
                 </div>
-                <div style="padding: 1.5rem; flex: 1; min-height: 300px; position: relative;">
-                    <canvas id="cashflowChart"></canvas>
-                </div>
+                <div style="padding: 1rem; flex: 1; min-height: 250px; position: relative;"><canvas id="cashflowChart"></canvas></div>
             </div>
 
             <!-- Chart 2: Sumber Pemasukan -->
             <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
                     <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%;"></div>
                     <div>
-                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Sumber Pemasukan</h4>
-                        <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">Proporsi sumber dana operasional utama</p>
+                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">Sumber Pemasukan</h4>
+                        <p style="font-size: 0.625rem; color: #94a3b8; margin-top: 0.125rem;">Proporsi sumber dana</p>
                     </div>
                 </div>
-                <div style="padding: 1.5rem; flex: 1; min-height: 250px; position: relative; display: flex; justify-content: center; align-items: center;">
-                    <canvas id="sourceChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Chart 3: Kepatuhan Infaq per Kelas -->
-            <div style="grid-column: span 2; background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
-                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%;"></div>
-                    <div>
-                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Kepatuhan Infaq per Kelas</h4>
-                        <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">Persentase Lunas dari Kelas 1 s/d Kelas 6</p>
-                    </div>
-                </div>
-                <div style="padding: 1.5rem; flex: 1; min-height: 300px; position: relative;">
-                    <canvas id="complianceChart"></canvas>
-                </div>
+                <div style="padding: 1rem; flex: 1; min-height: 220px; position: relative; display: flex; justify-content: center; align-items: center;"><canvas id="sourceChart"></canvas></div>
             </div>
             @endif
 
             @if (in_array(auth()->user()->role, ['kepsek', 'operator', 'admin', 'superadmin']))
-            <!-- Chart 4: PPDB -->
-            @if (auth()->user()->role === 'operator')
-            <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; grid-column: span 3;">
-            @else
-            <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">            
-            @endif
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+            <!-- Chart 3: PPDB -->
+            <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
+                <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
                     <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 50%;"></div>
                     <div>
-                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.875rem; color: #1e293b; margin: 0;">Pendaftar PPDB</h4>
-                        <p style="font-size: 0.6875rem; color: #94a3b8; margin-top: 0.125rem;">Rekap per status persetujuan</p>
+                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">Pendaftar PPDB</h4>
+                        <p style="font-size: 0.625rem; color: #94a3b8; margin-top: 0.125rem;">Rekap per status</p>
                     </div>
                 </div>
-                <div style="padding: 1.5rem; flex: 1; min-height: 250px; position: relative; display: flex; justify-content: center; align-items: center;">
-                    <canvas id="ppdbChart"></canvas>
-                </div>
+                <div style="padding: 1rem; flex: 1; min-height: 220px; position: relative; display: flex; justify-content: center; align-items: center;"><canvas id="ppdbChart"></canvas></div>
             </div>
             @endif
         </div>
+
+        <!-- Charts — Baris 2 -->
+        @if (in_array(auth()->user()->role, ['kepsek', 'bendahara', 'admin', 'superadmin']))
+        <div class="anim-chart" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+
+            <!-- Chart 4: Kepatuhan Infaq per Kelas (span 2) -->
+            <div style="grid-column: span 2; background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
+                <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%;"></div>
+                    <div>
+                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">Kepatuhan Infaq per Kelas</h4>
+                        <p style="font-size: 0.625rem; color: #94a3b8; margin-top: 0.125rem;">Persentase Lunas Kelas 1-6</p>
+                    </div>
+                </div>
+                <div style="padding: 1rem; flex: 1; min-height: 250px; position: relative;"><canvas id="complianceChart"></canvas></div>
+            </div>
+
+            <!-- Chart 5: Distribusi Pengeluaran -->
+            <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
+                <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #f43f5e, #e11d48); border-radius: 50%;"></div>
+                    <div>
+                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">Distribusi Pengeluaran</h4>
+                        <p style="font-size: 0.625rem; color: #94a3b8; margin-top: 0.125rem;">Per kategori tahun ini</p>
+                    </div>
+                </div>
+                <div style="padding: 1rem; flex: 1; min-height: 220px; position: relative; display: flex; justify-content: center; align-items: center;"><canvas id="distribusiChart"></canvas></div>
+            </div>
+
+            <!-- Chart 6: Rasio Siswa per Kelas -->
+            <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
+                <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 50%;"></div>
+                    <div>
+                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">Rasio Siswa per Kelas</h4>
+                        <p style="font-size: 0.625rem; color: #94a3b8; margin-top: 0.125rem;">Jumlah siswa tiap kelas</p>
+                    </div>
+                </div>
+                <div style="padding: 1rem; flex: 1; min-height: 220px; position: relative;"><canvas id="rasioKelasChart"></canvas></div>
+            </div>
+
+            <!-- Chart 7: Tren Tabungan Siswa (span 2) -->
+            <div style="grid-column: span 2; background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
+                <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 50%;"></div>
+                    <div>
+                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">Tren Tabungan Siswa</h4>
+                        <p style="font-size: 0.625rem; color: #94a3b8; margin-top: 0.125rem;">Setoran vs Penarikan per bulan</p>
+                    </div>
+                </div>
+                <div style="padding: 1rem; flex: 1; min-height: 250px; position: relative;"><canvas id="tabunganChart"></canvas></div>
+            </div>
+
+            <!-- Chart 8: Pemasukan vs Pengeluaran (span 2) -->
+            <div style="grid-column: span 2; background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column;">
+                <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%;"></div>
+                    <div>
+                        <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8125rem; color: #1e293b; margin: 0;">Pemasukan vs Pengeluaran</h4>
+                        <p style="font-size: 0.625rem; color: #94a3b8; margin-top: 0.125rem;">Perbandingan bulanan</p>
+                    </div>
+                </div>
+                <div style="padding: 1rem; flex: 1; min-height: 250px; position: relative;"><canvas id="inVsOutChart"></canvas></div>
+            </div>
+        </div>
+        @endif
     </div>
 
     <?php
@@ -385,7 +427,11 @@
         'source' => $chartSource ?? [],
         'compliance' => $chartCompliance ?? [],
         'ppdbDiterima' => $ppdbDiterima ?? 0,
-        'ppdbPending' => $ppdbPending ?? 0
+        'ppdbPending' => $ppdbPending ?? 0,
+        'tabunganTren' => $chartTabunganTren ?? [],
+        'distribusiPengeluaran' => $chartDistribusiPengeluaran ?? [],
+        'pemasukanVsPengeluaran' => $chartPemasukanVsPengeluaran ?? [],
+        'rasioSiswaKelas' => $chartRasioSiswaKelas ?? []
     ]);
     ?>
     <script id="dashboard-store" type="application/json">
@@ -449,6 +495,64 @@
                     type: 'pie',
                     data: { labels: ['Diterima', 'Menunggu', 'Ditolak'], datasets: [{ data: [store.ppdbDiterima, store.ppdbPending, 0], backgroundColor: ['#10b981', '#0ea5e9', '#f43f5e'], borderWidth: 0 }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                });
+            }
+
+            // === Chart 5: Distribusi Pengeluaran (Doughnut) ===
+            const distribusiData = store.distribusiPengeluaran;
+            const ctxDistribusi = document.getElementById('distribusiChart');
+            if (ctxDistribusi && distribusiData && distribusiData.labels && distribusiData.labels.length > 0) {
+                const distribusiColors = ['#f43f5e','#f59e0b','#6366f1','#10b981','#0ea5e9','#8b5cf6','#d97706','#06b6d4','#22c55e','#ec4899'];
+                new Chart(ctxDistribusi, {
+                    type: 'doughnut',
+                    data: { labels: distribusiData.labels, datasets: [{ data: distribusiData.data, backgroundColor: distribusiColors.slice(0, distribusiData.labels.length), borderWidth: 0, cutout: '60%' }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 } } } } }
+                });
+            }
+
+            // === Chart 6: Rasio Siswa per Kelas (Horizontal Bar) ===
+            const rasioData = store.rasioSiswaKelas;
+            const ctxRasio = document.getElementById('rasioKelasChart');
+            if (ctxRasio && rasioData && rasioData.labels && rasioData.labels.length > 0) {
+                const barColors = rasioData.labels.map((_, i) => ['#6366f1','#8b5cf6','#06b6d4','#10b981','#f59e0b','#f43f5e','#0ea5e9','#22c55e','#d97706','#ec4899'][i % 10]);
+                new Chart(ctxRasio, {
+                    type: 'bar',
+                    data: { labels: rasioData.labels, datasets: [{ label: 'Jumlah Siswa', data: rasioData.data, backgroundColor: barColors, borderRadius: 4 }] },
+                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
+                });
+            }
+
+            // === Chart 7: Tren Tabungan Siswa (Area) ===
+            const tabunganData = store.tabunganTren;
+            const ctxTabungan = document.getElementById('tabunganChart');
+            if (ctxTabungan && tabunganData && tabunganData.labels) {
+                new Chart(ctxTabungan, {
+                    type: 'line',
+                    data: {
+                        labels: tabunganData.labels,
+                        datasets: [
+                            { label: 'Setoran', data: tabunganData.in, borderColor: '#06b6d4', backgroundColor: 'rgba(6,182,212,0.1)', fill: true, tension: 0.4, borderWidth: 2, pointRadius: 3 },
+                            { label: 'Penarikan', data: tabunganData.out, borderColor: '#f43f5e', backgroundColor: 'rgba(244,63,94,0.1)', fill: true, tension: 0.4, borderWidth: 2, pointRadius: 3 }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            // === Chart 8: Pemasukan vs Pengeluaran (Grouped Bar) ===
+            const inOutData = store.pemasukanVsPengeluaran;
+            const ctxInOut = document.getElementById('inVsOutChart');
+            if (ctxInOut && inOutData && inOutData.labels) {
+                new Chart(ctxInOut, {
+                    type: 'bar',
+                    data: {
+                        labels: inOutData.labels,
+                        datasets: [
+                            { label: 'Pemasukan', data: inOutData.in, backgroundColor: '#8b5cf6', borderRadius: 4 },
+                            { label: 'Pengeluaran', data: inOutData.out, backgroundColor: '#f43f5e', borderRadius: 4 }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
                 });
             }
         });

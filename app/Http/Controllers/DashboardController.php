@@ -57,7 +57,12 @@ class DashboardController extends Controller
                 ['pengeluaranBulanIni' => $this->getPengeluaranBulanIni($role, $isGlobalAdmin, $userScopeUnitIds)],
                 ['totalSaldoTabungan' => $this->getTotalSaldoTabungan($isGlobalAdmin, $userScopeUnitIds)],
                 ['totalWakafMasuk' => $this->getTotalWakafMasuk($role, $isGlobalAdmin, $userScopeUnitIds)],
-                $this->getKelasStats($isGlobalAdmin, $userScopeUnitIds)
+                $this->getKelasStats($isGlobalAdmin, $userScopeUnitIds),
+                // 4 Chart Baru
+                ['chartTabunganTren' => $this->getChartTabunganTren($isGlobalAdmin, $userScopeUnitIds)],
+                ['chartDistribusiPengeluaran' => $this->getChartDistribusiPengeluaran($role, $isGlobalAdmin, $userScopeUnitIds)],
+                ['chartPemasukanVsPengeluaran' => $this->getChartPemasukanVsPengeluaran($role, $isGlobalAdmin, $userScopeUnitIds)],
+                ['chartRasioSiswaKelas' => $this->getChartRasioSiswaKelas($isGlobalAdmin, $userScopeUnitIds)]
             );
         });
 
@@ -388,6 +393,99 @@ class DashboardController extends Controller
         return [
             'totalKelas'      => $totalKelas,
             'totalSiswaKelas' => $totalSiswaKelas,
+        ];
+    }
+
+    // ========== 4 CHART BARU ==========
+
+    private function getChartTabunganTren($isGlobalAdmin, $userScopeUnitIds): array
+    {
+        $currentYear = now()->year;
+        $inQuery = StudentSaving::where('type', 'in')->whereYear('date', $currentYear);
+        $outQuery = StudentSaving::where('type', 'out')->whereYear('date', $currentYear);
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $inQuery->whereIn('unit_id', $userScopeUnitIds);
+            $outQuery->whereIn('unit_id', $userScopeUnitIds);
+        }
+        $monthlyIn = $inQuery->selectRaw("EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total")
+            ->groupBy('month')->pluck('total', 'month');
+        $monthlyOut = $outQuery->selectRaw("EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total")
+            ->groupBy('month')->pluck('total', 'month');
+
+        $saldoIn = []; $saldoOut = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $saldoIn[] = $monthlyIn[$i] ?? 0;
+            $saldoOut[] = $monthlyOut[$i] ?? 0;
+        }
+        return [
+            'labels' => ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],
+            'in' => $saldoIn,
+            'out' => $saldoOut
+        ];
+    }
+
+    private function getChartDistribusiPengeluaran($role, $isGlobalAdmin, $userScopeUnitIds): array
+    {
+        if (!in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) return [];
+
+        $currentYear = now()->year;
+        $query = GeneralTransaction::where('type', 'out')
+            ->whereYear('date', $currentYear)
+            ->join('transaction_categories', 'general_transactions.transaction_category_id', '=', 'transaction_categories.id')
+            ->selectRaw('transaction_categories.name as category, SUM(general_transactions.amount) as total')
+            ->groupBy('transaction_categories.name');
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $query->whereIn('general_transactions.unit_id', $userScopeUnitIds);
+        }
+        $data = $query->pluck('total', 'category');
+        return [
+            'labels' => $data->keys()->toArray(),
+            'data' => $data->values()->toArray()
+        ];
+    }
+
+    private function getChartPemasukanVsPengeluaran($role, $isGlobalAdmin, $userScopeUnitIds): array
+    {
+        if (!in_array($role, ['kepsek', 'bendahara', 'admin', 'superadmin'])) return [];
+
+        $currentYear = now()->year;
+        $inQuery = GeneralTransaction::where('type', 'in')->whereYear('date', $currentYear);
+        $outQuery = GeneralTransaction::where('type', 'out')->whereYear('date', $currentYear);
+        $sppQuery = SppPayment::whereYear('date', $currentYear);
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $inQuery->whereIn('unit_id', $userScopeUnitIds);
+            $outQuery->whereIn('unit_id', $userScopeUnitIds);
+            $sppQuery->whereHas('sppBill', fn($q) => $q->whereIn('unit_id', $userScopeUnitIds));
+        }
+        $monthlyIn = $inQuery->selectRaw("EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total")
+            ->groupBy('month')->pluck('total', 'month');
+        $monthlySpp = $sppQuery->selectRaw("EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total")
+            ->groupBy('month')->pluck('total', 'month');
+        $monthlyOut = $outQuery->selectRaw("EXTRACT(MONTH FROM date)::int as month, SUM(amount) as total")
+            ->groupBy('month')->pluck('total', 'month');
+
+        $dataIn = []; $dataOut = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $dataIn[] = ($monthlyIn[$i] ?? 0) + ($monthlySpp[$i] ?? 0);
+            $dataOut[] = $monthlyOut[$i] ?? 0;
+        }
+        return [
+            'labels' => ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],
+            'in' => $dataIn,
+            'out' => $dataOut
+        ];
+    }
+
+    private function getChartRasioSiswaKelas($isGlobalAdmin, $userScopeUnitIds): array
+    {
+        $query = Classroom::withCount('students');
+        if (!$isGlobalAdmin && !empty($userScopeUnitIds)) {
+            $query->whereIn('unit_id', $userScopeUnitIds);
+        }
+        $kelas = $query->orderBy('name')->get();
+        return [
+            'labels' => $kelas->pluck('name')->toArray(),
+            'data' => $kelas->pluck('students_count')->toArray()
         ];
     }
 }

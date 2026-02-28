@@ -46,17 +46,18 @@
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                     @php
                         $isOpen = $ppdbSettings['ppdb_is_open'] === '1';
-                        $badgeStyle = 'display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.875rem;border-radius:999px;font-size:0.75rem;font-weight:700;' . ($isOpen ? 'background:#d1fae5;color:#047857;' : 'background:#fee2e2;color:#991b1b;');
-                        $dotStyle = 'width:7px;height:7px;border-radius:50%;' . ($isOpen ? 'background:#10b981;box-shadow:0 0 0 2px rgba(16,185,129,0.2);' : 'background:#ef4444;box-shadow:0 0 0 2px rgba(239,68,68,0.2);');
-                        $toggleAreaStyle = 'border-radius:0.75rem;padding:1.25rem;text-align:center;' . ($isOpen ? 'background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;' : 'background:linear-gradient(135deg,#fef2f2,#fee2e2);border:1.5px solid #fca5a5;');
-                        $sliderBg = 'position:absolute;top:0;left:0;right:0;bottom:0;border-radius:999px;transition:all 0.3s ease;' . ($isOpen ? 'background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 1px 4px rgba(16,185,129,0.3);' : 'background:#cbd5e1;');
-                        $knobStyle = 'position:absolute;top:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:all 0.3s ease;box-shadow:0 1px 3px rgba(0,0,0,0.2);' . ($isOpen ? 'left:26px;' : 'left:2px;');
-                        $statusTextStyle = 'font-size:0.75rem;font-weight:700;margin:0.5rem 0 0;' . ($isOpen ? 'color:#047857;' : 'color:#991b1b;');
                     @endphp
-                    <span style="{!! $badgeStyle !!}">
-                        <span style="{!! $dotStyle !!}"></span>
-                        {{ $isOpen ? 'PPDB DIBUKA' : 'PPDB DITUTUP' }}
+                    @if ($isOpen)
+                    <span style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.875rem; border-radius: 999px; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.04em; background: linear-gradient(135deg, #ecfdf5, #d1fae5); color: #047857; border: 1px solid #6ee7b7;">
+                        <span style="width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 2px rgba(16,185,129,0.2);"></span>
+                        PPDB DIBUKA
                     </span>
+                    @else
+                    <span style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.875rem; border-radius: 999px; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.04em; background: linear-gradient(135deg, #fef2f2, #fee2e2); color: #991b1b; border: 1px solid #fca5a5;">
+                        <span style="width:7px;height:7px;border-radius:50%;background:#ef4444;box-shadow:0 0 0 2px rgba(239,68,68,0.2);"></span>
+                        PPDB DITUTUP
+                    </span>
+                    @endif
                     <div style="width: 28px; height: 28px; background: #f1f5f9; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; border: 1px solid #e2e8f0;">
                         <svg class="chevron" style="width: 14px; height: 14px; color: #64748b; transition: transform 0.25s ease;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                     </div>
@@ -66,15 +67,29 @@
                 <!-- Baris 1: Toggle + Nominal -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
                     <!-- Toggle Buka/Tutup PPDB -->
-                    <div style="{!! $toggleAreaStyle !!}">
+                    @if ($isOpen)
+                    <div style="border-radius:0.75rem;padding:1.25rem;text-align:center;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;">
+                    @else
+                    <div style="border-radius:0.75rem;padding:1.25rem;text-align:center;background:linear-gradient(135deg,#fef2f2,#fee2e2);border:1.5px solid #fca5a5;">
+                    @endif
                         <p style="font-size: 0.6875rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 0.625rem;">Status PPDB</p>
                         <label style="position: relative; display: inline-block; width: 48px; height: 24px; cursor: pointer;">
                             <input type="checkbox" id="ppdb-toggle" {{ $isOpen ? 'checked' : '' }} style="display: none;" onchange="togglePpdb(this.checked)">
-                            <span style="{!! $sliderBg !!}">
-                                <span style="{!! $knobStyle !!}"></span>
+                            @if ($isOpen)
+                            <span style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:999px;transition:all 0.3s ease;background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 1px 4px rgba(16,185,129,0.3);">
+                                <span style="position:absolute;top:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:all 0.3s ease;box-shadow:0 1px 3px rgba(0,0,0,0.2);left:26px;"></span>
                             </span>
+                            @else
+                            <span style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:999px;transition:all 0.3s ease;background:#cbd5e1;">
+                                <span style="position:absolute;top:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:all 0.3s ease;box-shadow:0 1px 3px rgba(0,0,0,0.2);left:2px;"></span>
+                            </span>
+                            @endif
                         </label>
-                        <p style="{!! $statusTextStyle !!}">{{ $isOpen ? 'Dibuka' : 'Ditutup' }}</p>
+                        @if ($isOpen)
+                        <p style="font-size:0.75rem;font-weight:700;margin:0.5rem 0 0;color:#047857;">Dibuka</p>
+                        @else
+                        <p style="font-size:0.75rem;font-weight:700;margin:0.5rem 0 0;color:#991b1b;">Ditutup</p>
+                        @endif
                     </div>
                     <!-- Biaya Pendaftaran -->
                     <div style="background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border: 1.5px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#3b82f6'" onmouseout="this.style.borderColor='#e2e8f0'">

@@ -484,21 +484,52 @@
             .fi-money-wrap {
                 position: relative !important;
                 display: flex !important;
-                align-items: center !important;
+                align-items: stretch !important;
+                border: 1.5px solid #e2e8f0 !important;
+                border-radius: 0.625rem !important;
+                background: #ffffff !important;
+                overflow: hidden !important;
+                transition: all 0.15s ease !important;
+                box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03) !important;
+            }
+            .fi-money-wrap:hover {
+                border-color: #94a3b8 !important;
+            }
+            .fi-money-wrap:focus-within {
+                border-color: #6366f1 !important;
+                box-shadow: 0 0 0 3px rgba(99,102,241,0.12), 0 1px 2px rgba(0,0,0,0.03) !important;
             }
             .fi-money-prefix {
-                position: absolute !important;
-                left: 0.75rem !important;
+                display: flex !important;
+                align-items: center !important;
+                padding: 0.625rem 0 0.625rem 0.75rem !important;
                 font-family: 'Inter', sans-serif !important;
                 font-size: 0.8125rem !important;
                 font-weight: 700 !important;
                 color: #64748b !important;
-                pointer-events: none !important;
-                z-index: 1 !important;
+                background: #f8fafc !important;
+                border-right: 1px solid #e2e8f0 !important;
+                padding-right: 0.625rem !important;
+                white-space: nowrap !important;
+                user-select: none !important;
             }
-            .fi-money-input {
-                padding-left: 2.25rem !important;
+            .fi-money-wrap .fi-money-input {
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                padding-left: 0.75rem !important;
                 font-variant-numeric: tabular-nums !important;
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
+            .fi-money-wrap .fi-money-input:hover,
+            .fi-money-wrap .fi-money-input:focus {
+                border: none !important;
+                box-shadow: none !important;
+            }
+            /* Hidden input di dalam money wrap tidak boleh terlihat */
+            .fi-money-wrap input[type="hidden"] {
+                display: none !important;
             }
 
             /* --- Responsive: mobile 1 column --- */

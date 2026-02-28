@@ -74,10 +74,10 @@
                             @endphp
                             <div style="margin-bottom: 1.25rem;">
                                 <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">{{ $comp->name }}</label>
-                                <div class="fi-money-wrap" style="position: relative; display: flex; align-items: center; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; overflow: hidden; background: #fff; transition: border-color 0.2s;" onfocus="this.style.borderColor='#3b82f6'">
-                                    <span style="padding: 0.625rem 0.75rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; background: #f8fafc; border-right: 1px solid #e2e8f0; flex-shrink: 0;">Rp</span>
+                                <div class="fi-money-wrap">
+                                    <span class="fi-money-prefix">Rp</span>
                                     <input type="hidden" name="components[{{ $comp->id }}]" value="{{ $nominal }}">
-                                    <input type="text" class="salary-nominal" data-type="earning" value="{{ number_format($nominal, 0, ',', '.') }}" style="width: 100%; padding: 0.625rem 0.75rem; font-size: 0.875rem; font-weight: 600; color: #334155; border: none; outline: none; background: transparent;" onfocus="this.parentElement.style.borderColor='#3b82f6'; this.parentElement.style.boxShadow='0 0 0 3px rgba(59,130,246,0.08)'" onblur="this.parentElement.style.borderColor='#e2e8f0'; this.parentElement.style.boxShadow='none'">
+                                    <input type="text" inputmode="numeric" class="fi-input fi-money-input salary-nominal" data-type="earning" value="{{ number_format($nominal, 0, ',', '.') }}" autocomplete="off">
                                 </div>
                             </div>
                         @endforeach
@@ -104,10 +104,10 @@
                             @endphp
                             <div style="margin-bottom: 1.25rem;">
                                 <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">{{ $comp->name }}</label>
-                                <div class="fi-money-wrap" style="position: relative; display: flex; align-items: center; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; overflow: hidden; background: #fff; transition: border-color 0.2s;" onfocus="this.style.borderColor='#3b82f6'">
-                                    <span style="padding: 0.625rem 0.75rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; background: #f8fafc; border-right: 1px solid #e2e8f0; flex-shrink: 0;">Rp</span>
+                                <div class="fi-money-wrap">
+                                    <span class="fi-money-prefix">Rp</span>
                                     <input type="hidden" name="components[{{ $comp->id }}]" value="{{ $nominal }}">
-                                    <input type="text" class="salary-nominal" data-type="deduction" value="{{ number_format($nominal, 0, ',', '.') }}" style="width: 100%; padding: 0.625rem 0.75rem; font-size: 0.875rem; font-weight: 600; color: #334155; border: none; outline: none; background: transparent;" onfocus="this.parentElement.style.borderColor='#3b82f6'; this.parentElement.style.boxShadow='0 0 0 3px rgba(59,130,246,0.08)'" onblur="this.parentElement.style.borderColor='#e2e8f0'; this.parentElement.style.boxShadow='none'">
+                                    <input type="text" inputmode="numeric" class="fi-input fi-money-input salary-nominal" data-type="deduction" value="{{ number_format($nominal, 0, ',', '.') }}" autocomplete="off">
                                 </div>
                             </div>
                         @endforeach

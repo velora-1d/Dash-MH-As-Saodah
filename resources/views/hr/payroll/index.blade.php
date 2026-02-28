@@ -218,10 +218,10 @@
                                                 <span style="font-size: 0.65rem; padding: 0.125rem 0.375rem; border-radius: 0.25rem; background: #fef2f2; color: #ef4444;">-</span>
                                                 @endif
                                             </label>
-                                            <div class="fi-money-wrap" style="position: relative;">
-                                                <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: #94a3b8; pointer-events: none;">Rp</span>
+                                            <div class="fi-money-wrap">
+                                                <span class="fi-money-prefix">Rp</span>
                                                 <input type="text" inputmode="numeric"
-                                                    class="payroll-input salary-nominal"
+                                                    class="fi-input fi-money-input salary-nominal"
                                                     data-comp-id="{{ $comp->id }}"
                                                     value="{{ $empSalNominal > 0 ? number_format($empSalNominal, 0, ',', '.') : '0' }}"
                                                     autocomplete="off">

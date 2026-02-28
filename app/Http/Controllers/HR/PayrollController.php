@@ -15,6 +15,7 @@ class PayrollController extends Controller
 {
     /**
      * Tampilkan riwayat pembuatan slip gaji (payrolls).
+     * Juga menyertakan data pegawai + komponen untuk panel Atur Gaji inline.
      */
     public function index(Request $request)
     {
@@ -31,7 +32,15 @@ class PayrollController extends Controller
         $payrolls = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
         $academicYears = AcademicYear::orderBy('name', 'desc')->get();
 
-        return view('hr.payroll.index', compact('payrolls', 'academicYears'));
+        // Data untuk panel Atur Gaji Pegawai (inline di halaman utama)
+        $employeeQuery = Employee::with('salaryComponents')->where('status', 'aktif');
+        if ($request->filled('emp_search')) {
+            $employeeQuery->where('name', 'like', "%{$request->emp_search}%");
+        }
+        $employees = $employeeQuery->orderBy('name')->get();
+        $components = SalaryComponent::orderBy('type')->orderBy('name')->get();
+
+        return view('hr.payroll.index', compact('payrolls', 'academicYears', 'employees', 'components'));
     }
 
     /**

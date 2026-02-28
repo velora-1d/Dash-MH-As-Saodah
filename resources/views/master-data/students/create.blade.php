@@ -325,7 +325,7 @@
                             </div>
                             <div id="infaq_nominal_container" class="{{ old('infaq_status') == 'subsidi' ? '' : 'hidden' }}">
                                 <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Nominal Subsidi (Rp)</label>
-                                <input type="number" name="infaq_nominal" id="infaq_nominal" min="0" step="1000" placeholder="20000" value="{{ old('infaq_nominal') }}" style="width: 100%; box-sizing: border-box;">
+                                <x-money-input name="infaq_nominal" :value="old('infaq_nominal')" placeholder="20.000" />
                             </div>
                         </div>
                     </div>
@@ -348,16 +348,16 @@
             const cat = document.getElementById('category');
             const infaq = document.getElementById('infaq_status');
             const nomCon = document.getElementById('infaq_nominal_container');
-            const nomIn = document.getElementById('infaq_nominal');
+            const nomIn = nomCon ? nomCon.querySelector('[data-money-raw]') : null;
+            const nomDisplay = nomCon ? nomCon.querySelector('[data-money-input]') : null;
             
             function toggle() { 
                 if (infaq.value === 'subsidi') { 
                     nomCon.classList.remove('hidden'); 
-                    nomIn.setAttribute('required','required'); 
                 } else { 
                     nomCon.classList.add('hidden'); 
-                    nomIn.removeAttribute('required'); 
-                    nomIn.value = ''; 
+                    if (nomIn) nomIn.value = ''; 
+                    if (nomDisplay) nomDisplay.value = ''; 
                 } 
             }
             

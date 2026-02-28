@@ -344,6 +344,171 @@
             aside::-webkit-scrollbar { display: none; }
             aside { -ms-overflow-style: none; scrollbar-width: none; }
 
+            /* =====================================================
+               FORM DESIGN SYSTEM (fi-*)
+               ===================================================== */
+
+            /* --- Grid Layout --- */
+            .fi-grid {
+                display: grid !important;
+                gap: 1.25rem !important;
+            }
+            .fi-grid-2 { grid-template-columns: repeat(2, 1fr) !important; }
+            .fi-grid-3 { grid-template-columns: repeat(3, 1fr) !important; }
+            .fi-grid-4 { grid-template-columns: repeat(4, 1fr) !important; }
+            .fi-grid-full { grid-column: 1 / -1 !important; }
+
+            /* --- Form Group Container --- */
+            .fi-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+
+            /* --- Label --- */
+            .fi-label {
+                display: block !important;
+                font-family: 'Inter', sans-serif !important;
+                font-size: 0.8125rem !important;
+                font-weight: 600 !important;
+                color: #374151 !important;
+                margin-bottom: 0.375rem !important;
+                letter-spacing: 0 !important;
+            }
+            .fi-required {
+                color: #e11d48 !important;
+                margin-left: 0.125rem !important;
+            }
+
+            /* --- Input States --- */
+            .fi-input {
+                width: 100% !important;
+                box-sizing: border-box !important;
+                font-family: 'Inter', sans-serif !important;
+                font-size: 0.875rem !important;
+                font-weight: 400 !important;
+                padding: 0.625rem 0.875rem !important;
+                border: 1.5px solid #e2e8f0 !important;
+                border-radius: 0.625rem !important;
+                background-color: #ffffff !important;
+                color: #1e293b !important;
+                outline: none !important;
+                transition: all 0.15s ease !important;
+                box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03) !important;
+            }
+            .fi-input:hover { border-color: #94a3b8 !important; }
+            .fi-input:focus {
+                border-color: #6366f1 !important;
+                box-shadow: 0 0 0 3px rgba(99,102,241,0.12), 0 1px 2px rgba(0,0,0,0.03) !important;
+            }
+            .fi-input.fi-error {
+                border-color: #fca5a5 !important;
+                background-color: #fef2f2 !important;
+            }
+            .fi-input.fi-error:focus {
+                border-color: #ef4444 !important;
+                box-shadow: 0 0 0 3px rgba(239,68,68,0.1) !important;
+            }
+            .fi-textarea { resize: vertical !important; min-height: 80px !important; }
+            .fi-select { cursor: pointer !important; }
+
+            /* --- Error Message --- */
+            .fi-error-msg {
+                display: flex !important;
+                align-items: center !important;
+                gap: 0.375rem !important;
+                font-size: 0.75rem !important;
+                font-weight: 500 !important;
+                color: #dc2626 !important;
+                margin-top: 0.375rem !important;
+            }
+            .fi-error-msg svg {
+                width: 0.875rem !important;
+                height: 0.875rem !important;
+                flex-shrink: 0 !important;
+            }
+
+            /* --- Hint Text --- */
+            .fi-hint {
+                font-size: 0.6875rem !important;
+                color: #94a3b8 !important;
+                margin-top: 0.25rem !important;
+                font-weight: 400 !important;
+                line-height: 1.4 !important;
+            }
+
+            /* --- Section Divider --- */
+            .fi-section {
+                margin: 1.5rem 0 0.5rem !important;
+                padding-top: 1.25rem !important;
+                border-top: 1px solid #f1f5f9 !important;
+            }
+            .fi-section-title {
+                display: flex !important;
+                align-items: center !important;
+                gap: 0.5rem !important;
+                font-family: 'Outfit', sans-serif !important;
+                font-weight: 700 !important;
+                font-size: 0.875rem !important;
+                color: #1e293b !important;
+            }
+            .fi-section-dot {
+                display: inline-block !important;
+                width: 8px !important;
+                height: 8px !important;
+                background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+                border-radius: 50% !important;
+            }
+
+            /* --- Icon Wrap (icon inside input) --- */
+            .fi-icon-wrap {
+                position: relative !important;
+            }
+            .fi-icon-wrap .fi-input,
+            .fi-icon-wrap .fi-select {
+                padding-left: 2.5rem !important;
+            }
+            .fi-icon-left {
+                position: absolute !important;
+                left: 0.75rem !important;
+                top: 50% !important;
+                transform: translateY(-50%) !important;
+                width: 1.125rem !important;
+                height: 1.125rem !important;
+                color: #94a3b8 !important;
+                pointer-events: none !important;
+                z-index: 1 !important;
+            }
+
+            /* --- Money Input (Rp prefix) --- */
+            .fi-money-wrap {
+                position: relative !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            .fi-money-prefix {
+                position: absolute !important;
+                left: 0.75rem !important;
+                font-family: 'Inter', sans-serif !important;
+                font-size: 0.8125rem !important;
+                font-weight: 700 !important;
+                color: #64748b !important;
+                pointer-events: none !important;
+                z-index: 1 !important;
+            }
+            .fi-money-input {
+                padding-left: 2.25rem !important;
+                font-variant-numeric: tabular-nums !important;
+            }
+
+            /* --- Responsive: mobile 1 column --- */
+            @media (max-width: 768px) {
+                .fi-grid-2, .fi-grid-3, .fi-grid-4 {
+                    grid-template-columns: 1fr !important;
+                }
+                .fi-grid-full { grid-column: span 1 !important; }
+            }
+
             /* --- RESPONSIVE MOBILE OVERRIDES --- */
             @media (max-width: 768px) {
                 /* Force multi-column grids to 1 column on mobile */

@@ -1,8 +1,5 @@
 <x-app-layout>
-    <style>
-        .edit-input { width: 100%; padding: 0.625rem 0.75rem 0.625rem 2.5rem; font-size: 0.875rem; font-weight: 500; color: #334155; border: 1px solid #e2e8f0; border-radius: 0.625rem; outline: none; transition: all 0.2s; background: #fff; }
-        .edit-input:focus { border-color: #3b82f6 !important; box-shadow: 0 0 0 3px rgba(59,130,246,0.1) !important; }
-    </style>
+
 
     <div class="space-y-6">
         <!-- Header Section -->
@@ -77,10 +74,10 @@
                             @endphp
                             <div style="margin-bottom: 1.25rem;">
                                 <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">{{ $comp->name }}</label>
-                                <div class="fi-money-wrap" style="position: relative;">
-                                    <span style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); font-size: 0.8125rem; color: #94a3b8; pointer-events: none; font-weight: 500;">Rp</span>
+                                <div class="fi-money-wrap" style="position: relative; display: flex; align-items: center; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; overflow: hidden; background: #fff; transition: border-color 0.2s;" onfocus="this.style.borderColor='#3b82f6'">
+                                    <span style="padding: 0.625rem 0.75rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; background: #f8fafc; border-right: 1px solid #e2e8f0; flex-shrink: 0;">Rp</span>
                                     <input type="hidden" name="components[{{ $comp->id }}]" value="{{ $nominal }}">
-                                    <input type="text" class="edit-input salary-nominal" data-type="earning" value="{{ number_format($nominal, 0, ',', '.') }}">
+                                    <input type="text" class="salary-nominal" data-type="earning" value="{{ number_format($nominal, 0, ',', '.') }}" style="width: 100%; padding: 0.625rem 0.75rem; font-size: 0.875rem; font-weight: 600; color: #334155; border: none; outline: none; background: transparent;" onfocus="this.parentElement.style.borderColor='#3b82f6'; this.parentElement.style.boxShadow='0 0 0 3px rgba(59,130,246,0.08)'" onblur="this.parentElement.style.borderColor='#e2e8f0'; this.parentElement.style.boxShadow='none'">
                                 </div>
                             </div>
                         @endforeach
@@ -107,10 +104,10 @@
                             @endphp
                             <div style="margin-bottom: 1.25rem;">
                                 <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">{{ $comp->name }}</label>
-                                <div class="fi-money-wrap" style="position: relative;">
-                                    <span style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); font-size: 0.8125rem; color: #94a3b8; pointer-events: none; font-weight: 500;">Rp</span>
+                                <div class="fi-money-wrap" style="position: relative; display: flex; align-items: center; border: 1.5px solid #e2e8f0; border-radius: 0.625rem; overflow: hidden; background: #fff; transition: border-color 0.2s;" onfocus="this.style.borderColor='#3b82f6'">
+                                    <span style="padding: 0.625rem 0.75rem; font-size: 0.8125rem; font-weight: 600; color: #64748b; background: #f8fafc; border-right: 1px solid #e2e8f0; flex-shrink: 0;">Rp</span>
                                     <input type="hidden" name="components[{{ $comp->id }}]" value="{{ $nominal }}">
-                                    <input type="text" class="edit-input salary-nominal" data-type="deduction" value="{{ number_format($nominal, 0, ',', '.') }}">
+                                    <input type="text" class="salary-nominal" data-type="deduction" value="{{ number_format($nominal, 0, ',', '.') }}" style="width: 100%; padding: 0.625rem 0.75rem; font-size: 0.875rem; font-weight: 600; color: #334155; border: none; outline: none; background: transparent;" onfocus="this.parentElement.style.borderColor='#3b82f6'; this.parentElement.style.boxShadow='0 0 0 3px rgba(59,130,246,0.08)'" onblur="this.parentElement.style.borderColor='#e2e8f0'; this.parentElement.style.boxShadow='none'">
                                 </div>
                             </div>
                         @endforeach

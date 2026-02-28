@@ -241,7 +241,7 @@
                                 <div style="display: flex; flex-direction: column; gap: 0.375rem; min-width: 140px;">
                                     @php $rp = $reg->registrationPayment; @endphp
                                     <button class="admin-badge {{ $rp->is_fee_paid ? 'admin-active' : '' }}" data-id="{{ $rp->id }}" data-field="is_fee_paid" data-amount="{{ $rp->is_fee_paid ? (int)$rp->fee_amount : $feeDaftarUlang }}" title="{{ $rp->is_fee_paid ? 'Lunas: Rp ' . number_format($rp->fee_amount, 0, ',', '.') : 'Harga Rekomendasi: Rp ' . number_format($feeDaftarUlang, 0, ',', '.') }}">
-                                        <span>Herreg {!! $feeDaftarUlang > 0 ? "<span style='opacity:0.6'>(" . ($feeDaftarUlang/1000) . "k)</span>" : "" !!}</span>
+                                        <span>Daftar {!! $feeDaftarUlang > 0 ? "<span style='opacity:0.6'>(" . ($feeDaftarUlang/1000) . "k)</span>" : "" !!}</span>
                                         <span class="indicator">{!! $rp->is_fee_paid ? '&#10003;' : '&#8722;' !!}</span>
                                     </button>
                                     <div style="display: flex; gap: 0.25rem;">
@@ -327,6 +327,17 @@
         }
         .admin-badge.admin-active:hover { background: #d1fae5; border-color: #6ee7b7; color: #047857; }
         .indicator { font-weight: 800; }
+        /* SweetAlert Premium Styling */
+        .swal-premium { border-radius: 1rem !important; padding: 1.5rem !important; border: 1.5px solid #e2e8f0 !important; box-shadow: 0 20px 60px rgba(0,0,0,0.12) !important; }
+        .swal-premium .swal2-title { font-family: 'Outfit', sans-serif !important; font-size: 1.0625rem !important; font-weight: 700 !important; color: #1e293b !important; padding: 0.75rem 0 0 !important; }
+        .swal-premium .swal2-html-container { margin: 0.75rem 1rem !important; }
+        .swal-premium .swal2-actions { margin-top: 1.25rem !important; gap: 0.5rem !important; }
+        .swal-btn-confirm { display: inline-flex !important; align-items: center !important; padding: 0.625rem 1.5rem !important; font-family: 'Outfit', sans-serif !important; font-weight: 700 !important; font-size: 0.8125rem !important; color: #fff !important; background: linear-gradient(135deg, #10b981, #059669) !important; border: none !important; border-radius: 0.625rem !important; cursor: pointer !important; box-shadow: 0 2px 8px rgba(16,185,129,0.3) !important; transition: all 0.2s !important; }
+        .swal-btn-confirm:hover { transform: translateY(-1px) !important; box-shadow: 0 4px 12px rgba(16,185,129,0.4) !important; }
+        .swal-btn-danger { display: inline-flex !important; align-items: center !important; padding: 0.625rem 1.5rem !important; font-family: 'Outfit', sans-serif !important; font-weight: 700 !important; font-size: 0.8125rem !important; color: #fff !important; background: linear-gradient(135deg, #ef4444, #dc2626) !important; border: none !important; border-radius: 0.625rem !important; cursor: pointer !important; box-shadow: 0 2px 8px rgba(239,68,68,0.3) !important; transition: all 0.2s !important; }
+        .swal-btn-danger:hover { transform: translateY(-1px) !important; box-shadow: 0 4px 12px rgba(239,68,68,0.4) !important; }
+        .swal-btn-cancel { display: inline-flex !important; align-items: center !important; padding: 0.625rem 1.5rem !important; font-family: 'Outfit', sans-serif !important; font-weight: 700 !important; font-size: 0.8125rem !important; color: #64748b !important; background: #f1f5f9 !important; border: 1.5px solid #e2e8f0 !important; border-radius: 0.625rem !important; cursor: pointer !important; transition: all 0.2s !important; }
+        .swal-btn-cancel:hover { background: #e2e8f0 !important; color: #475569 !important; }
     </style>
 
     <script>
@@ -343,13 +354,26 @@
 
             if (isTurningOn && isPaymentField) {
                 Swal.fire({
-                    title: 'Berapa Nominal yang Dibayar?',
-                    text: 'Sesuaikan nominal apabila murid ini mendapatkan harga berbeda.',
-                    input: 'number',
-                    inputValue: currentAmountStr,
+                    title: '<div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;"><div style="width:36px;height:36px;background:linear-gradient(135deg,#10b981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg style="width:18px;height:18px;color:#fff" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>Terima Pembayaran</div>',
+                    html: '<p style="font-size:0.8125rem;color:#64748b;margin:0 0 1rem;">Masukkan nominal yang dibayarkan oleh siswa. Sesuaikan jika mendapat harga khusus.</p><div class="fi-money-wrap" style="max-width:280px;margin:0 auto;"><span class="fi-money-prefix">Rp</span><input type="text" inputmode="numeric" id="swal-nominal" class="fi-input fi-money-input" value="' + Number(currentAmountStr).toLocaleString('id-ID') + '" autocomplete="off" style="text-align:center;font-weight:700;font-size:1rem;"></div>',
                     showCancelButton: true,
-                    confirmButtonText: 'Terima Kas',
+                    confirmButtonText: '<svg style="width:14px;height:14px;margin-right:0.375rem" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Terima Kas',
                     cancelButtonText: 'Batal',
+                    customClass: { popup: 'swal-premium', confirmButton: 'swal-btn-confirm', cancelButton: 'swal-btn-cancel' },
+                    buttonsStyling: false,
+                    didOpen: () => {
+                        const inp = document.getElementById('swal-nominal');
+                        inp.addEventListener('input', function() {
+                            var raw = inp.value.replace(/\D/g, '');
+                            inp.value = raw.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                        });
+                        inp.focus(); inp.select();
+                    },
+                    preConfirm: () => {
+                        const raw = document.getElementById('swal-nominal').value.replace(/\D/g, '');
+                        if (!raw || raw === '0') { Swal.showValidationMessage('Nominal tidak boleh kosong atau 0'); return false; }
+                        return raw;
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
                         doToggle(paymentId, field, result.value);
@@ -357,12 +381,13 @@
                 });
             } else if (!isTurningOn && isPaymentField) {
                  Swal.fire({
-                    title: 'Batalkan Pembayaran?',
-                    text: 'Pemasukan di Keuangan Umum juga akan otomatis dibatalkan.',
-                    icon: 'warning',
+                    title: '<div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;"><div style="width:36px;height:36px;background:linear-gradient(135deg,#ef4444,#dc2626);border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg style="width:18px;height:18px;color:#fff" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></div>Batalkan Pembayaran?</div>',
+                    html: '<p style="font-size:0.8125rem;color:#64748b;">Pemasukan di Keuangan Umum juga akan otomatis dibatalkan. Pastikan ini sudah benar.</p>',
                     showCancelButton: true,
                     confirmButtonText: 'Ya, Batalkan',
                     cancelButtonText: 'Tutup',
+                    customClass: { popup: 'swal-premium', confirmButton: 'swal-btn-danger', cancelButton: 'swal-btn-cancel' },
+                    buttonsStyling: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         doToggle(paymentId, field, null);

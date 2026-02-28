@@ -16,13 +16,13 @@
                         <p class="text-sm text-gray-600"><strong>Pegawai:</strong> {{ $payroll->employee->name }}</p>
                         <p class="text-sm text-gray-600"><strong>Periode:</strong> Bulan {{ $payroll->month }} - {{ $payroll->academicYear->name }}</p>
                         <p class="text-sm text-gray-600"><strong>Status Saat Ini:</strong> 
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $payroll->status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $payroll->status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
                                 {{ ucfirst($payroll->status) }}
                             </span>
                         </p>
                     </div>
 
-                    <form action="{{ route('hr.payroll.update', $payroll->id) }}" method="POST">
+                    <form action="{{ route('hr.payroll.update', $payroll->id) }}" method="POST" id="payrollForm">
                         @csrf
                         @method('PUT')
 
@@ -43,10 +43,8 @@
 
                                 @foreach($earningComponents as $comp)
                                     @php
-                                        // Cari apakah pegawai ini sudah punya rincian nominal untuk komponen ini sebelumnya
                                         $existingDetail = $payroll->details->where('component_name', $comp->name)->first();
                                         $nominal = $existingDetail ? $existingDetail->nominal : 0;
-                                        // Gunakan ID komponen sebagai key untuk form (karena di Controller akan memproses ID komponen / nama)
                                     @endphp
                                     <div class="mb-4">
                                         <label class="block text-sm font-medium text-gray-700">{{ $comp->name }}</label>
@@ -54,10 +52,8 @@
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                 <span class="text-gray-500 sm:text-sm">Rp</span>
                                             </div>
-                                            <!-- Hidden real value -->
                                             <input type="hidden" name="components[{{ $comp->id }}]" value="{{ $nominal }}">
-                                            <!-- Display string value -->
-                                            <input type="text" class="salary-nominal focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" value="{{ number_format($nominal, 0, ',', '.') }}">
+                                            <input type="text" class="salary-nominal focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" data-type="earning" value="{{ number_format($nominal, 0, ',', '.') }}">
                                         </div>
                                     </div>
                                 @endforeach
@@ -89,10 +85,30 @@
                                                 <span class="text-gray-500 sm:text-sm">Rp</span>
                                             </div>
                                             <input type="hidden" name="components[{{ $comp->id }}]" value="{{ $nominal }}">
-                                            <input type="text" class="salary-nominal focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" value="{{ number_format($nominal, 0, ',', '.') }}">
+                                            <input type="text" class="salary-nominal focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" data-type="deduction" value="{{ number_format($nominal, 0, ',', '.') }}">
                                         </div>
                                     </div>
                                 @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Panel Ringkasan Kalkulasi Otomatis -->
+                        <div class="mt-6 p-5 rounded-xl border-2 border-blue-200 bg-blue-50" id="summaryPanel">
+                            <h4 class="text-sm font-bold text-blue-800 mb-3 uppercase tracking-wide">Ringkasan Gaji</h4>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-green-700 font-medium">Total Pendapatan</span>
+                                    <span class="font-bold text-green-700" id="totalEarning">Rp 0</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-red-600 font-medium">Total Potongan</span>
+                                    <span class="font-bold text-red-600" id="totalDeduction">Rp 0</span>
+                                </div>
+                                <hr class="border-blue-300">
+                                <div class="flex justify-between items-center text-base pt-1">
+                                    <span class="text-blue-900 font-bold">Gaji Bersih (THP)</span>
+                                    <span class="font-extrabold text-blue-900 text-lg" id="netSalary">Rp 0</span>
+                                </div>
                             </div>
                         </div>
 
@@ -120,7 +136,6 @@
         </div>
     </div>
 
-    <!-- Script auto-format Rp. sama seperti di pengaturan salaries default -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             function formatRibuan(val) {
@@ -128,14 +143,54 @@
                 return num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
             }
 
+            function formatCurrency(val) {
+                return 'Rp ' + formatRibuan(val);
+            }
+
+            function recalculate() {
+                var totalEarning = 0;
+                var totalDeduction = 0;
+
+                document.querySelectorAll('.salary-nominal').forEach(function(el) {
+                    var hiddenInput = el.closest('.fi-money-wrap').querySelector('input[type="hidden"]');
+                    var raw = parseInt(hiddenInput ? hiddenInput.value : 0) || 0;
+                    var type = el.getAttribute('data-type');
+
+                    if (type === 'earning') {
+                        totalEarning += raw;
+                    } else if (type === 'deduction') {
+                        totalDeduction += raw;
+                    }
+                });
+
+                var netSalary = totalEarning - totalDeduction;
+
+                document.getElementById('totalEarning').textContent = formatCurrency(totalEarning);
+                document.getElementById('totalDeduction').textContent = formatCurrency(totalDeduction);
+                document.getElementById('netSalary').textContent = formatCurrency(netSalary);
+
+                // Warna net salary: merah jika minus, biru jika positif
+                var netEl = document.getElementById('netSalary');
+                if (netSalary < 0) {
+                    netEl.className = 'font-extrabold text-red-600 text-lg';
+                } else {
+                    netEl.className = 'font-extrabold text-blue-900 text-lg';
+                }
+            }
+
+            // Setup event listener untuk setiap input nominal
             document.querySelectorAll('.salary-nominal').forEach(function(el) {
                 var hiddenInput = el.closest('.fi-money-wrap').querySelector('input[type="hidden"]');
                 el.addEventListener('input', function() {
                     var raw = el.value.replace(/\D/g, '');
                     el.value = formatRibuan(raw);
                     if (hiddenInput) hiddenInput.value = raw;
+                    recalculate();
                 });
             });
+
+            // Hitung total awal saat halaman dimuat
+            recalculate();
         });
     </script>
 </x-app-layout>

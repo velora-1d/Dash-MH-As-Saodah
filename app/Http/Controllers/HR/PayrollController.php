@@ -203,12 +203,13 @@ class PayrollController extends Controller
     }
 
     /**
-     * Hitung ulang dan simpan perubahan Nominal Detail Slip Gaji
+     * Hitung ulang dan simpan perubahan Nominal Detail Slip Gaji.
+     * Key form = SalaryComponent.id → cocokkan ke PayrollDetail via component_name.
      */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'components' => 'array',
+            'components' => 'required|array',
             'components.*' => 'numeric|min:0',
         ]);
 
@@ -221,36 +222,55 @@ class PayrollController extends Controller
         $totalEarning = 0;
         $totalDeduction = 0;
 
-        // Loop inputan dari user dan sesuaikan nominal PayrollDetail
-        if ($request->has('components')) {
-            foreach ($request->components as $detailId => $nominal) {
-                if ($nominal >= 0) {
-                    $detail = PayrollDetail::where('payroll_id', $payroll->id)->where('id', $detailId)->first();
-                    if ($detail) {
-                        $detail->nominal = $nominal;
-                        $detail->save();
+        // Key form = SalaryComponent.id, value = nominal yang diketik user
+        foreach ($request->components as $componentId => $nominal) {
+            $nominal = floatval($nominal);
 
-                        if ($detail->type === 'earning') {
-                            $totalEarning += $nominal;
-                        } else {
-                            $totalDeduction += $nominal;
-                        }
-                    }
+            // Cari master komponen berdasarkan ID untuk dapat nama & tipe
+            $component = SalaryComponent::find($componentId);
+            if (!$component) {
+                continue; // Komponen tidak valid, lewati
+            }
+
+            if ($nominal > 0) {
+                // Buat atau perbarui record PayrollDetail berdasarkan component_name
+                PayrollDetail::updateOrCreate(
+                    [
+                        'payroll_id' => $payroll->id,
+                        'component_name' => $component->name,
+                    ],
+                    [
+                        'type' => $component->type,
+                        'nominal' => $nominal,
+                    ]
+                );
+
+                // Akumulasi total
+                if ($component->type === 'earning') {
+                    $totalEarning += $nominal;
+                } else {
+                    $totalDeduction += $nominal;
                 }
+            } else {
+                // Nominal 0 → hapus detail jika sebelumnya ada
+                PayrollDetail::where('payroll_id', $payroll->id)
+                    ->where('component_name', $component->name)
+                    ->delete();
             }
         }
 
-        // Update total kalkulasi di tabel induk
+        // Hitung ulang total kalkulasi di tabel induk: Pendapatan - Potongan = Gaji Bersih
         $payroll->total_earnings = $totalEarning;
         $payroll->total_deductions = $totalDeduction;
         $payroll->net_salary = $totalEarning - $totalDeduction;
-        // Simpan field deskripsi/catatan misal ada
+
+        // Simpan catatan/deskripsi jika ada
         if ($request->has('description')) {
             $payroll->description = $request->description;
         }
         $payroll->save();
 
-        return redirect()->route('hr.payroll.index')->with('success', 'Riwayat Gaji ' . $payroll->employee->name . ' berhasi diperbarui.');
+        return redirect()->route('hr.payroll.index')->with('success', 'Slip gaji ' . $payroll->employee->name . ' berhasil diperbarui. Gaji Bersih: Rp ' . number_format($payroll->net_salary, 0, ',', '.'));
     }
 
     /**
